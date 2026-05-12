@@ -419,8 +419,53 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                 <input type="hidden" name="Q4_Staff_Burnout_Scale" id="hidden-q4" value="5">
                 <input type="hidden" name="Q5_Current_Tech_Status" id="hidden-q5" value="" required>
 
+                <!-- ================= INTRODUCTORY FLOW SELECTOR (STEP 0) ================= -->
+                <div id="step-0" class="audit-step active space-y-8 animate-fade-in">
+                    <div class="text-center max-w-xl mx-auto space-y-3">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Optimize Your Operations</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight uppercase">Let's Simplify Your Software</h2>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                            Would you like to start with our 2-minute Business Efficiency Audit to pinpoint labor leakage, or proceed directly to standard contact?
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                        <!-- Audit Option (YES) -->
+                        <div class="audit-card border border-stone-200/60 rounded-[2rem] p-8 bg-[#FAF9F5]/30 text-center flex flex-col justify-between cursor-pointer hover:border-indigo-500 hover:bg-white transition duration-300 shadow-sm" onclick="chooseAuditFlow(true)">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto font-black text-lg shadow-sm border border-indigo-100/30">
+                                    A
+                                </div>
+                                <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight">Interactive Efficiency Audit</h3>
+                                <p class="text-slate-500 text-xs leading-relaxed max-w-xs mx-auto font-medium">
+                                    Highly Recommended. Rate staff burnout, identify bottlenecks, and get a customized manual-to-automated checklist delivered straight to your inbox.
+                                </p>
+                            </div>
+                            <div class="pt-6">
+                                <span class="btn-primary inline-block text-[11px] uppercase tracking-widest font-black py-3 px-6 rounded-xl">Start 2-Min Audit →</span>
+                            </div>
+                        </div>
+
+                        <!-- Direct Contact Option (NO) -->
+                        <div class="audit-card border border-stone-200/60 rounded-[2rem] p-8 bg-[#FAF9F5]/30 text-center flex flex-col justify-between cursor-pointer hover:border-indigo-500 hover:bg-white transition duration-300 shadow-sm" onclick="chooseAuditFlow(false)">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mx-auto font-black text-lg shadow-sm border border-stone-200/30">
+                                    B
+                                </div>
+                                <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight">Direct Contact Form</h3>
+                                <p class="text-slate-500 text-xs leading-relaxed max-w-xs mx-auto font-medium">
+                                    Skip the operational assessment. Go straight to sharing your contact information and leave us a message or ask a question.
+                                </p>
+                            </div>
+                            <div class="pt-6">
+                                <span class="btn-secondary inline-block text-[11px] uppercase tracking-widest font-black py-3 px-6 rounded-xl font-black">Skip to Contact →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ================= QUESTION 1 ================= -->
-                <div id="step-1" class="audit-step active space-y-6">
+                <div id="step-1" class="audit-step space-y-6">
                     <div class="text-center md:text-left">
                         <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 1: Labor Leakage</span>
                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">How many hours are lost to manual tasks each week?</h2>
@@ -446,7 +491,8 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                         </div>
                     </div>
 
-                    <div class="flex justify-end pt-6">
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(0)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
                         <button type="button" onclick="nextStep(2)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Continue →</button>
                     </div>
                 </div>
@@ -494,7 +540,7 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
 
                     <div class="pt-4">
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Your Focus Reclaimed</label>
-                        <textarea id="q3-textarea" oninput="updateQ3(this.value)" placeholder="e.g. Focus on business expansion, spend more quality weekend time with family, or optimize core service operations..." required class="w-full bg-[#FAF9F5] border border-stone-200/60 p-5 rounded-2xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 shadow-sm font-medium h-36 resize-none"></textarea>
+                        <textarea id="q3-textarea" oninput="updateQ3(this.value)" placeholder="e.g. Focus on business expansion, spend more quality weekend time with family, or optimize core service operations..." class="w-full bg-[#FAF9F5] border border-stone-200/60 p-5 rounded-2xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 shadow-sm font-medium h-36 resize-none"></textarea>
                     </div>
 
                     <div class="flex justify-between pt-6 border-t border-stone-100">
@@ -564,9 +610,9 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                 <!-- ================= STEP 6: CONTACT INFORMATION ================= -->
                 <div id="step-6" class="audit-step space-y-6">
                     <div class="text-center md:text-left">
-                        <span class="text-indigo-600 font-bold uppercase tracking-widest text-[10px] bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/30">Diagnoses Prepared</span>
-                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Let's Compile Your Custom Blueprint</h2>
-                        <p class="text-slate-500 text-sm mt-1">Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.</p>
+                        <span id="step-6-badge" class="text-indigo-600 font-bold uppercase tracking-widest text-[10px] bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/30">Diagnoses Prepared</span>
+                        <h2 id="step-6-title" class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Let's Compile Your Custom Blueprint</h2>
+                        <p id="step-6-desc" class="text-slate-500 text-sm mt-1">Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
@@ -636,9 +682,9 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                     </svg>
                 </div>
                 <div class="space-y-3">
-                    <span class="text-green-600 font-extrabold text-[10px] tracking-widest uppercase bg-green-50 px-2.5 py-1 rounded-full border border-green-100/40">Audit Submitted Successfully!</span>
-                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Your Efficiency Blueprint Is Underway!</h2>
-                    <p class="text-slate-600 text-sm max-w-md mx-auto leading-relaxed font-medium">
+                    <span id="success-badge" class="text-green-600 font-extrabold text-[10px] tracking-widest uppercase bg-green-50 px-2.5 py-1 rounded-full border border-green-100/40">Audit Submitted Successfully!</span>
+                    <h2 id="success-title" class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Your Efficiency Blueprint Is Underway!</h2>
+                    <p id="success-desc" class="text-slate-600 text-sm max-w-md mx-auto leading-relaxed font-medium">
                         Nathan will review your 5 labor leakage metrics and manually craft your customized manual-to-automated operational checklist. Look out for a detailed response in your inbox soon!
                     </p>
                 </div>
@@ -696,24 +742,58 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
 
     <!-- Multi-Step Form Logic and Ajax Submission -->
     <script>
-        let currentStep = 1;
+        let currentStep = 0;
+        let hasChosenAudit = true;
         const totalSteps = 6;
 
         function updateProgress() {
-            const percent = Math.round(((currentStep - 1) / (totalSteps - 1)) * 100);
-            
             const stepIndicator = document.getElementById('step-indicator');
             const percentIndicator = document.getElementById('percent-indicator');
             const progressBar = document.getElementById('progress-bar');
+            const progressRow = document.getElementById('progress-container-row');
             
-            if (currentStep <= 5) {
-                stepIndicator.innerText = `Question ${currentStep} of 5`;
-                percentIndicator.innerText = `${percent}% Complete`;
-                progressBar.style.width = `${percent}%`;
+            if (currentStep === 0) {
+                // Hide progress bar on introductory choice step
+                progressRow.style.display = "none";
             } else {
-                stepIndicator.innerText = `Final Step`;
-                percentIndicator.innerText = `100% Complete`;
-                progressBar.style.width = `100%`;
+                progressRow.style.display = "block";
+                const percent = Math.round(((currentStep - 1) / 5) * 100);
+                if (currentStep <= 5) {
+                    stepIndicator.innerText = `Question ${currentStep} of 5`;
+                    percentIndicator.innerText = `${percent}% Complete`;
+                    progressBar.style.width = `${percent}%`;
+                } else {
+                    stepIndicator.innerText = `Final Step`;
+                    percentIndicator.innerText = `100% Complete`;
+                    progressBar.style.width = `100%`;
+                }
+            }
+        }
+
+        function chooseAuditFlow(wantsAudit) {
+            hasChosenAudit = wantsAudit;
+            if (wantsAudit) {
+                // Reset audit values for fresh entry
+                document.getElementById('hidden-q1').value = "";
+                document.getElementById('hidden-q2').value = "";
+                document.getElementById('hidden-q3').value = "";
+                document.getElementById('hidden-q5').value = "";
+                
+                // Clear text area
+                document.getElementById('q3-textarea').value = "";
+                
+                // Remove selection visual highlights
+                document.querySelectorAll('.audit-card').forEach(card => card.classList.remove('selected'));
+                
+                showStep(1);
+            } else {
+                // Populate skipped text in audit values
+                document.getElementById('hidden-q1').value = "Skipped (Direct Contact Option)";
+                document.getElementById('hidden-q2').value = "Skipped (Direct Contact Option)";
+                document.getElementById('hidden-q3').value = "Skipped (Direct Contact Option)";
+                document.getElementById('hidden-q5').value = "Skipped (Direct Contact Option)";
+                
+                showStep(6);
             }
         }
 
@@ -721,12 +801,35 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
             document.querySelectorAll('.audit-step').forEach(step => {
                 step.classList.remove('active');
             });
+            
             const activeStep = document.getElementById(`step-${stepNum}`);
             if (activeStep) {
                 activeStep.classList.add('active');
             }
+            
             currentStep = stepNum;
             updateProgress();
+            
+            // Dynamically adjust step 6 texts based on choices
+            if (stepNum === 6) {
+                const badge = document.getElementById('step-6-badge');
+                const title = document.getElementById('step-6-title');
+                const desc = document.getElementById('step-6-desc');
+                const submitBtn = document.getElementById('submit-btn');
+                
+                if (hasChosenAudit) {
+                    badge.innerText = "Diagnoses Prepared";
+                    title.innerText = "Let's Compile Your Custom Blueprint";
+                    desc.innerText = "Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.";
+                    submitBtn.innerText = "Submit Audit Request";
+                } else {
+                    badge.innerText = "Get In Touch";
+                    title.innerText = "Let's Simplify Your Workflow";
+                    desc.innerText = "Fill out your details below and Nathan Carey will reach out to you directly to answer questions and coordinate a free consultation.";
+                    submitBtn.innerText = "Send Message";
+                }
+            }
+            
             window.scrollTo({ top: 120, behavior: 'smooth' });
         }
 
@@ -753,7 +856,12 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
         }
 
         function prevStep(stepNum) {
-            showStep(stepNum);
+            if (stepNum === 5 && !hasChosenAudit) {
+                // Skipped audit takes user back to choice screen
+                showStep(0);
+            } else {
+                showStep(stepNum);
+            }
         }
 
         // Card Selection Logic for Q1
@@ -827,7 +935,7 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
             e.preventDefault();
             
             submitBtn.disabled = true;
-            submitBtn.innerText = "Submitting Audit...";
+            submitBtn.innerText = hasChosenAudit ? "Submitting Audit..." : "Sending Message...";
             submitBtn.style.opacity = "0.7";
 
             const formData = new FormData(form);
@@ -849,7 +957,21 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                     form.classList.add('hidden');
                     document.getElementById('progress-container-row').classList.add('hidden');
                     
-                    // Show success screen card
+                    // Show success screen card and customize based on choice
+                    const successBadge = document.getElementById('success-badge');
+                    const successTitle = document.getElementById('success-title');
+                    const successDesc = document.getElementById('success-desc');
+                    
+                    if (hasChosenAudit) {
+                        successBadge.innerText = "Audit Submitted Successfully!";
+                        successTitle.innerText = "Your Efficiency Blueprint Is Underway!";
+                        successDesc.innerText = "Nathan will review your 5 labor leakage metrics and manually craft your customized manual-to-automated operational checklist. Look out for a response in your inbox soon!";
+                    } else {
+                        successBadge.innerText = "Message Sent Successfully!";
+                        successTitle.innerText = "Let's Build Something Great!";
+                        successDesc.innerText = "Thank you for contacting Hoosier AI Automations. Nathan Carey has received your message and details, and will reach out to connect with you shortly.";
+                    }
+
                     const successCard = document.getElementById('success-card');
                     successCard.classList.remove('hidden');
                     
@@ -863,7 +985,7 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                     console.log(response);
                     alert(res.error || "Something went wrong. Please try again.");
                     submitBtn.disabled = false;
-                    submitBtn.innerText = "Submit Audit Request";
+                    submitBtn.innerText = hasChosenAudit ? "Submit Audit Request" : "Send Message";
                     submitBtn.style.opacity = "1";
                 }
             })
@@ -871,7 +993,7 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                 console.log(error);
                 alert("Form submission failed. Please check your internet and try again.");
                 submitBtn.disabled = false;
-                submitBtn.innerText = "Submit Audit Request";
+                submitBtn.innerText = hasChosenAudit ? "Submit Audit Request" : "Send Message";
                 submitBtn.style.opacity = "1";
             });
         });
@@ -883,13 +1005,12 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
 ---
 
 ## File: Assets/portfolio.html
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Portfolio | Hoosier AI Automations</title>
+    <title>Portfolio | Hoosier AI Automations</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
@@ -905,7 +1026,7 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
         }
     </style>
 </head>
-<body class="bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen">
+<body class="bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen relative">
 
     <!-- Glassmorphism Navbar -->
     <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm shadow-slate-100/50">
@@ -989,7 +1110,7 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
             <div class="grid md:grid-cols-2 gap-8">
                 
                 <!-- Project Card 1: Sugar Shell Bakehouse -->
-                <div class="limestone-card p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
+                <div class="limestone-card p-8 md:p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
                     <div>
                         <div class="flex justify-between items-center mb-6">
                             <span class="bg-indigo-50 text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-100/40">Created for the everydayer.</span>
@@ -999,15 +1120,42 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
                             A friendly, custom-made website designed for Bedford's premier bakery. Features interactive menu listings, seamless pre-order forms, and a responsive layout that looks great on any phone. Custom-built to help their team spend more time baking and less time answering repetitive questions.
                         </p>
+
+                        <!-- Premium Browser Viewport Mockup Carousel -->
+                        <div class="relative rounded-2xl border border-stone-200/80 shadow-md overflow-hidden bg-stone-50 mb-8 mt-4 group/browser">
+                            <!-- Browser Titlebar -->
+                            <div class="bg-stone-100 border-b border-stone-200/60 px-4 py-2.5 flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="flex-1 text-center bg-white/85 rounded-md py-0.5 px-3 text-[9px] text-slate-400 font-bold tracking-wide max-w-[180px] mx-auto truncate border border-stone-200/30">
+                                    sugarshellbakehouse.com
+                                </div>
+                            </div>
+                            <!-- Browser Viewport -->
+                            <div class="relative aspect-[16/10] overflow-hidden bg-white">
+                                <!-- Slides -->
+                                <img src="SS1.jpg" alt="Sugar Shell Home Page" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-100 hover:scale-105">
+                                <img src="SS2.jpg" alt="Sugar Shell Menu Section" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="SS3.jpg" alt="Sugar Shell Contact Section" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="SS4.jpg" alt="Sugar Shell Checkout" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                            </div>
+                            <!-- Slide Label Badge -->
+                            <div class="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white" id="sugarshell-text">
+                                1. Home Page & Sweet Offerings
+                            </div>
+                        </div>
                     </div>
                     <div class="pt-6 border-t border-stone-100 flex justify-between items-center">
                         <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Lawrence County</span>
-                        <a href="https://sugarshellbakehouse.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs">Visit Website →</a>
+                        <a href="https://sugarshellbakehouse.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs font-black">Visit Website →</a>
                     </div>
                 </div>
 
                 <!-- Project Card 2: Visit Hopes -->
-                <div class="limestone-card p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
+                <div class="limestone-card p-8 md:p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
                     <div>
                         <div class="flex justify-between items-center mb-6">
                             <span class="bg-indigo-50 text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-100/40">Websites for Marketing.</span>
@@ -1017,15 +1165,42 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
                             A Hoosier favorite upscale wellness destination. Designed to capture local Lawrence County inquiries and display relaxing accommodations and retreat packaging, translating to higher physical booking rates.
                         </p>
+
+                        <!-- Premium Browser Viewport Mockup Carousel -->
+                        <div class="relative rounded-2xl border border-stone-200/80 shadow-md overflow-hidden bg-stone-50 mb-8 mt-4 group/browser">
+                            <!-- Browser Titlebar -->
+                            <div class="bg-stone-100 border-b border-stone-200/60 px-4 py-2.5 flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="flex-1 text-center bg-white/85 rounded-md py-0.5 px-3 text-[9px] text-slate-400 font-bold tracking-wide max-w-[180px] mx-auto truncate border border-stone-200/30">
+                                    visithopes.netlify.app
+                                </div>
+                            </div>
+                            <!-- Browser Viewport -->
+                            <div class="relative aspect-[16/10] overflow-hidden bg-white">
+                                <!-- Slides -->
+                                <img src="VH1.jpg" alt="Visit Hopes Home Page" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-100 hover:scale-105">
+                                <img src="VH2.jpg" alt="Visit Hopes Accommodations" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="VH3.jpg" alt="Visit Hopes Contact Section" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="VH4.jpg" alt="Visit Hopes Booking" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                            </div>
+                            <!-- Slide Label Badge -->
+                            <div class="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white" id="visithopes-text">
+                                1. Serene Sanctuary Welcome
+                            </div>
+                        </div>
                     </div>
                     <div class="pt-6 border-t border-stone-100 flex justify-between items-center">
                         <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Regional Wellness</span>
-                        <a href="https://visithopes.netlify.app" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs">Visit Website →</a>
+                        <a href="https://visithopes.netlify.app" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs font-black">Visit Website →</a>
                     </div>
                 </div>
 
                 <!-- Project Card 3: Hoosier Helpers Senior Care -->
-                <div class="limestone-card p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
+                <div class="limestone-card p-8 md:p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
                     <div>
                         <div class="flex justify-between items-center mb-6">
                             <span class="bg-indigo-50 text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-100/40">Senior Care & Trust</span>
@@ -1035,15 +1210,43 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
                             A fast, secure, and professionally coded web presence built for a local senior care provider. Features local Bedford JSON-LD schemas, high-contrast accessible layouts, and seamless callback request capture designed to establish maximum safety and trust for community families.
                         </p>
+
+                        <!-- Premium Browser Viewport Mockup Carousel -->
+                        <div class="relative rounded-2xl border border-stone-200/80 shadow-md overflow-hidden bg-stone-50 mb-8 mt-4 group/browser">
+                            <!-- Browser Titlebar -->
+                            <div class="bg-stone-100 border-b border-stone-200/60 px-4 py-2.5 flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="flex-1 text-center bg-white/85 rounded-md py-0.5 px-3 text-[9px] text-slate-400 font-bold tracking-wide max-w-[180px] mx-auto truncate border border-stone-200/30">
+                                    hoosierhelpersseniorcare.com
+                                </div>
+                            </div>
+                            <!-- Browser Viewport -->
+                            <div class="relative aspect-[16/10] overflow-hidden bg-white">
+                                <!-- Slides -->
+                                <img src="HHSC1.jpg" alt="Hoosier Helpers Home Page" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-100 hover:scale-105">
+                                <img src="HHSC2.jpg" alt="Hoosier Helpers Services" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="HHSC3.jpg" alt="Hoosier Helpers Team" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="HHSC4.jpg" alt="Hoosier Helpers Area" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="HHSC5.jpg" alt="Hoosier Helpers Contact" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                            </div>
+                            <!-- Slide Label Badge -->
+                            <div class="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white" id="hoosierhelpers-text">
+                                1. Professional Family Companion Care
+                            </div>
+                        </div>
                     </div>
                     <div class="pt-6 border-t border-stone-100 flex justify-between items-center">
                         <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Bedford, IN</span>
-                        <a href="https://hoosierhelpersseniorcare.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs">Visit Website →</a>
+                        <a href="https://hoosierhelpersseniorcare.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs font-black">Visit Website →</a>
                     </div>
                 </div>
 
                 <!-- Consultation Card -->
-                <div class="border-2 border-dashed border-stone-200 p-10 rounded-[2rem] flex flex-col justify-center items-center text-center bg-[#FAF9F5]/40">
+                <div class="border-2 border-dashed border-stone-200 p-10 rounded-[2rem] flex flex-col justify-center items-center text-center bg-[#FAF9F5]/40 min-h-[350px]">
                     <h3 class="text-2xl font-black text-slate-800 mb-4 uppercase tracking-tight">Your Build Is Next</h3>
                     <p class="text-slate-600 text-sm mb-8 max-w-sm leading-relaxed">We map out your manual business bottlenecks and build the custom software to eliminate them forever.</p>
                     <a href="hireus.html" class="btn-primary">Consult My Project</a>
@@ -1098,19 +1301,80 @@ This file contains the complete, updated source code for `index.html`, `hireus.h
     <script src="chat.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            const slideText = document.getElementById('slide-text');
-            const captions = ["1. Welcome Page", "2. Vehicle Selection", "3. Zip Code Routing", "4. Service Location", "5. Visual Assessment", "6. AI Diagnosis Complete", "7. Contact Information"];
-            let currentIdx = 0;
+            // 1. Featured Mobile app (RevAI)
+            const revaiSlides = document.querySelectorAll('.slide');
+            const revaiText = document.getElementById('slide-text');
+            const revaiCaptions = ["1. Welcome Page", "2. Vehicle Selection", "3. Zip Code Routing", "4. Service Location", "5. Visual Assessment", "6. AI Diagnosis Complete", "7. Contact Information"];
+            let revaiIdx = 0;
             
-            if (slides.length > 0) {
-                function showSlide(index) {
-                    slides[currentIdx].style.opacity = '0';
-                    currentIdx = (index + slides.length) % slides.length;
-                    slides[currentIdx].style.opacity = '1';
-                    if (slideText) slideText.innerText = captions[currentIdx];
-                }
-                setInterval(() => { showSlide(currentIdx + 1); }, 3500);
+            if (revaiSlides.length > 0) {
+                setInterval(() => {
+                    revaiSlides[revaiIdx].style.opacity = '0';
+                    revaiIdx = (revaiIdx + 1) % revaiSlides.length;
+                    revaiSlides[revaiIdx].style.opacity = '1';
+                    if (revaiText) revaiText.innerText = revaiCaptions[revaiIdx];
+                }, 3500);
+            }
+
+            // 2. Sugar Shell Carousel
+            const ssSlides = document.querySelectorAll('.sugarshell-slide');
+            const ssText = document.getElementById('sugarshell-text');
+            const ssCaptions = [
+                "1. Home Page & Sweet Offerings",
+                "2. Custom Bakery Menu Selection",
+                "3. Elegant Interactive Elements",
+                "4. Frictionless Checkout Form"
+            ];
+            let ssIdx = 0;
+            
+            if (ssSlides.length > 0) {
+                setInterval(() => {
+                    ssSlides[ssIdx].style.opacity = '0';
+                    ssIdx = (ssIdx + 1) % ssSlides.length;
+                    ssSlides[ssIdx].style.opacity = '1';
+                    if (ssText) ssText.innerText = ssCaptions[ssIdx];
+                }, 3600);
+            }
+
+            // 3. Visit Hopes Carousel
+            const vhSlides = document.querySelectorAll('.visithopes-slide');
+            const vhText = document.getElementById('visithopes-text');
+            const vhCaptions = [
+                "1. Serene Sanctuary Welcome",
+                "2. Premium Guest Accommodations",
+                "3. Curated Healing Services",
+                "4. Seamless Online Booking"
+            ];
+            let vhIdx = 0;
+            
+            if (vhSlides.length > 0) {
+                setInterval(() => {
+                    vhSlides[vhIdx].style.opacity = '0';
+                    vhIdx = (vhIdx + 1) % vhSlides.length;
+                    vhSlides[vhIdx].style.opacity = '1';
+                    if (vhText) vhText.innerText = vhCaptions[vhIdx];
+                }, 3700);
+            }
+
+            // 4. Hoosier Helpers Carousel
+            const hhSlides = document.querySelectorAll('.hoosierhelpers-slide');
+            const hhText = document.getElementById('hoosierhelpers-text');
+            const hhCaptions = [
+                "1. Professional Family Companion Care",
+                "2. Personalized Specialized Services",
+                "3. Trustworthy Care Team",
+                "4. Local Lawrence County Commitment",
+                "5. Direct Callback Connection Form"
+            ];
+            let hhIdx = 0;
+            
+            if (hhSlides.length > 0) {
+                setInterval(() => {
+                    hhSlides[hhIdx].style.opacity = '0';
+                    hhIdx = (hhIdx + 1) % hhSlides.length;
+                    hhSlides[hhIdx].style.opacity = '1';
+                    if (hhText) hhText.innerText = hhCaptions[hhIdx];
+                }, 3800);
             }
         });
     </script>

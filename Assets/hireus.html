@@ -78,8 +78,53 @@
                 <input type="hidden" name="Q4_Staff_Burnout_Scale" id="hidden-q4" value="5">
                 <input type="hidden" name="Q5_Current_Tech_Status" id="hidden-q5" value="" required>
 
+                <!-- ================= INTRODUCTORY FLOW SELECTOR (STEP 0) ================= -->
+                <div id="step-0" class="audit-step active space-y-8 animate-fade-in">
+                    <div class="text-center max-w-xl mx-auto space-y-3">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Optimize Your Operations</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight uppercase">Let's Simplify Your Software</h2>
+                        <p class="text-slate-500 text-sm leading-relaxed font-medium">
+                            Would you like to start with our 2-minute Business Efficiency Audit to pinpoint labor leakage, or proceed directly to standard contact?
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                        <!-- Audit Option (YES) -->
+                        <div class="audit-card border border-stone-200/60 rounded-[2rem] p-8 bg-[#FAF9F5]/30 text-center flex flex-col justify-between cursor-pointer hover:border-indigo-500 hover:bg-white transition duration-300 shadow-sm" onclick="chooseAuditFlow(true)">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto font-black text-lg shadow-sm border border-indigo-100/30">
+                                    A
+                                </div>
+                                <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight">Interactive Efficiency Audit</h3>
+                                <p class="text-slate-500 text-xs leading-relaxed max-w-xs mx-auto font-medium">
+                                    Highly Recommended. Rate staff burnout, identify bottlenecks, and get a customized manual-to-automated checklist delivered straight to your inbox.
+                                </p>
+                            </div>
+                            <div class="pt-6">
+                                <span class="btn-primary inline-block text-[11px] uppercase tracking-widest font-black py-3 px-6 rounded-xl">Start 2-Min Audit →</span>
+                            </div>
+                        </div>
+
+                        <!-- Direct Contact Option (NO) -->
+                        <div class="audit-card border border-stone-200/60 rounded-[2rem] p-8 bg-[#FAF9F5]/30 text-center flex flex-col justify-between cursor-pointer hover:border-indigo-500 hover:bg-white transition duration-300 shadow-sm" onclick="chooseAuditFlow(false)">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mx-auto font-black text-lg shadow-sm border border-stone-200/30">
+                                    B
+                                </div>
+                                <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight">Direct Contact Form</h3>
+                                <p class="text-slate-500 text-xs leading-relaxed max-w-xs mx-auto font-medium">
+                                    Skip the operational assessment. Go straight to sharing your contact information and leave us a message or ask a question.
+                                </p>
+                            </div>
+                            <div class="pt-6">
+                                <span class="btn-secondary inline-block text-[11px] uppercase tracking-widest font-black py-3 px-6 rounded-xl font-black">Skip to Contact →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ================= QUESTION 1 ================= -->
-                <div id="step-1" class="audit-step active space-y-6">
+                <div id="step-1" class="audit-step space-y-6">
                     <div class="text-center md:text-left">
                         <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 1: Labor Leakage</span>
                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">How many hours are lost to manual tasks each week?</h2>
@@ -105,7 +150,8 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-end pt-6">
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(0)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
                         <button type="button" onclick="nextStep(2)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Continue →</button>
                     </div>
                 </div>
@@ -153,7 +199,7 @@
 
                     <div class="pt-4">
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Your Focus Reclaimed</label>
-                        <textarea id="q3-textarea" oninput="updateQ3(this.value)" placeholder="e.g. Focus on business expansion, spend more quality weekend time with family, or optimize core service operations..." required class="w-full bg-[#FAF9F5] border border-stone-200/60 p-5 rounded-2xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 shadow-sm font-medium h-36 resize-none"></textarea>
+                        <textarea id="q3-textarea" oninput="updateQ3(this.value)" placeholder="e.g. Focus on business expansion, spend more quality weekend time with family, or optimize core service operations..." class="w-full bg-[#FAF9F5] border border-stone-200/60 p-5 rounded-2xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 shadow-sm font-medium h-36 resize-none"></textarea>
                     </div>
 
                     <div class="flex justify-between pt-6 border-t border-stone-100">
@@ -223,9 +269,9 @@
                 <!-- ================= STEP 6: CONTACT INFORMATION ================= -->
                 <div id="step-6" class="audit-step space-y-6">
                     <div class="text-center md:text-left">
-                        <span class="text-indigo-600 font-bold uppercase tracking-widest text-[10px] bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/30">Diagnoses Prepared</span>
-                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Let's Compile Your Custom Blueprint</h2>
-                        <p class="text-slate-500 text-sm mt-1">Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.</p>
+                        <span id="step-6-badge" class="text-indigo-600 font-bold uppercase tracking-widest text-[10px] bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/30">Diagnoses Prepared</span>
+                        <h2 id="step-6-title" class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Let's Compile Your Custom Blueprint</h2>
+                        <p id="step-6-desc" class="text-slate-500 text-sm mt-1">Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.</p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
@@ -295,9 +341,9 @@
                     </svg>
                 </div>
                 <div class="space-y-3">
-                    <span class="text-green-600 font-extrabold text-[10px] tracking-widest uppercase bg-green-50 px-2.5 py-1 rounded-full border border-green-100/40">Audit Submitted Successfully!</span>
-                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Your Efficiency Blueprint Is Underway!</h2>
-                    <p class="text-slate-600 text-sm max-w-md mx-auto leading-relaxed font-medium">
+                    <span id="success-badge" class="text-green-600 font-extrabold text-[10px] tracking-widest uppercase bg-green-50 px-2.5 py-1 rounded-full border border-green-100/40">Audit Submitted Successfully!</span>
+                    <h2 id="success-title" class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Your Efficiency Blueprint Is Underway!</h2>
+                    <p id="success-desc" class="text-slate-600 text-sm max-w-md mx-auto leading-relaxed font-medium">
                         Nathan will review your 5 labor leakage metrics and manually craft your customized manual-to-automated operational checklist. Look out for a detailed response in your inbox soon!
                     </p>
                 </div>
@@ -355,24 +401,58 @@
 
     <!-- Multi-Step Form Logic and Ajax Submission -->
     <script>
-        let currentStep = 1;
+        let currentStep = 0;
+        let hasChosenAudit = true;
         const totalSteps = 6;
 
         function updateProgress() {
-            const percent = Math.round(((currentStep - 1) / (totalSteps - 1)) * 100);
-            
             const stepIndicator = document.getElementById('step-indicator');
             const percentIndicator = document.getElementById('percent-indicator');
             const progressBar = document.getElementById('progress-bar');
+            const progressRow = document.getElementById('progress-container-row');
             
-            if (currentStep <= 5) {
-                stepIndicator.innerText = `Question ${currentStep} of 5`;
-                percentIndicator.innerText = `${percent}% Complete`;
-                progressBar.style.width = `${percent}%`;
+            if (currentStep === 0) {
+                // Hide progress bar on introductory choice step
+                progressRow.style.display = "none";
             } else {
-                stepIndicator.innerText = `Final Step`;
-                percentIndicator.innerText = `100% Complete`;
-                progressBar.style.width = `100%`;
+                progressRow.style.display = "block";
+                const percent = Math.round(((currentStep - 1) / 5) * 100);
+                if (currentStep <= 5) {
+                    stepIndicator.innerText = `Question ${currentStep} of 5`;
+                    percentIndicator.innerText = `${percent}% Complete`;
+                    progressBar.style.width = `${percent}%`;
+                } else {
+                    stepIndicator.innerText = `Final Step`;
+                    percentIndicator.innerText = `100% Complete`;
+                    progressBar.style.width = `100%`;
+                }
+            }
+        }
+
+        function chooseAuditFlow(wantsAudit) {
+            hasChosenAudit = wantsAudit;
+            if (wantsAudit) {
+                // Reset audit values for fresh entry
+                document.getElementById('hidden-q1').value = "";
+                document.getElementById('hidden-q2').value = "";
+                document.getElementById('hidden-q3').value = "";
+                document.getElementById('hidden-q5').value = "";
+                
+                // Clear text area
+                document.getElementById('q3-textarea').value = "";
+                
+                // Remove selection visual highlights
+                document.querySelectorAll('.audit-card').forEach(card => card.classList.remove('selected'));
+                
+                showStep(1);
+            } else {
+                // Populate skipped text in audit values
+                document.getElementById('hidden-q1').value = "Skipped (Direct Contact Option)";
+                document.getElementById('hidden-q2').value = "Skipped (Direct Contact Option)";
+                document.getElementById('hidden-q3').value = "Skipped (Direct Contact Option)";
+                document.getElementById('hidden-q5').value = "Skipped (Direct Contact Option)";
+                
+                showStep(6);
             }
         }
 
@@ -380,12 +460,35 @@
             document.querySelectorAll('.audit-step').forEach(step => {
                 step.classList.remove('active');
             });
+            
             const activeStep = document.getElementById(`step-${stepNum}`);
             if (activeStep) {
                 activeStep.classList.add('active');
             }
+            
             currentStep = stepNum;
             updateProgress();
+            
+            // Dynamically adjust step 6 texts based on choices
+            if (stepNum === 6) {
+                const badge = document.getElementById('step-6-badge');
+                const title = document.getElementById('step-6-title');
+                const desc = document.getElementById('step-6-desc');
+                const submitBtn = document.getElementById('submit-btn');
+                
+                if (hasChosenAudit) {
+                    badge.innerText = "Diagnoses Prepared";
+                    title.innerText = "Let's Compile Your Custom Blueprint";
+                    desc.innerText = "Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.";
+                    submitBtn.innerText = "Submit Audit Request";
+                } else {
+                    badge.innerText = "Get In Touch";
+                    title.innerText = "Let's Simplify Your Workflow";
+                    desc.innerText = "Fill out your details below and Nathan Carey will reach out to you directly to answer questions and coordinate a free consultation.";
+                    submitBtn.innerText = "Send Message";
+                }
+            }
+            
             window.scrollTo({ top: 120, behavior: 'smooth' });
         }
 
@@ -412,7 +515,12 @@
         }
 
         function prevStep(stepNum) {
-            showStep(stepNum);
+            if (stepNum === 5 && !hasChosenAudit) {
+                // Skipped audit takes user back to choice screen
+                showStep(0);
+            } else {
+                showStep(stepNum);
+            }
         }
 
         // Card Selection Logic for Q1
@@ -486,7 +594,7 @@
             e.preventDefault();
             
             submitBtn.disabled = true;
-            submitBtn.innerText = "Submitting Audit...";
+            submitBtn.innerText = hasChosenAudit ? "Submitting Audit..." : "Sending Message...";
             submitBtn.style.opacity = "0.7";
 
             const formData = new FormData(form);
@@ -508,7 +616,21 @@
                     form.classList.add('hidden');
                     document.getElementById('progress-container-row').classList.add('hidden');
                     
-                    // Show success screen card
+                    // Show success screen card and customize based on choice
+                    const successBadge = document.getElementById('success-badge');
+                    const successTitle = document.getElementById('success-title');
+                    const successDesc = document.getElementById('success-desc');
+                    
+                    if (hasChosenAudit) {
+                        successBadge.innerText = "Audit Submitted Successfully!";
+                        successTitle.innerText = "Your Efficiency Blueprint Is Underway!";
+                        successDesc.innerText = "Nathan will review your 5 labor leakage metrics and manually craft your customized manual-to-automated operational checklist. Look out for a response in your inbox soon!";
+                    } else {
+                        successBadge.innerText = "Message Sent Successfully!";
+                        successTitle.innerText = "Let's Build Something Great!";
+                        successDesc.innerText = "Thank you for contacting Hoosier AI Automations. Nathan Carey has received your message and details, and will reach out to connect with you shortly.";
+                    }
+
                     const successCard = document.getElementById('success-card');
                     successCard.classList.remove('hidden');
                     
@@ -522,7 +644,7 @@
                     console.log(response);
                     alert(res.error || "Something went wrong. Please try again.");
                     submitBtn.disabled = false;
-                    submitBtn.innerText = "Submit Audit Request";
+                    submitBtn.innerText = hasChosenAudit ? "Submit Audit Request" : "Send Message";
                     submitBtn.style.opacity = "1";
                 }
             })
@@ -530,7 +652,7 @@
                 console.log(error);
                 alert("Form submission failed. Please check your internet and try again.");
                 submitBtn.disabled = false;
-                submitBtn.innerText = "Submit Audit Request";
+                submitBtn.innerText = hasChosenAudit ? "Submit Audit Request" : "Send Message";
                 submitBtn.style.opacity = "1";
             });
         });

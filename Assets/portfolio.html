@@ -103,7 +103,7 @@
             <div class="grid md:grid-cols-2 gap-8">
                 
                 <!-- Project Card 1: Sugar Shell Bakehouse -->
-                <div class="limestone-card p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
+                <div class="limestone-card p-8 md:p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
                     <div>
                         <div class="flex justify-between items-center mb-6">
                             <span class="bg-indigo-50 text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-100/40">Created for the everydayer.</span>
@@ -113,15 +113,42 @@
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
                             A friendly, custom-made website designed for Bedford's premier bakery. Features interactive menu listings, seamless pre-order forms, and a responsive layout that looks great on any phone. Custom-built to help their team spend more time baking and less time answering repetitive questions.
                         </p>
+
+                        <!-- Premium Browser Viewport Mockup Carousel -->
+                        <div class="relative rounded-2xl border border-stone-200/80 shadow-md overflow-hidden bg-stone-50 mb-8 mt-4 group/browser">
+                            <!-- Browser Titlebar -->
+                            <div class="bg-stone-100 border-b border-stone-200/60 px-4 py-2.5 flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="flex-1 text-center bg-white/85 rounded-md py-0.5 px-3 text-[9px] text-slate-400 font-bold tracking-wide max-w-[180px] mx-auto truncate border border-stone-200/30">
+                                    sugarshellbakehouse.com
+                                </div>
+                            </div>
+                            <!-- Browser Viewport -->
+                            <div class="relative aspect-[16/10] overflow-hidden bg-white">
+                                <!-- Slides -->
+                                <img src="SS1.jpg" alt="Sugar Shell Home Page" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-100 hover:scale-105">
+                                <img src="SS2.jpg" alt="Sugar Shell Menu Section" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="SS3.jpg" alt="Sugar Shell Contact Section" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="SS4.jpg" alt="Sugar Shell Checkout" class="sugarshell-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                            </div>
+                            <!-- Slide Label Badge -->
+                            <div class="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white" id="sugarshell-text">
+                                1. Home Page & Sweet Offerings
+                            </div>
+                        </div>
                     </div>
                     <div class="pt-6 border-t border-stone-100 flex justify-between items-center">
                         <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Lawrence County</span>
-                        <a href="https://sugarshellbakehouse.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs">Visit Website →</a>
+                        <a href="https://sugarshellbakehouse.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs font-black">Visit Website →</a>
                     </div>
                 </div>
 
                 <!-- Project Card 2: Visit Hopes -->
-                <div class="limestone-card p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
+                <div class="limestone-card p-8 md:p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
                     <div>
                         <div class="flex justify-between items-center mb-6">
                             <span class="bg-indigo-50 text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-100/40">Websites for Marketing.</span>
@@ -131,15 +158,42 @@
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
                             A Hoosier favorite upscale wellness destination. Designed to capture local Lawrence County inquiries and display relaxing accommodations and retreat packaging, translating to higher physical booking rates.
                         </p>
+
+                        <!-- Premium Browser Viewport Mockup Carousel -->
+                        <div class="relative rounded-2xl border border-stone-200/80 shadow-md overflow-hidden bg-stone-50 mb-8 mt-4 group/browser">
+                            <!-- Browser Titlebar -->
+                            <div class="bg-stone-100 border-b border-stone-200/60 px-4 py-2.5 flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="flex-1 text-center bg-white/85 rounded-md py-0.5 px-3 text-[9px] text-slate-400 font-bold tracking-wide max-w-[180px] mx-auto truncate border border-stone-200/30">
+                                    visithopes.netlify.app
+                                </div>
+                            </div>
+                            <!-- Browser Viewport -->
+                            <div class="relative aspect-[16/10] overflow-hidden bg-white">
+                                <!-- Slides -->
+                                <img src="VH1.jpg" alt="Visit Hopes Home Page" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-100 hover:scale-105">
+                                <img src="VH2.jpg" alt="Visit Hopes Accommodations" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="VH3.jpg" alt="Visit Hopes Contact Section" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="VH4.jpg" alt="Visit Hopes Booking" class="visithopes-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                            </div>
+                            <!-- Slide Label Badge -->
+                            <div class="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white" id="visithopes-text">
+                                1. Serene Sanctuary Welcome
+                            </div>
+                        </div>
                     </div>
                     <div class="pt-6 border-t border-stone-100 flex justify-between items-center">
                         <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Regional Wellness</span>
-                        <a href="https://visithopes.netlify.app" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs">Visit Website →</a>
+                        <a href="https://visithopes.netlify.app" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs font-black">Visit Website →</a>
                     </div>
                 </div>
 
                 <!-- Project Card 3: Hoosier Helpers Senior Care -->
-                <div class="limestone-card p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
+                <div class="limestone-card p-8 md:p-10 rounded-[2rem] border border-stone-200/50 shadow-lg bg-white flex flex-col justify-between group hover:border-indigo-200 transition duration-300">
                     <div>
                         <div class="flex justify-between items-center mb-6">
                             <span class="bg-indigo-50 text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-100/40">Senior Care & Trust</span>
@@ -149,15 +203,43 @@
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
                             A fast, secure, and professionally coded web presence built for a local senior care provider. Features local Bedford JSON-LD schemas, high-contrast accessible layouts, and seamless callback request capture designed to establish maximum safety and trust for community families.
                         </p>
+
+                        <!-- Premium Browser Viewport Mockup Carousel -->
+                        <div class="relative rounded-2xl border border-stone-200/80 shadow-md overflow-hidden bg-stone-50 mb-8 mt-4 group/browser">
+                            <!-- Browser Titlebar -->
+                            <div class="bg-stone-100 border-b border-stone-200/60 px-4 py-2.5 flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="flex-1 text-center bg-white/85 rounded-md py-0.5 px-3 text-[9px] text-slate-400 font-bold tracking-wide max-w-[180px] mx-auto truncate border border-stone-200/30">
+                                    hoosierhelpersseniorcare.com
+                                </div>
+                            </div>
+                            <!-- Browser Viewport -->
+                            <div class="relative aspect-[16/10] overflow-hidden bg-white">
+                                <!-- Slides -->
+                                <img src="HHSC1.jpg" alt="Hoosier Helpers Home Page" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-100 hover:scale-105">
+                                <img src="HHSC2.jpg" alt="Hoosier Helpers Services" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="HHSC3.jpg" alt="Hoosier Helpers Team" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="HHSC4.jpg" alt="Hoosier Helpers Area" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                                <img src="HHSC5.jpg" alt="Hoosier Helpers Contact" class="hoosierhelpers-slide absolute inset-0 w-full h-full object-contain transition-all duration-700 opacity-0 hover:scale-105">
+                            </div>
+                            <!-- Slide Label Badge -->
+                            <div class="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-sm px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white" id="hoosierhelpers-text">
+                                1. Professional Family Companion Care
+                            </div>
+                        </div>
                     </div>
                     <div class="pt-6 border-t border-stone-100 flex justify-between items-center">
                         <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Bedford, IN</span>
-                        <a href="https://hoosierhelpersseniorcare.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs">Visit Website →</a>
+                        <a href="https://hoosierhelpersseniorcare.com" target="_blank" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-xs font-black">Visit Website →</a>
                     </div>
                 </div>
 
                 <!-- Consultation Card -->
-                <div class="border-2 border-dashed border-stone-200 p-10 rounded-[2rem] flex flex-col justify-center items-center text-center bg-[#FAF9F5]/40">
+                <div class="border-2 border-dashed border-stone-200 p-10 rounded-[2rem] flex flex-col justify-center items-center text-center bg-[#FAF9F5]/40 min-h-[350px]">
                     <h3 class="text-2xl font-black text-slate-800 mb-4 uppercase tracking-tight">Your Build Is Next</h3>
                     <p class="text-slate-600 text-sm mb-8 max-w-sm leading-relaxed">We map out your manual business bottlenecks and build the custom software to eliminate them forever.</p>
                     <a href="hireus.html" class="btn-primary">Consult My Project</a>
@@ -212,19 +294,80 @@
     <script src="chat.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            const slideText = document.getElementById('slide-text');
-            const captions = ["1. Welcome Page", "2. Vehicle Selection", "3. Zip Code Routing", "4. Service Location", "5. Visual Assessment", "6. AI Diagnosis Complete", "7. Contact Information"];
-            let currentIdx = 0;
+            // 1. Featured Mobile app (RevAI)
+            const revaiSlides = document.querySelectorAll('.slide');
+            const revaiText = document.getElementById('slide-text');
+            const revaiCaptions = ["1. Welcome Page", "2. Vehicle Selection", "3. Zip Code Routing", "4. Service Location", "5. Visual Assessment", "6. AI Diagnosis Complete", "7. Contact Information"];
+            let revaiIdx = 0;
             
-            if (slides.length > 0) {
-                function showSlide(index) {
-                    slides[currentIdx].style.opacity = '0';
-                    currentIdx = (index + slides.length) % slides.length;
-                    slides[currentIdx].style.opacity = '1';
-                    if (slideText) slideText.innerText = captions[currentIdx];
-                }
-                setInterval(() => { showSlide(currentIdx + 1); }, 3500);
+            if (revaiSlides.length > 0) {
+                setInterval(() => {
+                    revaiSlides[revaiIdx].style.opacity = '0';
+                    revaiIdx = (revaiIdx + 1) % revaiSlides.length;
+                    revaiSlides[revaiIdx].style.opacity = '1';
+                    if (revaiText) revaiText.innerText = revaiCaptions[revaiIdx];
+                }, 3500);
+            }
+
+            // 2. Sugar Shell Carousel
+            const ssSlides = document.querySelectorAll('.sugarshell-slide');
+            const ssText = document.getElementById('sugarshell-text');
+            const ssCaptions = [
+                "1. Home Page & Sweet Offerings",
+                "2. Custom Bakery Menu Selection",
+                "3. Elegant Interactive Elements",
+                "4. Frictionless Checkout Form"
+            ];
+            let ssIdx = 0;
+            
+            if (ssSlides.length > 0) {
+                setInterval(() => {
+                    ssSlides[ssIdx].style.opacity = '0';
+                    ssIdx = (ssIdx + 1) % ssSlides.length;
+                    ssSlides[ssIdx].style.opacity = '1';
+                    if (ssText) ssText.innerText = ssCaptions[ssIdx];
+                }, 3600);
+            }
+
+            // 3. Visit Hopes Carousel
+            const vhSlides = document.querySelectorAll('.visithopes-slide');
+            const vhText = document.getElementById('visithopes-text');
+            const vhCaptions = [
+                "1. Serene Sanctuary Welcome",
+                "2. Premium Guest Accommodations",
+                "3. Curated Healing Services",
+                "4. Seamless Online Booking"
+            ];
+            let vhIdx = 0;
+            
+            if (vhSlides.length > 0) {
+                setInterval(() => {
+                    vhSlides[vhIdx].style.opacity = '0';
+                    vhIdx = (vhIdx + 1) % vhSlides.length;
+                    vhSlides[vhIdx].style.opacity = '1';
+                    if (vhText) vhText.innerText = vhCaptions[vhIdx];
+                }, 3700);
+            }
+
+            // 4. Hoosier Helpers Carousel
+            const hhSlides = document.querySelectorAll('.hoosierhelpers-slide');
+            const hhText = document.getElementById('hoosierhelpers-text');
+            const hhCaptions = [
+                "1. Professional Family Companion Care",
+                "2. Personalized Specialized Services",
+                "3. Trustworthy Care Team",
+                "4. Local Lawrence County Commitment",
+                "5. Direct Callback Connection Form"
+            ];
+            let hhIdx = 0;
+            
+            if (hhSlides.length > 0) {
+                setInterval(() => {
+                    hhSlides[hhIdx].style.opacity = '0';
+                    hhIdx = (hhIdx + 1) % hhSlides.length;
+                    hhSlides[hhIdx].style.opacity = '1';
+                    if (hhText) hhText.innerText = hhCaptions[hhIdx];
+                }, 3800);
             }
         });
     </script>
