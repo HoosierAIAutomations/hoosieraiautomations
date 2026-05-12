@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoosier AI Automations | Software Simplified. Enterprise Elevated.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="1330.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @keyframes pulse-star {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .star-pulse {
+            transform-origin: 50px 91.5px;
+            animation: pulse-star 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen">
+
+    <!-- Glassmorphism Navbar -->
+    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm shadow-slate-100/50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 text-slate-900 no-underline hover:opacity-90 transition">
+                <img src="1330.png" alt="Hoosier AI Automations Logo" class="h-10 w-auto">
+                <span class="text-xl font-black tracking-tighter uppercase italic text-slate-900">Hoosier AI Automations</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="nav-link text-indigo-600 font-bold">Home</a>
+                <a href="promise.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Our Promise</a>
+                <a href="pricing.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Pricing</a>
+                <a href="portfolio.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Portfolio</a>
+                <a href="hireus.html" class="nav-cta text-white font-bold">Hire Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Two-Column Layout with Founder's Vision Manifesto) -->
+    <header class="pt-40 pb-16 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-12 gap-12 items-stretch">
+            
+            <!-- Left Column: Copywriting -->
+            <div class="lg:col-span-7 flex flex-col justify-center text-left">
+                <span class="text-indigo-600 font-bold uppercase tracking-widest text-xs mb-3 bg-indigo-50/80 px-3.5 py-1.5 rounded-full w-fit border border-indigo-100/50">Born in Bedford. Built for the World.</span>
+                <h1 class="text-5xl md:text-7.5xl font-black mb-6 tracking-tight leading-[1.05] hero-text uppercase">
+                    SOFTWARE SIMPLIFIED. <br><span class="font-normal italic text-indigo-600 text-4xl md:text-6xl">ENTERPRISE ELEVATED.</span>
+                </h1>
+                <p class="subtitle text-base md:text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
+                    We build high-performance web platforms, native Android apps, strategic marketing campaigns, and seamless software integrations. Whether you're a Bedford, IN business or a national enterprise, we help entrepreneurs and 'mom and pop' shops take back their time. No confusing jargon—just friendly, handcrafted tools that save you and your employees time, money, and energy so you can focus on what matters: HUMAN to HUMAN interactions.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 mb-4 lg:mb-0">
+                    <a href="hireus.html" class="btn-primary text-center">Let's Grab Coffee & Chat</a>
+                    <a href="portfolio.html" class="btn-secondary text-center">See Our Projects</a>
+                </div>
+            </div>
+
+            <!-- Right Column: Option 2 Manifesto Bento Container with Larger Photo -->
+            <div class="lg:col-span-5 relative w-full limestone-card rounded-[2.5rem] flex flex-col overflow-hidden border border-stone-200/60 p-8 md:p-10 shadow-xl bg-white group justify-between">
+                <!-- Grid decorative background -->
+                <div class="absolute inset-0 opacity-[0.03] limestone-pattern z-0"></div>
+                
+                <div class="relative z-10 flex flex-col h-full justify-between">
+                    <!-- Owner Photo & Manifesto Header Row -->
+                    <div>
+                        <div class="flex items-center space-x-5 mb-6">
+                            <div class="relative w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden group-hover:scale-105 transition duration-300 flex-shrink-0">
+                                <img src="owner.jpg" alt="Nathan Carey (Nate)" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Founder's Vision</span>
+                                <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight mt-1.5">FOUNDER’S VISION</h3>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest leading-none mt-1">Software Simplified. Enterprise Elevated.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Vision Manifesto Text -->
+                        <div class="text-slate-600 text-sm leading-relaxed space-y-4 font-medium">
+                            <p>
+                                I built Hoosier AI Automations LLC to take high-end tech out of Silicon Valley and bring it back to Indiana and into your local communities. My goal is straightforward: create 'extra sets of hands' that multiply your team's effort without expanding your payroll.
+                            </p>
+                            <p>
+                                We focus on pure, fast code that bridges the gap between complex digital tools and your local operations. Every automation we deliver is a direct investment in the solid, efficient future of your business. Your local is my local—let’s build something solid together.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Limestone Trust Badges -->
+    <div class="border-y border-stone-200/50 bg-white/40 backdrop-blur-sm py-8 px-6 shadow-sm">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-xs md:text-sm font-bold tracking-wider uppercase text-slate-600">
+            <div class="flex flex-col items-center"><span class="text-indigo-600 text-2xl block mb-1">✓</span> Official Indiana LLC</div>
+            <div class="flex flex-col items-center"><span class="text-indigo-600 text-2xl block mb-1">✓</span> Locally Owned</div>
+            <div class="flex flex-col items-center"><span class="text-indigo-600 text-2xl block mb-1">✓</span> Handcrafted Code</div>
+            <div class="flex flex-col items-center"><span class="text-indigo-600 text-2xl block mb-1">✓</span> Zero Templates</div>
+        </div>
+    </div>
+
+    <!-- Grayscale Selected Tech Ribbon -->
+    <div class="py-12 border-b border-stone-200/50 max-w-7xl mx-auto px-6">
+        <p class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Our Selected Enterprise Stack</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-40 hover:opacity-60 transition duration-300">
+            <!-- GitHub Logo -->
+            <div class="flex items-center space-x-2 grayscale">
+                <svg class="w-6 h-6 text-slate-600" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z" clip-rule="evenodd"/></svg>
+                <span class="font-extrabold text-sm tracking-tight text-slate-700">GitHub</span>
+            </div>
+            <!-- Netlify Logo -->
+            <div class="flex items-center space-x-2 grayscale">
+                <svg class="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 24 24"><path d="M11.97 2c-.14 0-.29.06-.39.16L1.83 11.9c-.21.2-.21.53 0 .73l1.8 1.78c.2.2.53.2.73 0l7.22-7.14V21.5c0 .28.22.5.5.5h2c.28 0 .5-.22.5-.5V7.27l7.22 7.14c.2.2.53.2.73 0l1.8-1.78c.21-.2.21-.53 0-.73L12.36 2.16c-.1-.1-.25-.16-.39-.16z"/></svg>
+                <span class="font-extrabold text-sm tracking-tight text-slate-700">Netlify</span>
+            </div>
+            <!-- Tailwind CSS Logo -->
+            <div class="flex items-center space-x-2 grayscale">
+                <svg class="w-6 h-6 text-slate-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/></svg>
+                <span class="font-extrabold text-sm tracking-tight text-slate-700">TailwindCSS</span>
+            </div>
+            <!-- React Logo -->
+            <div class="flex items-center space-x-2 grayscale">
+                <svg class="w-6 h-6 text-slate-600 animate-spin-slow" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12s4.48 10 10 10 10-4.48 10-10zm-10-2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>
+                <span class="font-extrabold text-sm tracking-tight text-slate-700">React</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bento Box Grid Layout (Services Section) -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-indigo-600 font-bold uppercase tracking-widest text-xs">Our Services</span>
+            <h2 class="text-4xl md:text-5xl font-black text-slate-900 mt-2">Built Solid. Styled Smart.</h2>
+            <p class="text-slate-600 text-lg mt-4 max-w-2xl mx-auto">Like the legendary limestone of Lawrence County, we build code designed to stand the test of time.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            <!-- Bento Box 1: Custom Web Infrastructure (Double-wide) -->
+            <div class="md:col-span-8 limestone-card p-8 md:p-12 rounded-[2rem] flex flex-col justify-between border border-stone-200/50 shadow-lg relative overflow-hidden group hover:border-indigo-200 transition duration-300">
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-indigo-50/40 rounded-full blur-3xl group-hover:bg-indigo-100/50 transition"></div>
+                <div>
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/40">Premium Web</span>
+                    <h3 class="text-3xl font-black mt-4 mb-4 text-slate-900">Custom Web Infrastructure</h3>
+                    <p class="text-slate-600 text-base leading-relaxed max-w-xl">
+                        A beautiful digital storefront custom-coded to load instantly and convert local Lawrence County families. We don't use WordPress or Wix templates. We write pure, high-performance HTML/JS that stays secure and dominates search results.
+                    </p>
+                </div>
+                <div class="mt-8 flex flex-wrap gap-2.5">
+                    <span class="bg-white px-3.5 py-1.5 rounded-full border border-stone-200/50 text-xs font-semibold text-slate-600 shadow-sm">Tailwind CSS</span>
+                    <span class="bg-white px-3.5 py-1.5 rounded-full border border-stone-200/50 text-xs font-semibold text-slate-600 shadow-sm">SEO Structured</span>
+                    <span class="bg-white px-3.5 py-1.5 rounded-full border border-stone-200/50 text-xs font-semibold text-slate-600 shadow-sm">Netlify Hosting</span>
+                </div>
+            </div>
+
+            <!-- Bento Box 2: AI Assistants (Single-wide) -->
+            <div class="md:col-span-4 limestone-card p-8 md:p-12 rounded-[2rem] flex flex-col justify-between border border-stone-200/50 shadow-lg relative overflow-hidden group hover:border-indigo-200 transition duration-300 bg-indigo-50/10">
+                <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-indigo-100/30 rounded-full blur-2xl"></div>
+                <div>
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/40">24/7 Support</span>
+                    <h3 class="text-3xl font-black mt-4 mb-4 text-slate-900">AI Assistants</h3>
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Never miss a lead at 2:00 AM. We build custom-trained chat assistants that handle standard client inquiries, gather info, and book calls while you sleep.
+                    </p>
+                </div>
+                <div class="mt-8">
+                    <span class="bg-indigo-600 text-white font-extrabold text-xs tracking-wider uppercase px-4 py-2 rounded-full shadow-md shadow-indigo-100">Smart Lead Capture</span>
+                </div>
+            </div>
+
+            <!-- Bento Box 3: Custom Mobile Apps (Single-wide) -->
+            <div class="md:col-span-4 limestone-card p-8 md:p-12 rounded-[2rem] flex flex-col justify-between border border-stone-200/50 shadow-lg relative overflow-hidden group hover:border-amber-200 transition duration-300 bg-amber-50/10">
+                <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-amber-100/20 rounded-full blur-2xl"></div>
+                <div>
+                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-100/40">Native Builds</span>
+                    <h3 class="text-3xl font-black mt-4 mb-4 text-slate-900">Mobile Apps</h3>
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Native Android and iOS experiences built for field service operations. Integrate with payment hardware, work offline, and connect directly to server logic.
+                    </p>
+                </div>
+                <div class="mt-8">
+                    <span class="bg-slate-900 text-white font-extrabold text-xs tracking-wider uppercase px-4 py-2 rounded-full shadow-md">Stripe Integrated</span>
+                </div>
+            </div>
+
+            <!-- Bento Box 4: Local Search Visibility (Double-wide) -->
+            <div class="md:col-span-8 limestone-card p-8 md:p-12 rounded-[2rem] flex flex-col justify-between border border-stone-200/50 shadow-lg relative overflow-hidden group hover:border-indigo-200 transition duration-300">
+                <div class="absolute -top-12 -left-12 w-48 h-48 bg-stone-100 rounded-full blur-3xl group-hover:bg-indigo-50/40 transition"></div>
+                <div>
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/40">Lawrence County SEO</span>
+                    <h3 class="text-3xl font-black mt-4 mb-4 text-slate-900">Local Map Dominance</h3>
+                    <p class="text-slate-600 text-base leading-relaxed max-w-xl">
+                        When someone in Bedford or Mitchell searches for your services, you need to be first. We inject custom JSON-LD schemas, optimize metadata, and achieve flawless Google PageSpeed scores so you win the local maps pack.
+                    </p>
+                </div>
+                <div class="mt-8 flex flex-wrap gap-2.5">
+                    <span class="bg-white px-3.5 py-1.5 rounded-full border border-stone-200/50 text-xs font-semibold text-slate-600 shadow-sm">Google Schema</span>
+                    <span class="bg-white px-3.5 py-1.5 rounded-full border border-stone-200/50 text-xs font-semibold text-slate-600 shadow-sm">Flawless Core Web Vitals</span>
+                    <span class="bg-white px-3.5 py-1.5 rounded-full border border-stone-200/50 text-xs font-semibold text-slate-600 shadow-sm">Bedford Targeted</span>
+                </div>
+            </div>
+
+            <!-- Bento Box 5: Start Your Free Business Efficiency Audit (Full-width 12-column) -->
+            <div class="md:col-span-12 limestone-card p-10 md:p-16 rounded-[2.5rem] border-2 border-indigo-200 shadow-xl relative overflow-hidden group hover:border-indigo-400 transition duration-300 bg-white">
+                <div class="absolute -top-12 -right-12 w-64 h-64 bg-indigo-50/45 rounded-full blur-3xl group-hover:bg-indigo-100/50 transition"></div>
+                <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-amber-50/45 rounded-full blur-3xl group-hover:bg-amber-100/45 transition"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div class="max-w-2xl text-left">
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-100/40">Free Interactive Resource</span>
+                        <h3 class="text-3xl md:text-4xl font-black mt-4 mb-4 text-slate-900 leading-none">Start Your Free Business Efficiency Audit</h3>
+                        <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+                            Takes under 2 minutes. Reveal your team's weekly labor leakage points, rate staff friction, and unlock a customized step-by-step automation checklist delivered straight to your operations.
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <a href="hireus.html" class="btn-primary py-4 px-10 text-sm uppercase tracking-widest font-black shadow-lg shadow-indigo-100 block text-center">Launch Efficiency Audit →</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Promises and Pricing Bento Cards -->
+    <section class="pb-12 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12">
+            <!-- Bento Box: Promise -->
+            <div class="limestone-card p-12 rounded-[2rem] border border-stone-200/50 shadow-lg relative overflow-hidden flex flex-col justify-between group hover:border-indigo-100 transition duration-300">
+                <div>
+                    <h2 class="text-4xl font-black mb-6 text-slate-900">Our Pillars of Promise</h2>
+                    <p class="text-slate-600 mb-8 text-lg leading-relaxed">We believe software should serve humans, not replace them. Our core commitment is to protect local staff burnout and digital carbon waste, while backing local community project goals.</p>
+                </div>
+                <a href="promise.html" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-sm mt-4">Our Green Commitment →</a>
+            </div>
+            
+            <!-- Bento Box: Pricing -->
+            <div class="limestone-card p-12 rounded-[2rem] border border-stone-200/50 shadow-lg relative overflow-hidden flex flex-col justify-between group hover:border-indigo-100 transition duration-300">
+                <div>
+                    <h2 class="text-4xl font-black mb-6 text-slate-900">Simple, Honest Pricing</h2>
+                    <p class="text-slate-600 mb-8 text-lg leading-relaxed">No hidden hosting fees, no monthly maintenance traps, and absolutely zero Silicon Valley tax. We quote transparently so you know exactly where your money goes.</p>
+                </div>
+                <a href="pricing.html" class="text-indigo-600 font-extrabold hover:text-indigo-800 transition uppercase tracking-wider text-sm mt-4">View Honest Pricing Plans →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Option 1: Premium Meet the Founder Biography spotlight block (Large portrait frame) -->
+    <section class="py-16 px-6 max-w-7xl mx-auto">
+        <div class="limestone-card p-10 md:p-16 rounded-[2.5rem] border border-stone-200/60 shadow-xl relative overflow-hidden bg-white">
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-indigo-50/40 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-amber-50/40 rounded-full blur-3xl"></div>
+            
+            <div class="relative z-10 grid md:grid-cols-12 gap-8 md:gap-16 items-center">
+                <!-- Left Photo Column (Enlarged Photo Frame) -->
+                <div class="md:col-span-5 flex justify-center">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-[2.5rem] border-4 border-white shadow-2xl overflow-hidden rotate-[-2deg] hover:rotate-0 transition duration-500 flex-shrink-0">
+                        <img src="owner.jpg" alt="Nathan Carey (Nate)" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Right Bio Column -->
+                <div class="md:col-span-7 space-y-5 text-left">
+                    <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-100/40">Meet the Founder</span>
+                    <h2 class="text-4xl font-black text-slate-900 uppercase tracking-tight leading-none">Nathan Carey (Nate)</h2>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Founder, Hoosier AI Automations LLC</p>
+                    
+                    <div class="text-slate-600 text-sm md:text-base leading-relaxed space-y-4 font-medium">
+                        <p>
+                            A fellow Lawrence County neighbor and stay-at-home dad, Nathan is the software simplified, enterprise elevated brain behind Hoosier AI Automations. He has dedicated his career to one mission: taking the powerful digital tools guarded by major corporations and bringing them home to local businesses like yours.
+                        </p>
+                        <p>
+                            Nate's focus isn't just on writing lightweight code; it's on crafting technology that feels simplified for your team and allows you to reclaim your most vital resource: your time. Hoosier AI Automations is committed to human first principles, ensuring our handcrafted automations support your employees without burning them out. We build the tech, so you can focus on what matters most: Human-to-Human connections.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-stone-200 text-center text-slate-500 text-xs tracking-widest uppercase px-6 flex flex-col items-center justify-center space-y-6">
+        <!-- Indiana Outline Badge -->
+        <div class="inline-flex items-center space-x-3 bg-white border border-stone-200 px-6 py-3.5 rounded-full shadow-md">
+            <!-- Sketched-style Indiana Outline SVG with pulsing star -->
+            <svg class="h-10 w-auto text-indigo-600 animate-fade-in" viewBox="0 0 100 140" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M 36,16 C 45,14 65,15 84,14 C 85,30 84,65 83,95 C 82,104 80,110 78,111 C 74,111 68,117 65,119 C 59,122 55,115 50,121 C 46,126 40,125 36,122 C 28,118 24,124 19,124 C 22,118 28,108 30,103 C 32,96 30,85 32,75 C 34,60 35,35 34,16 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="4.5" />
+                <path d="M 48,90 L 50,85 L 52,90 L 57,90 L 53,93 L 55,98 L 50,95 L 45,98 L 47,93 L 43,90 Z" fill="#F59E0B" class="star-pulse" />
+            </svg>
+            <div class="text-left leading-tight">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Enterprise Class</p>
+                <p class="text-xs font-black text-slate-800 uppercase tracking-wider">US Owned & Operated</p>
+                <p class="text-[9px] font-bold text-indigo-500 uppercase tracking-widest">Bedford, Indiana</p>
+            </div>
+        </div>
+        <div class="space-y-2 text-center text-[11px]">
+            <p>&copy; 2026 Hoosier AI Automations. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Light-Mode Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-window">
+            <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
+                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
+                <div class="bg-stone-100 text-slate-800 p-3.5 rounded-[1.25rem] text-sm max-w-[85%] self-start mr-auto">Hello! I'm Haas. How can we help automate your business today?</div>
+            </div>
+            <div id="chat-input-area" class="p-4 border-t border-stone-100 bg-white flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask anything..." class="bg-stone-50 border border-stone-200/60 rounded-full px-4 py-2.5 flex-1 text-sm outline-none text-slate-800 focus:border-indigo-500 focus:bg-white transition">
+                <button id="chat-submit" class="bg-indigo-600 hover:bg-indigo-700 transition w-10 h-10 rounded-full flex items-center justify-center text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+        <div id="chat-bubble">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+        </div>
+    </div>
+
+<script src="chat.js"></script>
+</body>
+</html>

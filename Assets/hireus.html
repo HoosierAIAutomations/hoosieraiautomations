@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Efficiency Audit | Hoosier AI Automations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="1330.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @keyframes pulse-star {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .star-pulse {
+            transform-origin: 50px 91.5px;
+            animation: pulse-star 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen relative">
+
+    <!-- Glassmorphism Navbar -->
+    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm shadow-slate-100/50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 text-slate-900 no-underline hover:opacity-90 transition">
+                <img src="1330.png" alt="Hoosier AI Automations Logo" class="h-10 w-auto">
+                <span class="text-xl font-black tracking-tighter uppercase italic text-slate-900">Hoosier AI Automations</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Home</a>
+                <a href="promise.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Our Promise</a>
+                <a href="pricing.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Pricing</a>
+                <a href="portfolio.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Portfolio</a>
+                <a href="hireus.html" class="nav-link text-indigo-600 font-bold">Hire Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="pt-36 pb-10 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <span class="text-indigo-600 font-bold uppercase tracking-widest text-xs bg-indigo-50/80 px-3.5 py-1.5 rounded-full w-fit border border-indigo-100/50 mx-auto block">Time Leakage Diagnostics</span>
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight hero-text uppercase mt-4">
+                Business Efficiency Audit
+            </h1>
+            <p class="subtitle max-w-2xl mx-auto text-slate-600 text-sm md:text-base leading-relaxed">
+                Identify operational bottleneck points, calculate hours leaked to repetitive manual tasks, and claim your custom-tailored <span class="text-indigo-600 font-bold">Strategy Blueprint</span> in under 2 minutes.
+            </p>
+        </div>
+    </header>
+
+    <!-- Interactive Audit Wizard Container -->
+    <main class="py-4 px-6 max-w-3xl mx-auto mb-20">
+        <div class="limestone-card p-8 md:p-12 rounded-[2.5rem] border border-stone-200/50 bg-white shadow-2xl relative overflow-hidden">
+            
+            <!-- Audit Progress Indicator Bar Row -->
+            <div id="progress-container-row" class="mb-10 space-y-3">
+                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <span id="step-indicator">Question 1 of 5</span>
+                    <span id="percent-indicator">20% Complete</span>
+                </div>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar-fill" style="width: 20%;"></div>
+                </div>
+            </div>
+
+            <!-- Form submission to secure Netlify function endpoint -->
+            <form id="audit-wizard-form" action="/.netlify/functions/submit-audit" method="POST">
+                
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                <!-- Form Audit Hidden Capture Variables -->
+                <input type="hidden" name="Q1_Hours_Lost_To_Manual_Tasks" id="hidden-q1" value="" required>
+                <input type="hidden" name="Q2_Primary_Bottleneck" id="hidden-q2" value="" required>
+                <input type="hidden" name="Q3_Growth_Goal" id="hidden-q3" value="">
+                <input type="hidden" name="Q4_Staff_Burnout_Scale" id="hidden-q4" value="5">
+                <input type="hidden" name="Q5_Current_Tech_Status" id="hidden-q5" value="" required>
+
+                <!-- ================= QUESTION 1 ================= -->
+                <div id="step-1" class="audit-step active space-y-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 1: Labor Leakage</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">How many hours are lost to manual tasks each week?</h2>
+                        <p class="text-slate-500 text-sm mt-1">Estimating repetitive spreadsheet updates, copy-pasting, and manual scheduling.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-center" onclick="selectQ1('0-5', this)">
+                            <h4 class="font-black text-slate-800 text-lg uppercase tracking-tight">0-5 Hours</h4>
+                            <p class="text-slate-500 text-xs mt-1">Minor overhead tasks</p>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-center" onclick="selectQ1('5-15', this)">
+                            <h4 class="font-black text-slate-800 text-lg uppercase tracking-tight">5-15 Hours</h4>
+                            <p class="text-slate-500 text-xs mt-1">Daily operational drag</p>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-center" onclick="selectQ1('15-40', this)">
+                            <h4 class="font-black text-slate-800 text-lg uppercase tracking-tight">15-40 Hours</h4>
+                            <p class="text-slate-500 text-xs mt-1">Significant operational bottleneck</p>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-center" onclick="selectQ1('40+', this)">
+                            <h4 class="font-black text-slate-800 text-lg uppercase tracking-tight">40+ Hours</h4>
+                            <p class="text-slate-500 text-xs mt-1">Severe enterprise-level drain</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-6">
+                        <button type="button" onclick="nextStep(2)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- ================= QUESTION 2 ================= -->
+                <div id="step-2" class="audit-step space-y-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 2: Operational Obstacles</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">What is your primary operational bottleneck?</h2>
+                        <p class="text-slate-500 text-sm mt-1">Select the single largest friction area dragging down your client experience.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-left" onclick="selectQ2('Scheduling & Bookings', this)">
+                            <h4 class="font-black text-slate-800 text-sm uppercase tracking-tight">Scheduling</h4>
+                            <p class="text-slate-500 text-[11px] mt-0.5">Appointment coordination & client calendars</p>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-left" onclick="selectQ2('Lead Follow-ups & Inbox', this)">
+                            <h4 class="font-black text-slate-800 text-sm uppercase tracking-tight">Lead Follow-ups</h4>
+                            <p class="text-slate-500 text-[11px] mt-0.5">Late replies, customer inbox overload, and lead leakage</p>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-left" onclick="selectQ2('Inventory & Operations', this)">
+                            <h4 class="font-black text-slate-800 text-sm uppercase tracking-tight">Inventory & Ops</h4>
+                            <p class="text-slate-500 text-[11px] mt-0.5">Material tracking, invoice dispatching, and field jobs</p>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-left" onclick="selectQ2('Software Gaps & Manual Entry', this)">
+                            <h4 class="font-black text-slate-800 text-sm uppercase tracking-tight">Software Gaps</h4>
+                            <p class="text-slate-500 text-[11px] mt-0.5">Manual data entry, API cracks, and duplicate spreadsheets</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(1)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
+                        <button type="button" onclick="nextStep(3)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- ================= QUESTION 3 ================= -->
+                <div id="step-3" class="audit-step space-y-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 3: Growth Vision</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">What would you do with 10 extra hours a week?</h2>
+                        <p class="text-slate-500 text-sm mt-1">How would you invest this reclaimed resource into what matters most?</p>
+                    </div>
+
+                    <div class="pt-4">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Your Focus Reclaimed</label>
+                        <textarea id="q3-textarea" oninput="updateQ3(this.value)" placeholder="e.g. Focus on business expansion, spend more quality weekend time with family, or optimize core service operations..." required class="w-full bg-[#FAF9F5] border border-stone-200/60 p-5 rounded-2xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 shadow-sm font-medium h-36 resize-none"></textarea>
+                    </div>
+
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(2)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
+                        <button type="button" onclick="nextStep(4)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- ================= QUESTION 4 ================= -->
+                <div id="step-4" class="audit-step space-y-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 4: Staff Well-being</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Staff Burnout Scale</h2>
+                        <p class="text-slate-500 text-sm mt-1">Assess the friction, fatigue, and burnout risk level currently felt by your team.</p>
+                    </div>
+
+                    <div class="pt-6 space-y-6 text-center">
+                        <div class="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-wider px-2">
+                            <span>1 - Chill</span>
+                            <span>5 - Balanced</span>
+                            <span>10 - Exhausted</span>
+                        </div>
+                        <input type="range" min="1" max="10" value="5" class="custom-slider w-full" id="burnout-range" oninput="updateQ4(this.value)">
+                        
+                        <!-- Dynamic slider response label -->
+                        <div class="bg-indigo-50/50 rounded-2xl p-5 border border-indigo-100/40 inline-block w-full max-w-md mx-auto">
+                            <span class="block text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">Friction Assessment</span>
+                            <span id="burnout-value-display" class="text-2xl font-black text-indigo-600 uppercase tracking-tight">5 - Stressed / Falling Behind</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(3)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
+                        <button type="button" onclick="nextStep(5)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- ================= QUESTION 5 ================= -->
+                <div id="step-5" class="audit-step space-y-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Step 5: Operational Legacy</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Current Tech Status</h2>
+                        <p class="text-slate-500 text-sm mt-1">How automated are your team's day-to-day operations right now?</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-center flex flex-col justify-between" onclick="selectQ5('Hand-operated / Manual', this)">
+                            <div class="py-4">
+                                <h4 class="font-black text-slate-800 text-lg uppercase tracking-tight">Hand-Operated</h4>
+                                <p class="text-slate-500 text-xs mt-1.5 leading-relaxed">Spreadsheets, legacy paperwork, and manual notes</p>
+                            </div>
+                        </div>
+                        <div class="audit-card border border-stone-200/60 rounded-2xl p-6 bg-[#FAF9F5]/30 text-center flex flex-col justify-between" onclick="selectQ5('Partially automated', this)">
+                            <div class="py-4">
+                                <h4 class="font-black text-slate-800 text-lg uppercase tracking-tight">Partially Automated</h4>
+                                <p class="text-slate-500 text-xs mt-1.5 leading-relaxed">Using multiple platforms but doing a lot of manual copy-paste syncing</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(4)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
+                        <button type="button" onclick="nextStep(6)" class="btn-primary py-4 px-8 text-sm uppercase tracking-widest font-black">Review My Score →</button>
+                    </div>
+                </div>
+
+                <!-- ================= STEP 6: CONTACT INFORMATION ================= -->
+                <div id="step-6" class="audit-step space-y-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-indigo-600 font-bold uppercase tracking-widest text-[10px] bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100/30">Diagnoses Prepared</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Let's Compile Your Custom Blueprint</h2>
+                        <p class="text-slate-500 text-sm mt-1">Nathan will evaluate your 5 diagnostic answers and deliver a customized automation roadmap directly to your inbox.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Your Full Name *</label>
+                            <input type="text" name="name" required placeholder="e.g. Jane Doe" class="w-full bg-[#FAF9F5] border border-stone-200/60 px-4 py-3.5 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Business Name *</label>
+                            <input type="text" name="Business_Name" required placeholder="e.g. Bedford Limestone Co." class="w-full bg-[#FAF9F5] border border-stone-200/60 px-4 py-3.5 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Your Role *</label>
+                            <select name="Role" required class="w-full bg-[#FAF9F5] border border-stone-200/60 px-4 py-3.5 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-semibold">
+                                <option value="" disabled selected>Select Your Position...</option>
+                                <option value="Owner">Owner</option>
+                                <option value="Founder">Founder</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Developer">Developer</option>
+                                <option value="Entrepreneur">Entrepreneur</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Website URL (Optional)</label>
+                            <input type="url" name="Website_URL" placeholder="https://example.com" class="w-full bg-[#FAF9F5] border border-stone-200/60 px-4 py-3.5 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Email Address *</label>
+                            <input type="email" name="email" required placeholder="e.g. jane@company.com" class="w-full bg-[#FAF9F5] border border-stone-200/60 px-4 py-3.5 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Phone Number *</label>
+                            <input type="tel" name="phone" required placeholder="e.g. (812) 555-0100" class="w-full bg-[#FAF9F5] border border-stone-200/60 px-4 py-3.5 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">How should we connect? *</label>
+                        <div class="switch-field max-w-xs">
+                            <input type="radio" id="prefer-text" name="Contact_Preference" value="Prefer Text" checked>
+                            <label for="prefer-text">Prefer Text</label>
+                            
+                            <input type="radio" id="prefer-call" name="Contact_Preference" value="Prefer Call">
+                            <label for="prefer-call">Prefer Call</label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Any specific questions, comments, or concerns?</label>
+                        <textarea name="Comments" placeholder="Tell us if you have critical software tools you currently use or specific workflow bottlenecks in mind..." class="w-full bg-[#FAF9F5] border border-stone-200/60 p-4 rounded-xl focus:border-indigo-500 focus:bg-white outline-none transition text-slate-900 text-sm font-medium h-24 resize-none"></textarea>
+                    </div>
+
+                    <div class="flex justify-between pt-6 border-t border-stone-100">
+                        <button type="button" onclick="prevStep(5)" class="btn-secondary py-3.5 px-6 text-xs uppercase tracking-widest font-black">← Back</button>
+                        <button type="submit" id="submit-btn" class="btn-primary py-4 px-10 text-sm uppercase tracking-widest font-black shadow-md shadow-indigo-100">Submit Audit Request</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- ================= SUCCESS CARD ================= -->
+            <div id="success-card" class="hidden text-center py-12 space-y-6">
+                <!-- Checkmark Success SVG -->
+                <div class="mx-auto w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center border-2 border-green-200 shadow-xl shadow-green-100/50 scale-0 transition duration-700" id="success-check">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                </div>
+                <div class="space-y-3">
+                    <span class="text-green-600 font-extrabold text-[10px] tracking-widest uppercase bg-green-50 px-2.5 py-1 rounded-full border border-green-100/40">Audit Submitted Successfully!</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Your Efficiency Blueprint Is Underway!</h2>
+                    <p class="text-slate-600 text-sm max-w-md mx-auto leading-relaxed font-medium">
+                        Nathan will review your 5 labor leakage metrics and manually craft your customized manual-to-automated operational checklist. Look out for a detailed response in your inbox soon!
+                    </p>
+                </div>
+                <div class="pt-6">
+                    <a href="index.html" class="btn-primary">Return to Homepage</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-stone-200 text-center text-slate-500 text-xs tracking-widest uppercase px-6 flex flex-col items-center justify-center space-y-6">
+        <!-- Indiana Outline Badge -->
+        <div class="inline-flex items-center space-x-3 bg-white border border-stone-200 px-6 py-3.5 rounded-full shadow-md">
+            <!-- Sketched-style Indiana Outline SVG with pulsing star -->
+            <svg class="h-10 w-auto text-indigo-600 animate-fade-in" viewBox="0 0 100 140" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M 36,16 C 45,14 65,15 84,14 C 85,30 84,65 83,95 C 82,104 80,110 78,111 C 74,111 68,117 65,119 C 59,122 55,115 50,121 C 46,126 40,125 36,122 C 28,118 24,124 19,124 C 22,118 28,108 30,103 C 32,96 30,85 32,75 C 34,60 35,35 34,16 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="4.5" />
+                <path d="M 48,90 L 50,85 L 52,90 L 57,90 L 53,93 L 55,98 L 50,95 L 45,98 L 47,93 L 43,90 Z" fill="#F59E0B" class="star-pulse" />
+            </svg>
+            <div class="text-left leading-tight">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Enterprise Class</p>
+                <p class="text-xs font-black text-slate-800 uppercase tracking-wider">US Owned & Operated</p>
+                <p class="text-[9px] font-bold text-indigo-500 uppercase tracking-widest">Bedford, Indiana</p>
+            </div>
+        </div>
+        <div class="space-y-2 text-center text-[11px]">
+            <p>&copy; 2026 Hoosier AI Automations. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Light-Mode Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-window">
+            <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
+                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
+                <div class="bg-stone-100 text-slate-800 p-3.5 rounded-[1.25rem] text-sm max-w-[85%] self-start mr-auto">Hello! I'm Haas. How can we help automate your business today?</div>
+            </div>
+            <div id="chat-input-area" class="p-4 border-t border-stone-100 bg-white flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask anything..." class="bg-stone-50 border border-stone-200/60 rounded-full px-4 py-2.5 flex-1 text-sm outline-none text-slate-800 focus:border-indigo-500 focus:bg-white transition">
+                <button id="chat-submit" class="bg-indigo-600 hover:bg-indigo-700 transition w-10 h-10 rounded-full flex items-center justify-center text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+        <div id="chat-bubble">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+        </div>
+    </div>
+
+    <script src="chat.js"></script>
+
+    <!-- Multi-Step Form Logic and Ajax Submission -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 6;
+
+        function updateProgress() {
+            const percent = Math.round(((currentStep - 1) / (totalSteps - 1)) * 100);
+            
+            const stepIndicator = document.getElementById('step-indicator');
+            const percentIndicator = document.getElementById('percent-indicator');
+            const progressBar = document.getElementById('progress-bar');
+            
+            if (currentStep <= 5) {
+                stepIndicator.innerText = `Question ${currentStep} of 5`;
+                percentIndicator.innerText = `${percent}% Complete`;
+                progressBar.style.width = `${percent}%`;
+            } else {
+                stepIndicator.innerText = `Final Step`;
+                percentIndicator.innerText = `100% Complete`;
+                progressBar.style.width = `100%`;
+            }
+        }
+
+        function showStep(stepNum) {
+            document.querySelectorAll('.audit-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            const activeStep = document.getElementById(`step-${stepNum}`);
+            if (activeStep) {
+                activeStep.classList.add('active');
+            }
+            currentStep = stepNum;
+            updateProgress();
+            window.scrollTo({ top: 120, behavior: 'smooth' });
+        }
+
+        function nextStep(stepNum) {
+            // Field validation for Q1-Q5 before proceeding
+            if (stepNum === 2 && !document.getElementById('hidden-q1').value) {
+                alert("Please select an answer for Question 1 before continuing.");
+                return;
+            }
+            if (stepNum === 3 && !document.getElementById('hidden-q2').value) {
+                alert("Please select a bottleneck option for Question 2 before continuing.");
+                return;
+            }
+            if (stepNum === 4 && !document.getElementById('q3-textarea').value.trim()) {
+                alert("Please share your growth thoughts in the textbox before continuing.");
+                return;
+            }
+            if (stepNum === 6 && !document.getElementById('hidden-q5').value) {
+                alert("Please select your current tech status before continuing.");
+                return;
+            }
+            
+            showStep(stepNum);
+        }
+
+        function prevStep(stepNum) {
+            showStep(stepNum);
+        }
+
+        // Card Selection Logic for Q1
+        function selectQ1(val, element) {
+            document.getElementById('hidden-q1').value = val;
+            
+            // Highlight selected card visually
+            element.parentNode.querySelectorAll('.audit-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Advance automatically after selection
+            setTimeout(() => { nextStep(2); }, 250);
+        }
+
+        // Card Selection Logic for Q2
+        function selectQ2(val, element) {
+            document.getElementById('hidden-q2').value = val;
+            
+            element.parentNode.querySelectorAll('.audit-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            setTimeout(() => { nextStep(3); }, 250);
+        }
+
+        // Text area callback for Q3
+        function updateQ3(val) {
+            document.getElementById('hidden-q3').value = val;
+        }
+
+        // Range Slider logic for Q4
+        function updateQ4(val) {
+            document.getElementById('hidden-q4').value = val;
+            const display = document.getElementById('burnout-value-display');
+            const num = parseInt(val);
+            
+            let labelText = "";
+            if (num <= 3) {
+                labelText = `${num} - Chill / Balanced`;
+            } else if (num <= 6) {
+                labelText = `${num} - Stressed / Falling Behind`;
+            } else if (num <= 8) {
+                labelText = `${num} - Burning Out / High Friction`;
+            } else {
+                labelText = `${num} - Crisis Point / Exhausted`;
+            }
+            
+            display.innerText = labelText;
+        }
+
+        // Card Selection Logic for Q5
+        function selectQ5(val, element) {
+            document.getElementById('hidden-q5').value = val;
+            
+            element.parentNode.querySelectorAll('.audit-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            setTimeout(() => { nextStep(6); }, 250);
+        }
+
+        // Ajax submission with loading spinner and Success animation
+        const form = document.getElementById('audit-wizard-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Submitting Audit...";
+            submitBtn.style.opacity = "0.7";
+
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch('/.netlify/functions/submit-audit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let res = await response.json();
+                if (response.status == 200) {
+                    // Hide wizard steps and progress indicators
+                    form.classList.add('hidden');
+                    document.getElementById('progress-container-row').classList.add('hidden');
+                    
+                    // Show success screen card
+                    const successCard = document.getElementById('success-card');
+                    successCard.classList.remove('hidden');
+                    
+                    // Scale checkmark in for delicious feedback
+                    setTimeout(() => {
+                        const check = document.getElementById('success-check');
+                        check.classList.remove('scale-0');
+                        check.classList.add('scale-100');
+                    }, 50);
+                } else {
+                    console.log(response);
+                    alert(res.error || "Something went wrong. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Submit Audit Request";
+                    submitBtn.style.opacity = "1";
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                alert("Form submission failed. Please check your internet and try again.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit Audit Request";
+                submitBtn.style.opacity = "1";
+            });
+        });
+    </script>
+</body>
+</html>

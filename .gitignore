@@ -1,0 +1,27 @@
+# Secret environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Netlify local build directories and caches
+.netlify/
+.netlify-cli/
+.netlify-build/
+
+# IDE / Editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS metadata files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

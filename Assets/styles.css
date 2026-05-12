@@ -1,0 +1,367 @@
+:root {
+    --bg-main: #FAF9F5;
+    --bg-secondary: #FFFFFF;
+    --bg-accent: #F5F4F0;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --accent-blue: #4F46E5;
+    --accent-blue-hover: #4338CA;
+    --border-color: #E2E8F0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    scroll-behavior: smooth;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Limestone Stone & Craft Textures */
+.limestone-pattern {
+    background-color: #FAF9F5;
+    background-image: radial-gradient(#E2E1D9 0.8px, transparent 0.8px);
+    background-size: 20px 20px;
+}
+
+.limestone-card {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5F4F0 100%);
+    border: 1px solid rgba(226, 225, 217, 0.7);
+    box-shadow: 0 20px 40px -15px rgba(28, 32, 40, 0.04), 0 1px 3px rgba(0, 0, 0, 0.01);
+}
+
+/* Retaining legacy class name but mapping to the warm Limestone theme */
+.metal-shine {
+    background: linear-gradient(135deg, #FFFFFF 0%, #FAF9F5 100%);
+    border: 1px solid rgba(226, 225, 217, 0.8);
+    box-shadow: 0 25px 50px -12px rgba(28, 32, 40, 0.03);
+}
+
+.hero-text {
+    background: linear-gradient(to bottom right, #1E1B4B, #4F46E5, #312E81);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Navigation */
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-blue);
+}
+
+.nav-cta {
+    background: var(--accent-blue);
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+.nav-cta:hover {
+    background: var(--accent-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.25);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 1rem 2.25rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25);
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(79, 70, 229, 0.4);
+}
+
+.btn-secondary {
+    border: 1px solid rgba(226, 225, 217, 1);
+    background-color: #FFFFFF;
+    color: var(--text-primary);
+    padding: 1rem 2.25rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Cards */
+.portfolio-card {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(79, 70, 229, 0.3);
+    box-shadow: 0 30px 60px -15px rgba(28, 32, 40, 0.06);
+}
+
+/* Chat Widget */
+#chat-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+#chat-bubble {
+    width: 4rem;
+    height: 4rem;
+    background: var(--accent-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.35);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+    border: 2px solid #FFFFFF;
+}
+
+#chat-bubble:hover {
+    transform: scale(1.08) rotate(5deg);
+    background: var(--accent-blue-hover);
+}
+
+#chat-window {
+    width: 360px;
+    height: 520px;
+    max-height: 80vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 225, 217, 0.9);
+    border-radius: 2rem;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(28, 32, 40, 0.08);
+    margin-bottom: 1rem;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+#chat-window.open {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Layout Utilities */
+.section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.container-narrow {
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container-wide {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Typography */
+h1, h2, h3 {
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    line-height: 1.75;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+    animation: spin 10s linear infinite;
+}
+
+/* --- Business Efficiency Audit Custom Styles --- */
+
+/* Audit Active Selection States */
+.audit-card {
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.audit-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(79, 70, 229, 0.4);
+    box-shadow: 0 12px 24px -6px rgba(28, 32, 40, 0.04);
+}
+
+.audit-card.selected {
+    border-color: #4F46E5 !important;
+    background-color: #EEF2FF !important;
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.12), inset 0 0 0 1px rgba(79, 70, 229, 0.2);
+}
+
+/* Multistep Progress Bar */
+.progress-container {
+    height: 6px;
+    background-color: #E2E8F0;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4F46E5 0%, #818CF8 100%);
+    border-radius: 9999px;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom range slider styling */
+input[type="range"].custom-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 9999px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+input[type="range"].custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4F46E5;
+    cursor: pointer;
+    border: 4px solid #FFFFFF;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.35);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type="range"].custom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    background: #4338CA;
+}
+
+input[type="range"].custom-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4F46E5;
+    cursor: pointer;
+    border: 4px solid #FFFFFF;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.35);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type="range"].custom-slider::-moz-range-thumb:hover {
+    transform: scale(1.15);
+    background: #4338CA;
+}
+
+/* Step Fade-in Animation Classes */
+.audit-step {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.audit-step.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Segmented Custom Pill Switch (Call vs Text) */
+.switch-field {
+    display: flex;
+    background-color: #F1F5F9;
+    padding: 4px;
+    border-radius: 9999px;
+    border: 1px solid #E2E8F0;
+}
+
+.switch-field input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0) !important;
+    height: 1px !important;
+    width: 1px !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+.switch-field label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #475569;
+    background-color: transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.switch-field input:checked + label {
+    background-color: #FFFFFF;
+    color: #4F46E5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | Hoosier AI Automations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="1330.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @keyframes pulse-star {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .star-pulse {
+            transform-origin: 50px 91.5px;
+            animation: pulse-star 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen relative">
+
+    <!-- Glassmorphism Navbar -->
+    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm shadow-slate-100/50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 text-slate-900 no-underline hover:opacity-90 transition">
+                <img src="1330.png" alt="Hoosier AI Automations Logo" class="h-10 w-auto">
+                <span class="text-xl font-black tracking-tighter uppercase italic text-slate-900">Hoosier AI Automations</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Home</a>
+                <a href="promise.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Our Promise</a>
+                <a href="pricing.html" class="nav-link text-indigo-600 font-bold">Pricing</a>
+                <a href="portfolio.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Portfolio</a>
+                <a href="hireus.html" class="nav-cta text-white font-bold">Hire Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="pt-40 pb-12 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <span class="text-indigo-600 font-bold uppercase tracking-widest text-xs bg-indigo-50/80 px-3.5 py-1.5 rounded-full w-fit border border-indigo-100/50 mx-auto block">Transparent Pricing</span>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight hero-text uppercase mt-4">
+                Straight to the point pricing
+            </h1>
+            <p class="subtitle max-w-2xl mx-auto text-slate-600 text-base md:text-lg leading-relaxed">
+                Zero hidden fees. Zero templates. No surprise monthly maintenance taxes. We build tools that pay for themselves in saved hours.
+            </p>
+        </div>
+    </header>
+
+    <!-- Pricing Content (No AI vs AI-Powered Board) -->
+    <section id="pricing" class="py-12 px-6 max-w-7xl mx-auto">
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+                
+                <!-- COLUMN 1: OLD SCHOOL CODE: NO AI -->
+                <div class="limestone-card p-8 md:p-12 rounded-[2.5rem] border border-stone-200/60 shadow-lg flex flex-col justify-between bg-white">
+                    <div>
+                        <!-- Header badge -->
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="bg-slate-100 text-slate-700 font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-slate-200/60">Old School Code: No AI</span>
+                            <span class="text-xs font-bold text-slate-400">Pure Custom Coding</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">Pure & Reliable</h2>
+                        <p class="text-sm text-slate-500 mb-8 font-semibold">Pure, fast, reliable builds. Zero AI logic.</p>
+                        
+                        <!-- Packages inside Column 1 -->
+                        <div class="space-y-6">
+                            
+                            <!-- Standard Website -->
+                            <div class="bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl p-6 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-black text-slate-800 uppercase tracking-tight">Standard Website</h4>
+                                    <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100/40">$0 Consultation</span>
+                                </div>
+                                <div class="flex items-baseline space-x-1 mb-3">
+                                    <span class="text-2xl font-black text-slate-900">$99</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Upfront</span>
+                                    <span class="text-slate-300 mx-2">|</span>
+                                    <span class="text-lg font-bold text-slate-800">$49/mo</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Maintenance</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">Includes professional high-contrast design, cloud security, hosting, updates, and 24/7 dedicated local support.</p>
+                            </div>
+
+                            <!-- Simple Automations -->
+                            <div class="bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl p-6 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-black text-slate-800 uppercase tracking-tight">Simple Automations</h4>
+                                    <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100/40">$0 Consultation</span>
+                                </div>
+                                <div class="flex items-baseline space-x-1 mb-3">
+                                    <span class="text-2xl font-black text-slate-900">$149</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Upfront</span>
+                                    <span class="text-slate-300 mx-2">|</span>
+                                    <span class="text-lg font-bold text-slate-800">$79/mo</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Maintenance</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">Custom background workflows connecting your legacy APIs, tools, forms, and database platforms.</p>
+                            </div>
+
+                            <!-- Build Your Way -->
+                            <div class="border border-stone-200/40 rounded-2xl p-5 flex justify-between items-center bg-white">
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800 uppercase tracking-wider">Build Your Way</h4>
+                                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Pay per custom page</p>
+                                </div>
+                                <span class="text-lg font-black text-indigo-600">$25 <span class="text-[10px] font-bold text-slate-400 uppercase">/ page</span></span>
+                            </div>
+
+                            <!-- The Hand-Off -->
+                            <div class="border border-stone-200/40 rounded-2xl p-5 flex justify-between items-center bg-white">
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800 uppercase tracking-wider">The Hand-Off</h4>
+                                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Built & fully handed over</p>
+                                </div>
+                                <span class="text-lg font-black text-indigo-600">$499 <span class="text-[10px] font-bold text-slate-400 uppercase">One-time</span></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-12">
+                        <a href="hireus.html" class="btn-secondary w-full text-center text-xs uppercase tracking-widest font-black py-4">Request No-AI Build</a>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: NEXT-GEN CODING: AI POWERED -->
+                <div class="limestone-card p-8 md:p-12 rounded-[2.5rem] border-2 border-indigo-200 shadow-xl flex flex-col justify-between bg-white relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-40 h-40 bg-indigo-50/55 rounded-full blur-3xl"></div>
+                    <div>
+                        <!-- Header badge -->
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="bg-indigo-600 text-white font-extrabold text-[10px] tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-indigo-700 shadow-sm">Next-Gen Coding: AI Powered</span>
+                            <span class="text-xs font-bold text-indigo-600">Smart Integrations</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">AI Augmented</h2>
+                        <p class="text-sm text-indigo-600 mb-8 font-semibold">Custom-trained assistants. AI powered.</p>
+                        
+                        <!-- Packages inside Column 2 -->
+                        <div class="space-y-6">
+                            
+                            <!-- AI Concierge -->
+                            <div class="bg-indigo-50/10 border border-indigo-100 rounded-2xl p-6 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-black text-slate-800 uppercase tracking-tight">AI Concierge</h4>
+                                    <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100/40">$0 Consultation</span>
+                                </div>
+                                <div class="flex items-baseline space-x-1 mb-3">
+                                    <span class="text-2xl font-black text-slate-900">$199</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Upfront</span>
+                                    <span class="text-slate-300 mx-2">|</span>
+                                    <span class="text-lg font-bold text-indigo-600">$125/mo</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Maintenance</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">Dedicated AI assistant trained on your docs. Includes ongoing AI prompt tuning, serverless hosting, and support.</p>
+                            </div>
+
+                            <!-- Enterprise AI -->
+                            <div class="bg-indigo-50/10 border border-indigo-100 rounded-2xl p-6 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-lg font-black text-slate-800 uppercase tracking-tight">Enterprise AI</h4>
+                                    <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100/40">$0 Consultation</span>
+                                </div>
+                                <div class="flex items-baseline space-x-1 mb-3">
+                                    <span class="text-2xl font-black text-slate-900">$299</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Upfront</span>
+                                    <span class="text-slate-300 mx-2">|</span>
+                                    <span class="text-lg font-bold text-indigo-600">$149/mo</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Maintenance</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">High-scale automation using computer vision/AI eyesight, automated Stripe invoicing, and backend deep learning APIs.</p>
+                            </div>
+
+                            <!-- Build Your Way -->
+                            <div class="border border-indigo-100 rounded-2xl p-5 flex justify-between items-center bg-white">
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800 uppercase tracking-wider">Build Your Way</h4>
+                                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Pay per custom AI-connected page</p>
+                                </div>
+                                <span class="text-lg font-black text-indigo-600">$50 <span class="text-[10px] font-bold text-slate-400 uppercase">/ page</span></span>
+                            </div>
+
+                            <!-- The Hand-Off -->
+                            <div class="border border-indigo-100 rounded-2xl p-5 flex justify-between items-center bg-white">
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800 uppercase tracking-wider">The Hand-Off</h4>
+                                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Built & fully handed over</p>
+                                </div>
+                                <span class="text-lg font-black text-indigo-600">$499 <span class="text-[10px] font-bold text-slate-400 uppercase">One-time</span></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-12">
+                        <a href="hireus.html" class="btn-primary w-full text-center text-xs uppercase tracking-widest font-black py-4 shadow-md shadow-indigo-100">Request AI Build</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-stone-200 text-center text-slate-500 text-xs tracking-widest uppercase px-6 flex flex-col items-center justify-center space-y-6">
+        <!-- Indiana Outline Badge -->
+        <div class="inline-flex items-center space-x-3 bg-white border border-stone-200 px-6 py-3.5 rounded-full shadow-md">
+            <!-- Sketched-style Indiana Outline SVG with pulsing star -->
+            <svg class="h-10 w-auto text-indigo-600 animate-fade-in" viewBox="0 0 100 140" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M 36,16 C 45,14 65,15 84,14 C 85,30 84,65 83,95 C 82,104 80,110 78,111 C 74,111 68,117 65,119 C 59,122 55,115 50,121 C 46,126 40,125 36,122 C 28,118 24,124 19,124 C 22,118 28,108 30,103 C 32,96 30,85 32,75 C 34,60 35,35 34,16 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="4.5" />
+                <path d="M 48,90 L 50,85 L 52,90 L 57,90 L 53,93 L 55,98 L 50,95 L 45,98 L 47,93 L 43,90 Z" fill="#F59E0B" class="star-pulse" />
+            </svg>
+            <div class="text-left leading-tight">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Enterprise Class</p>
+                <p class="text-xs font-black text-slate-800 uppercase tracking-wider">US Owned & Operated</p>
+                <p class="text-[9px] font-bold text-indigo-500 uppercase tracking-widest">Bedford, Indiana</p>
+            </div>
+        </div>
+        <div class="space-y-2 text-center text-[11px]">
+            <p>&copy; 2026 Hoosier AI Automations. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Light-Mode Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-window">
+            <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
+                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
+                <div class="bg-stone-100 text-slate-800 p-3.5 rounded-[1.25rem] text-sm max-w-[85%] self-start mr-auto">Hello! I'm Haas. How can we help automate your business today?</div>
+            </div>
+            <div id="chat-input-area" class="p-4 border-t border-stone-100 bg-white flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask anything..." class="bg-stone-50 border border-stone-200/60 rounded-full px-4 py-2.5 flex-1 text-sm outline-none text-slate-800 focus:border-indigo-500 focus:bg-white transition">
+                <button id="chat-submit" class="bg-indigo-600 hover:bg-indigo-700 transition w-10 h-10 rounded-full flex items-center justify-center text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+        <div id="chat-bubble">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+        </div>
+    </div>
+
+    <script src="chat.js"></script>
+</body>
+</html>
