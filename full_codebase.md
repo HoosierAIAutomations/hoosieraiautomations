@@ -308,7 +308,7 @@
     <div id="chat-widget">
         <div id="chat-window">
             <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
-                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <h3 class="text-[#001C48] font-black text-lg tracking-tight uppercase">Haas</h3>
                 <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
             </div>
             <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
@@ -716,7 +716,7 @@
     <div id="chat-widget">
         <div id="chat-window">
             <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
-                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <h3 class="text-[#001C48] font-black text-lg tracking-tight uppercase">Haas</h3>
                 <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
             </div>
             <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
@@ -1277,7 +1277,7 @@
     <div id="chat-widget">
         <div id="chat-window">
             <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
-                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <h3 class="text-[#001C48] font-black text-lg tracking-tight uppercase">Haas</h3>
                 <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
             </div>
             <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
@@ -1613,7 +1613,7 @@
     <div id="chat-widget">
         <div id="chat-window">
             <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
-                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <h3 class="text-[#001C48] font-black text-lg tracking-tight uppercase">Haas</h3>
                 <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
             </div>
             <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
@@ -1802,7 +1802,7 @@
     <div id="chat-widget">
         <div id="chat-window">
             <div id="chat-header" class="flex justify-between items-center p-5 border-b border-stone-200/60 bg-slate-50">
-                <h3 class="text-indigo-600 font-extrabold">Haas</h3>
+                <h3 class="text-[#001C48] font-black text-lg tracking-tight uppercase">Haas</h3>
                 <button id="chat-close" class="text-slate-400 hover:text-slate-800 text-xl font-bold">&times;</button>
             </div>
             <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4 flex flex-col">
