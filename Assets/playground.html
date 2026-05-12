@@ -12,40 +12,57 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #FAF9F5;
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        /* Overwriting default colors for brand harmony */
+        .brand-indigo-bg {
+            background-color: #001C48;
         }
-        .console-grid {
-            background-size: 24px 24px;
-            background-image: linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+        .brand-indigo-text {
+            color: #001C48;
         }
-        .step-transition {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .brand-indigo-border {
+            border-color: #001C48;
         }
-        .secure-lock {
+        /* Blurred canvas preview paywall */
+        .paywall-blur {
+            filter: blur(10px);
+            pointer-events: none;
             user-select: none;
-            -webkit-user-select: none;
         }
-        /* Kid friendly lego pastels */
-        .lego-card {
-            border: 3px solid #000;
-            box-shadow: 6px 6px 0px #000;
+        /* Pixelated virtual pet styles */
+        .pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        .pixel-cell {
+            background-color: transparent;
+            aspect-ratio: 1;
+        }
+        .pixel-black { background-color: #000000; }
+        .pixel-indigo { background-color: #001C48; }
+        .pixel-orange { background-color: #F59E0B; }
+        .pixel-white { background-color: #FFFFFF; }
+        
+        /* Kids Neubrutalism Legos */
+        .kids-lego-card {
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0px #000000;
             border-radius: 20px;
             background: #FFFFFF;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
         }
-        .lego-card:hover {
+        .kids-lego-card:hover {
             transform: translate(-2px, -2px);
-            box-shadow: 8px 8px 0px #000;
+            box-shadow: 8px 8px 0px #000000;
         }
         .btn-lego {
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px #000;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px 0px #000000;
             border-radius: 12px;
             font-weight: 900;
             text-transform: uppercase;
@@ -53,21 +70,18 @@
         }
         .btn-lego:hover {
             transform: translate(-1px, -1px);
-            box-shadow: 5px 5px 0px #000;
+            box-shadow: 5px 5px 0px #000000;
         }
         .btn-lego:active {
             transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px #000000;
         }
     </style>
 </head>
-<body class="bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen relative overflow-x-hidden secure-lock">
-
-    <!-- Fullscreen Water Ripple Canvas -->
-    <canvas id="ripple-canvas" class="fixed inset-0 z-[100] pointer-events-none opacity-0 transition-opacity duration-300"></canvas>
+<body class="bg-[#FAF9F5] text-slate-900 limestone-pattern min-h-screen relative overflow-x-hidden">
 
     <!-- Navigation Header -->
-    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm">
+    <nav class="fixed w-full z-50 bg-white/75 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-3 text-slate-900 hover:opacity-95 transition">
                 <img src="1330.png" alt="Logo" class="h-10 w-auto">
@@ -84,24 +98,9 @@
         </div>
     </nav>
 
-    <!-- PWA Install Banner -->
-    <div id="pwa-install-banner" class="fixed bottom-6 left-6 z-[90] hidden max-w-sm glass-panel p-5 rounded-2xl border border-indigo-100 shadow-2xl animate-fade-in flex flex-col gap-3">
-        <div class="flex items-center gap-3">
-            <img src="1330.png" alt="App Icon" class="w-10 h-10 rounded-xl shadow">
-            <div>
-                <h4 class="font-bold text-slate-900 text-sm">Install Haas Playground</h4>
-                <p class="text-xs text-slate-500">Add to your Home Screen for seamless offline access!</p>
-            </div>
-        </div>
-        <div class="flex gap-2 justify-end">
-            <button id="pwa-dismiss" class="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:bg-stone-50 transition">Dismiss</button>
-            <button id="pwa-install-btn" class="bg-indigo-600 hover:bg-indigo-700 transition px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg">Install Now</button>
-        </div>
-    </div>
-
     <!-- Onboarding Stage Wizard -->
     <div id="onboarding-stage" class="pt-36 pb-12 px-6 flex items-center justify-center min-h-[85vh]">
-        <div class="max-w-xl w-full glass-panel border border-stone-200/55 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+        <div class="max-w-xl w-full limestone-card p-8 md:p-12 rounded-[2rem] shadow-2xl relative overflow-hidden">
             
             <!-- Step Indicators -->
             <div class="flex justify-between items-center mb-10 relative z-10">
@@ -122,7 +121,7 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 pt-2">
-                        <!-- Role card components (SVG instead of Emojis) -->
+                        <!-- Role card components (No Emojis - Thin line SVG icons) -->
                         <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Founder/Owner')">
                             <input type="radio" name="user_role" value="Founder/Owner" class="hidden">
                             <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -172,7 +171,7 @@
                         </label>
                     </div>
 
-                    <!-- Role Feedback Response Message Box -->
+                    <!-- Role Feedback Box -->
                     <div id="role-feedback-box" class="hidden bg-indigo-50 border border-indigo-100/60 rounded-2xl p-4 text-xs font-semibold text-indigo-800 animate-fade-in text-left">
                         <span id="role-feedback-text"></span>
                     </div>
@@ -244,7 +243,7 @@
                         </label>
                     </div>
 
-                    <!-- Intent Feedback Response Message Box -->
+                    <!-- Intent Feedback Box -->
                     <div id="intent-feedback-box" class="hidden bg-indigo-50 border border-indigo-100/60 rounded-2xl p-4 text-xs font-semibold text-indigo-800 animate-fade-in text-left">
                         <span id="intent-feedback-text"></span>
                     </div>
@@ -273,7 +272,7 @@
 
                         <div class="space-y-3">
                             <label for="user-age-select" class="text-slate-600 text-xs font-black uppercase tracking-wider">Your Age</label>
-                            <!-- Dropdown selection box instead of Slider -->
+                            <!-- Dropdown Age Selection -->
                             <select id="user-age-select" class="w-full bg-stone-50 border-2 border-stone-200/60 rounded-2xl px-5 py-4 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
                                 <option value="" disabled selected>Choose Your Age</option>
                             </select>
@@ -298,191 +297,181 @@
     <!-- ========================================================================= -->
     <div id="playground-dashboard" class="hidden pt-32 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
         
-        <!-- ================== VIEW 1: PROFESSIONAL STUDIO CONSOLE (18+) ================== -->
+        <!-- ================== VIEW 1: EXECUTIVE PRO CONSOLE (18+) ================== -->
         <div id="professional-dashboard" class="hidden space-y-10">
             
-            <!-- Hero banner with transparent pricing message -->
-            <div class="w-full glass-panel border border-stone-200/60 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/50 via-transparent to-transparent opacity-60"></div>
-                <div class="text-left space-y-2 relative z-10 max-w-3xl">
+            <!-- Executive Branding & Dropdown Controllers -->
+            <div class="w-full limestone-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/20 via-transparent to-transparent opacity-60"></div>
+                <div class="text-left space-y-2 relative z-10 max-w-2xl">
                     <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Zero Fee Sandbox</span>
-                    <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">Interactive Professional Console</h3>
+                    <h3 class="text-2xl font-black text-[#001C48] uppercase tracking-tight">Executive Automation Suite</h3>
                     <p class="text-slate-600 text-sm leading-relaxed font-semibold">
-                        Everything inside the playground is free to explore. Individual downloads and exports help keep this community growing. Thank you for your support!
+                        Design industry blueprints for your bottlenecks. Enter a custom description or pick an industry framework below.
                     </p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 items-center relative z-10 w-full md:w-auto">
-                    <!-- Dropdown selector for Framework templates -->
-                    <select id="industry-selector" onchange="loadIndustryTemplate()" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
-                        <option value="RealEstate">🏡 Real Estate Leads</option>
-                        <option value="Logistics">🚛 Smart Logistics</option>
-                        <option value="Retail">🛒 Retail Low Stock</option>
-                    </select>
-                    <button onclick="triggerBlueprintGeneration()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-6 py-3.5 rounded-2xl transition shadow-lg w-full sm:w-auto">
-                        Generate Blueprint
+                    <!-- Dropdown Menu 1: Small Business Solutions -->
+                    <div class="flex flex-col gap-1 w-full sm:w-auto text-left">
+                        <label class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Small Business Solutions</label>
+                        <select id="sme-selector" onchange="loadBusinessScenario('sme')" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
+                            <option value="" disabled selected>Select Solution</option>
+                            <option value="SME_Scheduling">Retail Scheduling</option>
+                            <option value="SME_Dispatch">Logistics Dispatch</option>
+                            <option value="SME_Responder">Lead Responders</option>
+                        </select>
+                    </div>
+
+                    <!-- Dropdown Menu 2: Enterprise Architect -->
+                    <div class="flex flex-col gap-1 w-full sm:w-auto text-left">
+                        <label class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Enterprise Architect</label>
+                        <select id="ent-selector" onchange="loadBusinessScenario('ent')" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
+                            <option value="" disabled selected>Select Architecture</option>
+                            <option value="ENT_Inventory">Multi-Channel Inventory</option>
+                            <option value="ENT_Telemetry">Fleet Telemetry Hub</option>
+                            <option value="ENT_Processor">AI Document Processor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sleek Centered Prompt Box -->
+            <div class="max-w-3xl mx-auto limestone-card rounded-2xl p-6 shadow-md text-center space-y-4">
+                <h4 class="font-black text-[11px] text-indigo-600 uppercase tracking-widest">Describe Your Custom Bottleneck</h4>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="custom-problem-input" placeholder="e.g., We spend 3 hours daily writing manual invoice emails..." class="flex-1 bg-stone-50 border-2 border-stone-200/60 rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
+                    <button onclick="translateCustomProblem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-6 py-3 rounded-xl transition shadow shadow-indigo-100">
+                        Translate To Haas Logic
                     </button>
                 </div>
             </div>
 
-            <!-- Dashboard Columns -->
+            <!-- Bottleneck Scenario Cards row -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="limestone-card rounded-2xl p-6 cursor-pointer hover:border-indigo-500 transition-all duration-300 text-left space-y-3" onclick="triggerPresetScenario('SME_Scheduling')">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Scenario 1</span>
+                    <h4 class="font-extrabold text-slate-800 text-base uppercase">Retail Scheduling Bottleneck</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Overcome tedious customer phone coordinate tag. Connect calendars and automate confirmation text pings instantly.</p>
+                </div>
+                <div class="limestone-card rounded-2xl p-6 cursor-pointer hover:border-indigo-500 transition-all duration-300 text-left space-y-3" onclick="triggerPresetScenario('SME_Dispatch')">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Scenario 2</span>
+                    <h4 class="font-extrabold text-slate-800 text-base uppercase">Logistics Dispatching Bottleneck</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Auto-assign dispatch orders from shipping boards directly to local driver mobile terminals inside geofenced paths.</p>
+                </div>
+                <div class="limestone-card rounded-2xl p-6 cursor-pointer hover:border-indigo-500 transition-all duration-300 text-left space-y-3" onclick="triggerPresetScenario('SME_Responder')">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Scenario 3</span>
+                    <h4 class="font-extrabold text-slate-800 text-base uppercase">Slow Lead Form Responders</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Instantly scrape inbox, sync database logs, and deploy AI-personalized sales briefs to clients in under 3 minutes.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard columns -->
             <div class="grid lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- Dynamic Design Canvas (2/3 Col) -->
+                <!-- Dynamic Roadmap & Canvas (2/3 Col) -->
                 <div class="lg:col-span-2 space-y-8">
                     
-                    <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl">
+                    <!-- Human Translator Panel -->
+                    <div class="limestone-card rounded-[2rem] p-6 md:p-8 shadow-xl text-left space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Automated Translator Engine</span>
+                            <h2 class="text-2xl font-black text-[#001C48] uppercase tracking-tight">The Human Roadmap</h2>
+                            <p class="text-xs text-slate-500 mt-1">Our translation layer translates messy real-world business bottlenecks into clear automation outcomes.</p>
+                        </div>
+
+                        <!-- 4 Columns matching specified headers -->
+                        <div class="grid sm:grid-cols-4 gap-4 border-t border-stone-200/60 pt-6" id="translator-grid">
+                            <div class="space-y-1.5">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">🚀 The Catch</h5>
+                                <p id="catch-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Select a scenario card above to watch the translator outline your bottleneck entry.</p>
+                            </div>
+                            <div class="space-y-1.5 border-l border-dashed border-stone-200/80 pl-3">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">🧠 The Decision</h5>
+                                <p id="decision-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Haas evaluates custom options, parses dates, or filters parameters.</p>
+                            </div>
+                            <div class="space-y-1.5 border-l border-dashed border-stone-200/80 pl-3">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">⚙️ The Action</h5>
+                                <p id="action-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Sync systems, schedule diaries, dispatch files, or ring customers.</p>
+                            </div>
+                            <div class="space-y-1.5 border-l border-dashed border-stone-200/80 pl-3">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">🎯 The Result</h5>
+                                <p id="result-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Human hours optimized, zero error margins, and maximized profits.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flowchart interactive Canvas with paywall blur overlay option -->
+                    <div class="limestone-card rounded-[2rem] p-6 md:p-8 shadow-xl">
                         <div class="flex justify-between items-center mb-6">
                             <div>
-                                <span class="text-xs font-bold text-slate-400 uppercase">Interactive Design Canvas</span>
-                                <h2 id="blueprint-title" class="text-2xl font-black text-slate-900 uppercase mt-0.5 tracking-tight">AI Pipeline Blueprint</h2>
+                                <span class="text-xs font-bold text-slate-400 uppercase">Live Architect flow</span>
+                                <h3 class="text-xl font-black text-[#001C48] uppercase tracking-tight">Visual Logical Pipeline</h3>
                             </div>
-                            <div class="flex gap-3">
-                                <button onclick="simulateStressTest()" class="bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-indigo-700 font-extrabold text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full transition">
-                                    ⚡ Stress Test
-                                </button>
-                                <span id="p-active-badge" class="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100/60 px-3 py-1.5 rounded-full">Secure Render</span>
-                            </div>
+                            <span class="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100/60 px-3 py-1 rounded-full">Secure Render</span>
                         </div>
 
-                        <!-- Flowchart Interactive Canvas -->
-                        <div class="relative w-full h-[450px] bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl overflow-hidden console-grid flex items-center justify-center">
-                            <canvas id="blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
+                        <!-- Canvas containing blurred preview -->
+                        <div class="relative w-full h-[400px] bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl overflow-hidden console-grid flex items-center justify-center">
+                            <canvas id="blueprint-canvas" class="w-full h-full" width="800" height="400"></canvas>
                             
-                            <!-- Stress testing overlay ring -->
-                            <div id="stress-test-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm hidden flex-col items-center justify-center text-white space-y-4">
-                                <div class="relative w-24 h-24 flex items-center justify-center">
-                                    <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-                                        <circle cx="48" cy="48" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent"/>
-                                        <circle id="stress-progress-ring" cx="48" cy="48" r="40" stroke="#818CF8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-width="8" fill="transparent" class="transition-all duration-100"/>
-                                    </svg>
-                                    <span id="stress-counter-text" class="font-mono text-xl font-bold">0</span>
-                                </div>
-                                <h4 class="font-extrabold text-sm uppercase tracking-widest">Simulating load pipeline...</h4>
-                                <p id="stress-log-text" class="text-[11px] text-slate-400 font-mono">Tasks generated: 0 / 1000</p>
-                            </div>
-
-                            <!-- Semi-transparent overlay watermark -->
-                            <div id="unpurchased-watermark" class="absolute inset-0 pointer-events-none flex items-center justify-center rotate-[-15deg] select-none opacity-[0.08]">
-                                <span class="text-slate-900 font-black text-4xl tracking-widest uppercase">HAAS PLAYGROUND • PRE-PURCHASED DEMO</span>
-                            </div>
-                        </div>
-
-                        <!-- Actions Panel -->
-                        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4 border-t border-stone-100 pt-6">
-                            <div class="text-left">
-                                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Save To Enterprise Vault</h4>
-                                <p class="text-[10px] text-slate-400 mt-0.5">Professional blueprints are free to design. Unlock full documentation and raw code exports to implement this in your business today.</p>
-                            </div>
-                            <button onclick="triggerExportPayment()" class="btn-primary w-full sm:w-auto px-8 py-4 flex items-center justify-center gap-2 font-black text-xs uppercase tracking-widest">
-                                <span>Unlock Full Guide ($5.00)</span> <span>💳</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Time-To-Value ROI Calculator Card -->
-                    <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl text-left space-y-6">
-                        <div>
-                            <span class="text-xs font-bold text-slate-400 uppercase">ROI Tool</span>
-                            <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Time-To-Value Calculator</h2>
-                            <p class="text-xs text-slate-500 mt-1">Compare manual labor costs against Haas automation efficiency to see when your automation pays for itself.</p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6 items-center">
-                            <div class="space-y-4">
-                                <div class="space-y-1.5">
-                                    <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Employee Hourly Rate ($)</label>
-                                    <input type="number" id="roi-rate" value="25" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:border-indigo-500 transition">
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Weekly Hours Spent On Task</label>
-                                    <input type="number" id="roi-hours" value="10" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:border-indigo-500 transition">
-                                </div>
-                            </div>
-
-                            <!-- Interactive ROI cost bars -->
-                            <div class="bg-stone-50 rounded-2xl p-6 border border-stone-100 space-y-4">
-                                <div class="space-y-1.5">
-                                    <div class="flex justify-between text-xs font-bold">
-                                        <span class="text-slate-500 uppercase">Yearly Manual Cost:</span>
-                                        <span id="roi-manual-cost" class="text-rose-600 font-extrabold">$13,000</span>
-                                    </div>
-                                    <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
-                                        <div id="roi-manual-bar" class="h-full bg-rose-500 w-full transition-all duration-500"></div>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-1.5">
-                                    <div class="flex justify-between text-xs font-bold">
-                                        <span class="text-slate-500 uppercase">Yearly Haas Cost:</span>
-                                        <span class="text-emerald-600 font-extrabold">$600</span>
-                                    </div>
-                                    <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-emerald-500 w-[5%]"></div>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-stone-200/60 pt-3 text-center">
-                                    <p class="text-xs font-bold text-slate-800">Your Haas Automation pays for itself in <span id="roi-payback-days" class="text-indigo-600 font-black">17 Days</span>!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Developer toolkit and API map -->
-                    <div class="grid md:grid-cols-2 gap-8 text-left">
-                        <!-- JSON Schema Previewer -->
-                        <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 shadow-xl space-y-4 flex flex-col justify-between">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Developer JSON Schema</h4>
-                                <p class="text-[10px] text-slate-500 mt-1">Raw blueprint payload exported directly to system nodes.</p>
-                            </div>
-                            <pre class="bg-slate-900 text-slate-300 font-mono text-[9px] p-4 rounded-xl overflow-x-auto max-h-[150px] border border-slate-800" id="json-preview"></pre>
-                        </div>
-
-                        <!-- App integrations map -->
-                        <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 shadow-xl space-y-4">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Integrations Map</h4>
-                                <p class="text-[10px] text-slate-500 mt-1">Fully compatible applications that Haas speaks to natively.</p>
-                            </div>
-                            <div class="grid grid-cols-4 gap-2 pt-2">
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Gmail</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Stripe</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Slack</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Shopify</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Airtable</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Firebase</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Twilio</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Zapier</span></div>
+                            <!-- Paywall locked trigger blur overlay -->
+                            <div id="stripe-lock-overlay" class="absolute inset-0 bg-white/70 backdrop-blur-md hidden flex flex-col items-center justify-center p-6 text-center space-y-4">
+                                <span class="text-3xl">🔒</span>
+                                <h4 class="font-black text-lg text-[#001C48] uppercase">Premium Executive Blueprint Locked</h4>
+                                <p class="text-xs text-slate-500 font-bold max-w-sm">Unlock the full technical documentation, raw JSON schema configurations, and customized Strategic Roadmap PDF for your operations.</p>
+                                <button onclick="simulateStripeCheckout()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full transition shadow-lg shadow-indigo-100 flex items-center gap-2">
+                                    <span>Unlock Strategy Blueprint ($5.00)</span> <span>💳</span>
+                                </button>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Sleek Studio Dark Terminal (1/3 Col) -->
+                <!-- ROI & cost charts column (1/3 Col) -->
                 <div class="space-y-6 text-left">
-                    <div class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6 shadow-2xl relative overflow-hidden h-[620px] flex flex-col justify-between">
-                        <div class="absolute inset-x-0 top-0 h-12 bg-slate-900 border-b border-slate-800/80 px-6 flex justify-between items-center z-10">
-                            <div class="flex items-center space-x-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <div class="limestone-card rounded-[2rem] p-6 shadow-xl space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Business Audit ROI</span>
+                            <h4 class="text-lg font-black text-[#001C48] uppercase mt-0.5">Human vs. Haas Cost</h4>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1">Calculate how much payroll capital is lost weekly to repetitive workflow coordinates.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Employee Hourly Rate ($)</label>
+                                <input type="number" id="roi-rate" value="25" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:brand-indigo-border transition">
                             </div>
-                            <span class="font-mono text-[10px] text-slate-500 font-bold tracking-wider">haas-terminal@studio-console</span>
-                            <span class="w-4 h-4 text-slate-600">⚡</span>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Weekly Repetitive Hours</label>
+                                <input type="number" id="roi-hours" value="10" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:brand-indigo-border transition">
+                            </div>
                         </div>
 
-                        <!-- Streaming logs (Light blue pastel and bolded white text - NO GREEN) -->
-                        <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-2.5 font-mono text-xs text-sky-200 text-left" id="terminal-stream-log">
-                            <p class="text-slate-500">// Haas Studio Engine v1.4.2</p>
-                            <p class="text-slate-500">// Standing by for user generation requests...</p>
-                            <p class="text-white font-bold">Ready.</p>
-                            <div class="w-2.5 h-4 bg-sky-300 inline-block animate-pulse"></div>
-                        </div>
+                        <div class="bg-stone-50 rounded-xl p-5 space-y-4 border border-stone-100">
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-slate-500 uppercase">Yearly Human Cost:</span>
+                                    <span id="roi-manual-cost" class="text-rose-600 font-extrabold">$13,000</span>
+                                </div>
+                                <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
+                                    <div id="roi-manual-bar" class="h-full bg-rose-500 w-full transition-all duration-500"></div>
+                                </div>
+                            </div>
 
-                        <div class="pt-4 border-t border-slate-800">
-                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest text-center">Thinking Terminal • real-time stream execution</p>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-slate-500 uppercase">Yearly Haas Cost:</span>
+                                    <span class="text-emerald-600 font-extrabold">$600</span>
+                                </div>
+                                <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-emerald-500 w-[5%]"></div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-stone-200 pt-3 text-center">
+                                <p class="text-xs font-bold text-slate-800 leading-relaxed">Your custom Haas pipeline pays for itself in <span id="roi-payback-days" class="text-indigo-600 font-black">17 Days</span>!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -493,118 +482,195 @@
         <!-- ================= VIEW 2: YOUNG INNOVATOR TRACK (17 & UNDER) ================= -->
         <div id="young-innovator-dashboard" class="hidden space-y-10">
             
-            <!-- Children track top header saying exactly what you wanted -->
-            <div class="w-full bg-gradient-to-r from-amber-200 via-pink-200 to-sky-200 border-4 border-black rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-[8px_8px_0px_#000] relative overflow-hidden text-left">
-                <div class="space-y-2 relative z-10 max-w-4xl">
+            <!-- Welcome Header Panel (Legos bubble theme - Always Free) -->
+            <div class="w-full bg-gradient-to-r from-yellow-300 via-pink-200 to-sky-200 border-4 border-black rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-[8px_8px_0px_#000] relative overflow-hidden text-left">
+                <div class="space-y-2 relative z-10 max-w-4xl text-black">
                     <span class="bg-black text-yellow-300 font-black text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border-2 border-black">Always 100% Free!</span>
-                    <h3 class="text-2xl md:text-3xl font-black text-black uppercase tracking-tight">Welcome to Haas Youth Playground</h3>
-                    <p class="text-black font-extrabold text-sm leading-relaxed">
-                        Welcome to Haas Youth Playground where everything is always free of charge to help provide our young people with the knowledge of Technology. Build workflows like digital Legos!
+                    <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight">Welcome to Haas Youth Playground</h3>
+                    <p class="font-extrabold text-sm leading-relaxed">
+                        Welcome to Haas Youth Playground where everything is always free of charge to help provide our young people with the knowledge of Technology. Connect course modules, build projects, and unlock certificates!
                     </p>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-4 items-center relative z-10 w-full md:w-auto">
-                    <!-- Dropdown for kids templates -->
-                    <select id="kids-toolkit-selector" onchange="loadKidsTemplate()" class="bg-white border-4 border-black rounded-xl px-4 py-3 text-xs font-black uppercase tracking-wider text-black outline-none shadow-[3px_3px_0px_#000]">
-                        <option value="Homework">📚 Homework Hero</option>
-                        <option value="Pet">🤖 My AI Robot Pet</option>
-                        <option value="Creator">🎨 Designer Soundboard</option>
-                    </select>
-                    <button onclick="triggerKidsGeneration()" class="btn-lego bg-yellow-300 hover:bg-yellow-400 text-black px-6 py-3.5 w-full sm:w-auto">
-                        Snap Together Lego Blocks!
-                    </button>
                 </div>
             </div>
 
-            <!-- Lego style Dashboard layout -->
+            <!-- Dashboard Row: Pixel Pet, Course Academy & Multi-level Bridge Game -->
             <div class="grid lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- Bubbly, Lego-like Bouncy Block Canvas (2/3 Col) -->
+                <!-- 5-Module Academy Checklist & Level Puzzles (2/3 Col) -->
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="lego-card p-6 md:p-8">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">My Digital Lego Sandbox</span>
-                                <h2 id="kids-canvas-title" class="text-2xl font-black text-black uppercase mt-0.5">Lego Connector Grid</h2>
-                            </div>
-                            <span class="bg-emerald-300 text-black font-black text-[10px] uppercase tracking-widest border-2 border-black px-3 py-1.5 rounded-full">Always Free!</span>
+                    
+                    <!-- 5-Module Coding Courses -->
+                    <div class="kids-lego-card p-6 md:p-8 text-left space-y-6">
+                        <div>
+                            <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Hoosier Coding Academy</span>
+                            <h3 class="text-2xl font-black text-black uppercase">🎓 5-Module Tech Explorer Course</h3>
+                            <p class="text-xs text-stone-500 font-bold mt-1">Complete all 5 technology modules below to power up your virtual robot pet and unlock the final Certification Exam!</p>
                         </div>
 
-                        <!-- Canvas layout -->
-                        <div class="relative w-full h-[450px] bg-white border-4 border-black rounded-2xl overflow-hidden flex items-center justify-center">
-                            <canvas id="kids-blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
-                        </div>
-
-                        <!-- Kids actions -->
-                        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4 border-t-4 border-black pt-6 text-left">
-                            <div>
-                                <h4 class="font-black text-black text-sm uppercase">Get Your Certificate of Innovation!</h4>
-                                <p class="text-xs text-stone-500 font-bold">Claim your personalized Certificate representing your first Haas Automation workflow. 100% free!</p>
+                        <div class="grid md:grid-cols-5 gap-3">
+                            <div id="course-card-1" onclick="completeAcademyModule(1)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-1">📋</span>
+                                <h5 class="text-[10px] font-black uppercase">1. Build a Workflow</h5>
+                                <span id="course-status-1" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
                             </div>
-                            <button onclick="generateInnovationCertificate()" class="btn-lego bg-emerald-400 hover:bg-emerald-500 text-black px-8 py-4 flex items-center justify-center gap-2">
-                                <span>Get My Free Certificate!</span> <span>🎓</span>
-                            </button>
+                            <div id="course-card-2" onclick="completeAcademyModule(2)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-2">🧩</span>
+                                <h5 class="text-[10px] font-black uppercase">2. App Integration</h5>
+                                <span id="course-status-2" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
+                            <div id="course-card-3" onclick="completeAcademyModule(3)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-3">💻</span>
+                                <h5 class="text-[10px] font-black uppercase">3. Create Website</h5>
+                                <span id="course-status-3" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
+                            <div id="course-card-4" onclick="completeAcademyModule(4)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-4">📱</span>
+                                <h5 class="text-[10px] font-black uppercase">4. Build PWA App</h5>
+                                <span id="course-status-4" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
+                            <div id="course-card-5" onclick="completeAcademyModule(5)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-5">📣</span>
+                                <h5 class="text-[10px] font-black uppercase">5. Create Ad</h5>
+                                <span id="course-status-5" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Mini-games: Logic Puzzles / The Broken Bridge -->
-                    <div class="lego-card p-6 md:p-8 text-left space-y-6">
-                        <div>
-                            <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Fun Game Level 1</span>
-                            <h3 class="text-xl font-black text-black uppercase tracking-tight">🌉 The Broken Bridge Game</h3>
-                            <p class="text-xs text-stone-500 font-bold mt-1">An automation flow has a missing node (it forgot to save a file!). Pick the correct "Logic Block" below to fix the bridge and complete the path!</p>
+                    <!-- 10-Question interactive Exam Section -->
+                    <div id="exam-card" class="kids-lego-card p-6 md:p-8 text-left space-y-6 opacity-40 pointer-events-none transition-all duration-300">
+                        <div class="flex justify-between items-center border-b-2 border-black pb-4">
+                            <div>
+                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Level Final Challenge</span>
+                                <h3 class="text-2xl font-black text-black uppercase">🧠 Technology Certification Exam</h3>
+                                <p class="text-xs text-stone-500 font-bold">You must complete all 5 modules first. Score 90% or higher (9 out of 10) to earn your Official Certificate!</p>
+                            </div>
+                            <div id="exam-score-badge" class="bg-indigo-600 text-white font-black text-xs px-3 py-1.5 rounded-full border-2 border-black">
+                                Question 1 of 10
+                            </div>
+                        </div>
+
+                        <!-- Active Question Display -->
+                        <div class="space-y-4" id="exam-question-box">
+                            <h4 id="question-text" class="text-base font-black text-black leading-relaxed">1. What is an automation workflow?</h4>
+                            <div class="grid md:grid-cols-2 gap-3" id="answer-choices-box">
+                                <!-- Choices populated in JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multiple Level Logic Bridge puzzles (Responsive to Age Group selection) -->
+                    <div class="kids-lego-card p-6 md:p-8 text-left space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider" id="game-age-label">Ages 10-12 Tracker</span>
+                                <h3 class="text-xl font-black text-black uppercase">🌉 The Multi-Level Logic Bridge Game</h3>
+                            </div>
+                            <!-- Level selector -->
+                            <div class="flex gap-2">
+                                <span class="bg-black text-yellow-300 font-black text-[9px] px-2 py-1 rounded border border-black uppercase" id="game-level-badge">Level 1: Beginner</span>
+                            </div>
                         </div>
 
                         <div class="border-4 border-black bg-stone-50 rounded-2xl p-5 relative overflow-hidden">
-                            <!-- Visual game board -->
-                            <div class="flex items-center justify-center gap-4 py-4">
-                                <div class="bg-blue-300 border-2 border-black rounded-xl p-3 font-black text-xs">📧 New Message</div>
+                            <!-- Graphical flowchart connector representation -->
+                            <div class="flex items-center justify-center gap-4 py-4" id="game-board-elements">
+                                <div class="bg-sky-300 border-2 border-black rounded-xl p-3 font-black text-xs">📧 New Message</div>
                                 <div class="text-xl">➡️</div>
                                 <div id="game-bridge-slot" class="bg-stone-200 border-4 border-dashed border-black rounded-xl p-3 font-black text-xs text-stone-400 h-12 w-36 flex items-center justify-center">? Missing Node</div>
+                                <div class="text-xl text-hidden" id="level-branch-arrow">➡️</div>
+                                <div id="level-branch-box" class="bg-pink-300 border-2 border-black rounded-xl p-3 font-black text-xs hidden">🧠 Condition Split</div>
                                 <div class="text-xl">➡️</div>
                                 <div class="bg-emerald-300 border-2 border-black rounded-xl p-3 font-black text-xs">📅 Save to Calendar</div>
                             </div>
 
-                            <!-- Choice buttons -->
-                            <div class="flex justify-center gap-3 pt-4 border-t-2 border-stone-200">
+                            <!-- Choice button layout -->
+                            <div class="flex justify-center gap-3 pt-4 border-t-2 border-stone-200" id="game-choices-wrapper">
                                 <button onclick="selectGameChoice('Wrong')" class="btn-lego bg-pink-300 text-xs px-4 py-2">🎨 Draw Picture</button>
                                 <button onclick="selectGameChoice('Right')" class="btn-lego bg-yellow-300 text-xs px-4 py-2">🧠 Haas Thinks</button>
                                 <button onclick="selectGameChoice('Wrong')" class="btn-lego bg-rose-300 text-xs px-4 py-2">🎈 Blow Up Balloon</button>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
-                <!-- Emoji Stream Logic tracker & Designer soundboard (1/3 Col) -->
+                <!-- AI Pixel Virtual Pet Companion & Creator Studio (1/3 Col) -->
                 <div class="space-y-6 text-left">
                     
-                    <!-- Soundboard & voice sounds toolkit -->
-                    <div class="lego-card p-6 space-y-4 bg-sky-100">
-                        <h4 class="font-black text-black text-sm uppercase">🎨 Kids Creator Soundboard</h4>
-                        <p class="text-[10px] text-stone-600 font-bold">Download fun, bubbly system notification sounds for your tablet!</p>
-                        <div class="grid grid-cols-2 gap-2 pt-2">
-                            <button onclick="playSFX('bubble')" class="btn-lego bg-yellow-200 text-[10px] p-2">🫧 Bubble SFX</button>
-                            <button onclick="playSFX('sparkle')" class="btn-lego bg-pink-200 text-[10px] p-2">✨ Sparkle SFX</button>
-                            <button onclick="playSFX('correct')" class="btn-lego bg-emerald-200 text-[10px] p-2">🔔 Success Ping</button>
-                            <button onclick="playSFX('lego')" class="btn-lego bg-purple-200 text-[10px] p-2">🧱 Lego Snap</button>
+                    <!-- Pixelated Virtual Pet card -->
+                    <div class="kids-lego-card p-6 text-center space-y-4 bg-gradient-to-b from-sky-50 to-indigo-50">
+                        <span class="text-[9px] font-black text-stone-400 uppercase tracking-widest block">AI Pixel Companion</span>
+                        
+                        <!-- Retro Pixel Art Bot Puppy -->
+                        <div class="pixel-grid border-4 border-black p-1 bg-white rounded-lg shadow-inner">
+                            <div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div><div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-orange"></div><div class="pixel-cell pixel-orange"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div>
+                            <div class="pixel-cell"></div><div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div><div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div><div class="pixel-cell"></div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <h4 id="pet-name" class="font-black text-black uppercase text-base">Byte the HaasBot</h4>
+                            <p id="pet-status" class="text-xs text-stone-500 font-bold">State: Cozy & Sleeping 😴</p>
+                        </div>
+
+                        <!-- Stats bars -->
+                        <div class="space-y-2 text-left pt-2">
+                            <div class="text-[10px] font-extrabold text-stone-600 flex justify-between uppercase">
+                                <span>Health Level:</span>
+                                <span id="pet-health-text">20%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-stone-200 border-2 border-black rounded-full overflow-hidden">
+                                <div id="pet-health-bar" class="h-full bg-red-400 w-1/5 transition-all duration-500"></div>
+                            </div>
+
+                            <div class="text-[10px] font-extrabold text-stone-600 flex justify-between uppercase">
+                                <span>Tech Wisdom:</span>
+                                <span id="pet-wisdom-text">10%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-stone-200 border-2 border-black rounded-full overflow-hidden">
+                                <div id="pet-wisdom-bar" class="h-full bg-indigo-500 w-[10%] transition-all duration-500"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Visual logs with Emojis and Icons -->
-                    <div class="lego-card p-6 h-[430px] flex flex-col justify-between bg-yellow-50 relative overflow-hidden">
-                        <div class="absolute inset-x-0 top-0 h-12 bg-yellow-100 border-b-4 border-black px-6 flex justify-between items-center z-10">
-                            <span class="font-black text-[10px] text-black uppercase tracking-wider">🌟 Haas Kid Companion</span>
-                            <span class="text-xs">😊</span>
+                    <!-- Kids Creator Studio Panel Dropdown -->
+                    <div class="kids-lego-card p-6 space-y-4 bg-yellow-50">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-black text-black uppercase text-sm">🎨 Creator Studio (For Kids)</h4>
+                            <span class="text-xs">🎨</span>
                         </div>
+                        <p class="text-[10px] text-stone-600 font-extrabold leading-relaxed">Customize your own Soundboards, Playful retro icons, backgrounds, and music tracks! Download your pack free.</p>
+                        
+                        <!-- Dropdown menus for resources selection -->
+                        <div class="space-y-3 pt-2">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[9px] font-black uppercase text-stone-500">Select Sound FX Pack</label>
+                                <select id="kids-sfx-dropdown" class="bg-white border-2 border-black rounded-lg px-2 py-1.5 text-xs font-bold text-slate-800 outline-none">
+                                    <option value="bubble">🫧 Bubble Pop synthesizer</option>
+                                    <option value="sparkle">✨ Retro Sparkle chime</option>
+                                    <option value="correct">🔔 Arpeggio Victory success</option>
+                                    <option value="lego">🧱 Block Snap clicker</option>
+                                </select>
+                            </div>
 
-                        <!-- Stream log visual list -->
-                        <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-3 font-bold text-xs text-stone-700 text-left" id="kids-stream-log">
-                            <p class="text-indigo-600">👋 Hi there, Young Innovator! Let's build something awesome!</p>
-                            <p class="text-stone-400">Click the yellow "Snap Together Lego Blocks" button to start your journey!</p>
-                        </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[9px] font-black uppercase text-stone-500">Select Wallpapers & Music</label>
+                                <select id="kids-assets-dropdown" class="bg-white border-2 border-black rounded-lg px-2 py-1.5 text-xs font-bold text-slate-800 outline-none">
+                                    <option value="LegoWallpaper">🧱 Colorful LEGO blocks background</option>
+                                    <option value="PixelVibeMusic">🎵 8-Bit Pixelated Theme Song</option>
+                                    <option value="ByteIcons">🐕 Byte pixelated Desktop Icons</option>
+                                </select>
+                            </div>
 
-                        <div class="pt-4 border-t-2 border-black/20 flex items-center justify-center gap-2">
-                            <span>🛡️</span>
-                            <p class="text-[9px] font-black text-stone-400 uppercase tracking-widest">100% Student Safe Environment</p>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="previewCreatorAsset()" class="w-1/2 btn-lego bg-pink-200 text-[10px] py-2">🔊 Preview Pack</button>
+                                <button onclick="downloadCreatorPack()" class="w-1/2 btn-lego bg-emerald-300 text-[10px] py-2">📥 Download Pack</button>
+                            </div>
                         </div>
                     </div>
 
@@ -615,52 +681,102 @@
 
     </div>
 
-    <!-- Certificate Mock Modal (Floating modal dynamically populated and printed) -->
+    <!-- Official Certificate Mock Modal -->
     <div id="cert-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
-        <div class="max-w-2xl w-full bg-white border-8 border-black rounded-[2.5rem] p-8 md:p-12 relative shadow-[12px_12px_0px_#000] text-center space-y-6">
-            <!-- Close button -->
+        <div class="max-w-2xl w-full bg-white border-[10px] border-black rounded-[2.5rem] p-8 md:p-12 relative shadow-[12px_12px_0px_#000] text-center space-y-6">
+            
+            <!-- Close trigger -->
             <button onclick="closeCertModal()" class="absolute top-4 right-4 text-xl font-black">✕</button>
             
-            <!-- Certificate frame border -->
-            <div class="border-4 border-double border-black p-8 rounded-2xl bg-amber-50 space-y-6">
-                <span class="text-3xl">🎓</span>
+            <!-- Certificate Layout -->
+            <div class="border-[6px] border-double border-black p-8 rounded-2xl bg-[#FAF9F5] space-y-6 relative overflow-hidden">
+                
+                <!-- Official Gold Seal stamp -->
+                <div class="absolute bottom-6 right-6 w-24 h-24 rounded-full bg-amber-400 border-4 border-black flex items-center justify-center shadow-lg transform rotate-12">
+                    <div class="text-center">
+                        <span class="text-[9px] font-black text-black block uppercase tracking-tighter">OFFICIAL</span>
+                        <span class="text-[10px] font-extrabold text-black block leading-none">HAAS SEAL</span>
+                        <span class="text-[8px] font-black text-black block uppercase">LLC</span>
+                    </div>
+                </div>
+
+                <span class="text-4xl">🎓</span>
                 <h1 class="font-black text-2xl md:text-3xl uppercase tracking-wider text-black">Certificate of Innovation</h1>
-                <p class="text-xs font-bold text-slate-500 tracking-widest uppercase">Presented Proudly to</p>
-                <h2 id="cert-recipient-name" class="text-3xl font-black text-indigo-600 uppercase italic tracking-wide">Young Innovator</h2>
+                <p class="text-xs font-bold text-slate-500 tracking-widest uppercase">This official credential certifies that</p>
+                
+                <!-- Double text inputs for full name validation -->
+                <div class="max-w-md mx-auto space-y-3" id="cert-name-input-block">
+                    <p class="text-xs font-black uppercase text-indigo-600">Please enter your First and Last name to write onto your Certificate:</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="cert-first-name" placeholder="First Name" class="w-1/2 bg-white border-2 border-black rounded-lg p-2 text-xs font-bold">
+                        <input type="text" id="cert-last-name" placeholder="Last Name" class="w-1/2 bg-white border-2 border-black rounded-lg p-2 text-xs font-bold">
+                    </div>
+                    <button onclick="applyNameToCertificate()" class="btn-lego bg-indigo-500 text-white text-xs px-4 py-2">Lock in Name ✍️</button>
+                </div>
+
+                <!-- Live locked Name header -->
+                <h2 id="cert-recipient-name" class="text-3xl font-black text-indigo-600 uppercase italic tracking-wide hidden">Young Innovator</h2>
+                
                 <div class="w-1/2 h-1 bg-black mx-auto"></div>
-                <p class="text-xs font-bold text-slate-700 max-w-md mx-auto leading-relaxed">
-                    successfully constructed their very first Haas automation loop logic workflow in the Hoosier AI Youth Playground!
+                <p class="text-xs font-extrabold text-slate-700 max-w-md mx-auto leading-relaxed">
+                    has successfully completed the complete 5-Module Technology Explorer course syllabus and successfully cleared the official technology credentialing examination.
                 </p>
-                <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider" id="cert-date-text">Verified Secure on May 12, 2026</p>
+                <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest" id="cert-date-text">Seal authenticated on May 12, 2026</p>
             </div>
             
             <div class="flex gap-4">
                 <button onclick="closeCertModal()" class="w-1/2 btn-lego bg-stone-100 text-xs py-3.5">Close</button>
-                <button onclick="window.print()" class="w-1/2 btn-lego bg-yellow-300 text-xs py-3.5">Print Certificate 🖨️</button>
+                <button id="print-cert-btn" disabled onclick="window.print()" class="w-1/2 btn-lego bg-stone-200 text-stone-400 cursor-not-allowed text-xs py-3.5">Print Certificate 🖨️</button>
             </div>
         </div>
     </div>
 
-    <!-- Footer with customized educational messaging -->
+    <!-- Stripe Secure Checkout Prompt Modal -->
+    <div id="stripe-checkout-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
+        <div class="max-w-md w-full bg-white border-4 border-indigo-900 rounded-[2rem] p-8 shadow-2xl text-center space-y-6">
+            <span class="text-3xl">💳</span>
+            <h3 class="font-black text-xl text-[#001C48] uppercase">Stripe Secure Checkout</h3>
+            <p class="text-xs text-slate-500 font-bold leading-relaxed">You are purchasing the <strong>Premium Operational Strategy PDF Roadmap Package</strong> for your selected business pipeline template. This transaction is 100% secure.</p>
+            
+            <div class="border border-stone-200 rounded-xl p-4 bg-stone-50 space-y-2 text-left">
+                <div class="flex justify-between text-xs font-extrabold text-slate-700">
+                    <span>Haas Pipeline Strategy Plan</span>
+                    <span>$5.00</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-slate-400">
+                    <span>Includes PDF roadmap & JSON configuration files</span>
+                    <span>Free Updates</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeStripeModal()" class="w-1/3 bg-stone-100 hover:bg-stone-200 text-slate-500 font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl transition">Cancel</button>
+                <button onclick="completeStripeTransaction()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl transition shadow">Confirm & Pay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Footer -->
     <footer class="py-16 border-t border-stone-200 text-center text-slate-500 text-xs tracking-widest uppercase px-6 flex flex-col items-center justify-center space-y-6">
-        <!-- Indiana Outline Badge -->
+        <!-- Indiana Outline Badge with Pulsing Bedford Star -->
         <div class="inline-flex items-center space-x-3 bg-white border border-stone-200 px-6 py-3.5 rounded-full shadow-md">
+            <!-- Indiana Outline SVG -->
             <svg class="h-10 w-auto text-indigo-600" viewBox="0 0 100 140" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M 36,16 C 45,14 65,15 84,14 C 85,30 84,65 83,95 C 82,104 80,110 78,111 C 74,111 68,117 65,119 C 59,122 55,115 50,121 C 46,126 40,125 36,122 C 28,118 24,124 19,124 C 22,118 28,108 30,103 C 32,96 30,85 32,75 C 34,60 35,35 34,16 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="4.5" />
                 <path d="M 48,90 L 50,85 L 52,90 L 57,90 L 53,93 L 55,98 L 50,95 L 45,98 L 47,93 L 43,90 Z" fill="#F59E0B" class="star-pulse" />
             </svg>
             <div class="text-left leading-tight">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Enterprise Class</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Born in Bedford</p>
                 <p class="text-xs font-black text-slate-800 uppercase tracking-wider">Hoosier AI Automations LLC</p>
                 <p class="text-[9px] font-bold text-indigo-500 uppercase tracking-widest">Bedford, Indiana</p>
             </div>
         </div>
-        <div class="space-y-2 text-center text-[11px]" id="playground-footer-text">
-            <p>&copy; 2026 Hoosier AI Automations. Built for the next generation of Hoosier creators. Keep dreaming, keep building.</p>
+        <div class="space-y-2 text-center text-[11px]">
+            <p>&copy; 2026 Hoosier AI Automations LLC. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Custom Toast Container -->
+    <!-- Toast Notifications -->
     <div id="toast-container" class="fixed top-24 right-6 z-[110] space-y-3 pointer-events-none"></div>
 
     <script src="chat.js"></script>

@@ -1848,40 +1848,57 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #FAF9F5;
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        /* Overwriting default colors for brand harmony */
+        .brand-indigo-bg {
+            background-color: #001C48;
         }
-        .console-grid {
-            background-size: 24px 24px;
-            background-image: linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+        .brand-indigo-text {
+            color: #001C48;
         }
-        .step-transition {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .brand-indigo-border {
+            border-color: #001C48;
         }
-        .secure-lock {
+        /* Blurred canvas preview paywall */
+        .paywall-blur {
+            filter: blur(10px);
+            pointer-events: none;
             user-select: none;
-            -webkit-user-select: none;
         }
-        /* Kid friendly lego pastels */
-        .lego-card {
-            border: 3px solid #000;
-            box-shadow: 6px 6px 0px #000;
+        /* Pixelated virtual pet styles */
+        .pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        .pixel-cell {
+            background-color: transparent;
+            aspect-ratio: 1;
+        }
+        .pixel-black { background-color: #000000; }
+        .pixel-indigo { background-color: #001C48; }
+        .pixel-orange { background-color: #F59E0B; }
+        .pixel-white { background-color: #FFFFFF; }
+        
+        /* Kids Neubrutalism Legos */
+        .kids-lego-card {
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0px #000000;
             border-radius: 20px;
             background: #FFFFFF;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
         }
-        .lego-card:hover {
+        .kids-lego-card:hover {
             transform: translate(-2px, -2px);
-            box-shadow: 8px 8px 0px #000;
+            box-shadow: 8px 8px 0px #000000;
         }
         .btn-lego {
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px #000;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px 0px #000000;
             border-radius: 12px;
             font-weight: 900;
             text-transform: uppercase;
@@ -1889,21 +1906,18 @@
         }
         .btn-lego:hover {
             transform: translate(-1px, -1px);
-            box-shadow: 5px 5px 0px #000;
+            box-shadow: 5px 5px 0px #000000;
         }
         .btn-lego:active {
             transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px #000000;
         }
     </style>
 </head>
-<body class="bg-[#FAF9F5] text-slate-950 limestone-pattern min-h-screen relative overflow-x-hidden secure-lock">
-
-    <!-- Fullscreen Water Ripple Canvas -->
-    <canvas id="ripple-canvas" class="fixed inset-0 z-[100] pointer-events-none opacity-0 transition-opacity duration-300"></canvas>
+<body class="bg-[#FAF9F5] text-slate-900 limestone-pattern min-h-screen relative overflow-x-hidden">
 
     <!-- Navigation Header -->
-    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm">
+    <nav class="fixed w-full z-50 bg-white/75 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-3 text-slate-900 hover:opacity-95 transition">
                 <img src="1330.png" alt="Logo" class="h-10 w-auto">
@@ -1920,24 +1934,9 @@
         </div>
     </nav>
 
-    <!-- PWA Install Banner -->
-    <div id="pwa-install-banner" class="fixed bottom-6 left-6 z-[90] hidden max-w-sm glass-panel p-5 rounded-2xl border border-indigo-100 shadow-2xl animate-fade-in flex flex-col gap-3">
-        <div class="flex items-center gap-3">
-            <img src="1330.png" alt="App Icon" class="w-10 h-10 rounded-xl shadow">
-            <div>
-                <h4 class="font-bold text-slate-900 text-sm">Install Haas Playground</h4>
-                <p class="text-xs text-slate-500">Add to your Home Screen for seamless offline access!</p>
-            </div>
-        </div>
-        <div class="flex gap-2 justify-end">
-            <button id="pwa-dismiss" class="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:bg-stone-50 transition">Dismiss</button>
-            <button id="pwa-install-btn" class="bg-indigo-600 hover:bg-indigo-700 transition px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg">Install Now</button>
-        </div>
-    </div>
-
     <!-- Onboarding Stage Wizard -->
     <div id="onboarding-stage" class="pt-36 pb-12 px-6 flex items-center justify-center min-h-[85vh]">
-        <div class="max-w-xl w-full glass-panel border border-stone-200/55 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+        <div class="max-w-xl w-full limestone-card p-8 md:p-12 rounded-[2rem] shadow-2xl relative overflow-hidden">
             
             <!-- Step Indicators -->
             <div class="flex justify-between items-center mb-10 relative z-10">
@@ -1958,7 +1957,7 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 pt-2">
-                        <!-- Role card components (SVG instead of Emojis) -->
+                        <!-- Role card components (No Emojis - Thin line SVG icons) -->
                         <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Founder/Owner')">
                             <input type="radio" name="user_role" value="Founder/Owner" class="hidden">
                             <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -2008,7 +2007,7 @@
                         </label>
                     </div>
 
-                    <!-- Role Feedback Response Message Box -->
+                    <!-- Role Feedback Box -->
                     <div id="role-feedback-box" class="hidden bg-indigo-50 border border-indigo-100/60 rounded-2xl p-4 text-xs font-semibold text-indigo-800 animate-fade-in text-left">
                         <span id="role-feedback-text"></span>
                     </div>
@@ -2080,7 +2079,7 @@
                         </label>
                     </div>
 
-                    <!-- Intent Feedback Response Message Box -->
+                    <!-- Intent Feedback Box -->
                     <div id="intent-feedback-box" class="hidden bg-indigo-50 border border-indigo-100/60 rounded-2xl p-4 text-xs font-semibold text-indigo-800 animate-fade-in text-left">
                         <span id="intent-feedback-text"></span>
                     </div>
@@ -2109,7 +2108,7 @@
 
                         <div class="space-y-3">
                             <label for="user-age-select" class="text-slate-600 text-xs font-black uppercase tracking-wider">Your Age</label>
-                            <!-- Dropdown selection box instead of Slider -->
+                            <!-- Dropdown Age Selection -->
                             <select id="user-age-select" class="w-full bg-stone-50 border-2 border-stone-200/60 rounded-2xl px-5 py-4 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
                                 <option value="" disabled selected>Choose Your Age</option>
                             </select>
@@ -2134,191 +2133,181 @@
     <!-- ========================================================================= -->
     <div id="playground-dashboard" class="hidden pt-32 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
         
-        <!-- ================== VIEW 1: PROFESSIONAL STUDIO CONSOLE (18+) ================== -->
+        <!-- ================== VIEW 1: EXECUTIVE PRO CONSOLE (18+) ================== -->
         <div id="professional-dashboard" class="hidden space-y-10">
             
-            <!-- Hero banner with transparent pricing message -->
-            <div class="w-full glass-panel border border-stone-200/60 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/50 via-transparent to-transparent opacity-60"></div>
-                <div class="text-left space-y-2 relative z-10 max-w-3xl">
+            <!-- Executive Branding & Dropdown Controllers -->
+            <div class="w-full limestone-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/20 via-transparent to-transparent opacity-60"></div>
+                <div class="text-left space-y-2 relative z-10 max-w-2xl">
                     <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Zero Fee Sandbox</span>
-                    <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">Interactive Professional Console</h3>
+                    <h3 class="text-2xl font-black text-[#001C48] uppercase tracking-tight">Executive Automation Suite</h3>
                     <p class="text-slate-600 text-sm leading-relaxed font-semibold">
-                        Everything inside the playground is free to explore. Individual downloads and exports help keep this community growing. Thank you for your support!
+                        Design industry blueprints for your bottlenecks. Enter a custom description or pick an industry framework below.
                     </p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 items-center relative z-10 w-full md:w-auto">
-                    <!-- Dropdown selector for Framework templates -->
-                    <select id="industry-selector" onchange="loadIndustryTemplate()" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
-                        <option value="RealEstate">🏡 Real Estate Leads</option>
-                        <option value="Logistics">🚛 Smart Logistics</option>
-                        <option value="Retail">🛒 Retail Low Stock</option>
-                    </select>
-                    <button onclick="triggerBlueprintGeneration()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-6 py-3.5 rounded-2xl transition shadow-lg w-full sm:w-auto">
-                        Generate Blueprint
+                    <!-- Dropdown Menu 1: Small Business Solutions -->
+                    <div class="flex flex-col gap-1 w-full sm:w-auto text-left">
+                        <label class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Small Business Solutions</label>
+                        <select id="sme-selector" onchange="loadBusinessScenario('sme')" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
+                            <option value="" disabled selected>Select Solution</option>
+                            <option value="SME_Scheduling">Retail Scheduling</option>
+                            <option value="SME_Dispatch">Logistics Dispatch</option>
+                            <option value="SME_Responder">Lead Responders</option>
+                        </select>
+                    </div>
+
+                    <!-- Dropdown Menu 2: Enterprise Architect -->
+                    <div class="flex flex-col gap-1 w-full sm:w-auto text-left">
+                        <label class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Enterprise Architect</label>
+                        <select id="ent-selector" onchange="loadBusinessScenario('ent')" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
+                            <option value="" disabled selected>Select Architecture</option>
+                            <option value="ENT_Inventory">Multi-Channel Inventory</option>
+                            <option value="ENT_Telemetry">Fleet Telemetry Hub</option>
+                            <option value="ENT_Processor">AI Document Processor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sleek Centered Prompt Box -->
+            <div class="max-w-3xl mx-auto limestone-card rounded-2xl p-6 shadow-md text-center space-y-4">
+                <h4 class="font-black text-[11px] text-indigo-600 uppercase tracking-widest">Describe Your Custom Bottleneck</h4>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="custom-problem-input" placeholder="e.g., We spend 3 hours daily writing manual invoice emails..." class="flex-1 bg-stone-50 border-2 border-stone-200/60 rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
+                    <button onclick="translateCustomProblem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-6 py-3 rounded-xl transition shadow shadow-indigo-100">
+                        Translate To Haas Logic
                     </button>
                 </div>
             </div>
 
-            <!-- Dashboard Columns -->
+            <!-- Bottleneck Scenario Cards row -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="limestone-card rounded-2xl p-6 cursor-pointer hover:border-indigo-500 transition-all duration-300 text-left space-y-3" onclick="triggerPresetScenario('SME_Scheduling')">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Scenario 1</span>
+                    <h4 class="font-extrabold text-slate-800 text-base uppercase">Retail Scheduling Bottleneck</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Overcome tedious customer phone coordinate tag. Connect calendars and automate confirmation text pings instantly.</p>
+                </div>
+                <div class="limestone-card rounded-2xl p-6 cursor-pointer hover:border-indigo-500 transition-all duration-300 text-left space-y-3" onclick="triggerPresetScenario('SME_Dispatch')">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Scenario 2</span>
+                    <h4 class="font-extrabold text-slate-800 text-base uppercase">Logistics Dispatching Bottleneck</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Auto-assign dispatch orders from shipping boards directly to local driver mobile terminals inside geofenced paths.</p>
+                </div>
+                <div class="limestone-card rounded-2xl p-6 cursor-pointer hover:border-indigo-500 transition-all duration-300 text-left space-y-3" onclick="triggerPresetScenario('SME_Responder')">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Scenario 3</span>
+                    <h4 class="font-extrabold text-slate-800 text-base uppercase">Slow Lead Form Responders</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium">Instantly scrape inbox, sync database logs, and deploy AI-personalized sales briefs to clients in under 3 minutes.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard columns -->
             <div class="grid lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- Dynamic Design Canvas (2/3 Col) -->
+                <!-- Dynamic Roadmap & Canvas (2/3 Col) -->
                 <div class="lg:col-span-2 space-y-8">
                     
-                    <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl">
+                    <!-- Human Translator Panel -->
+                    <div class="limestone-card rounded-[2rem] p-6 md:p-8 shadow-xl text-left space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Automated Translator Engine</span>
+                            <h2 class="text-2xl font-black text-[#001C48] uppercase tracking-tight">The Human Roadmap</h2>
+                            <p class="text-xs text-slate-500 mt-1">Our translation layer translates messy real-world business bottlenecks into clear automation outcomes.</p>
+                        </div>
+
+                        <!-- 4 Columns matching specified headers -->
+                        <div class="grid sm:grid-cols-4 gap-4 border-t border-stone-200/60 pt-6" id="translator-grid">
+                            <div class="space-y-1.5">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">🚀 The Catch</h5>
+                                <p id="catch-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Select a scenario card above to watch the translator outline your bottleneck entry.</p>
+                            </div>
+                            <div class="space-y-1.5 border-l border-dashed border-stone-200/80 pl-3">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">🧠 The Decision</h5>
+                                <p id="decision-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Haas evaluates custom options, parses dates, or filters parameters.</p>
+                            </div>
+                            <div class="space-y-1.5 border-l border-dashed border-stone-200/80 pl-3">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">⚙️ The Action</h5>
+                                <p id="action-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Sync systems, schedule diaries, dispatch files, or ring customers.</p>
+                            </div>
+                            <div class="space-y-1.5 border-l border-dashed border-stone-200/80 pl-3">
+                                <h5 class="text-xs font-black uppercase text-indigo-600 tracking-wider">🎯 The Result</h5>
+                                <p id="result-text" class="text-xs text-slate-600 leading-relaxed font-semibold">Human hours optimized, zero error margins, and maximized profits.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flowchart interactive Canvas with paywall blur overlay option -->
+                    <div class="limestone-card rounded-[2rem] p-6 md:p-8 shadow-xl">
                         <div class="flex justify-between items-center mb-6">
                             <div>
-                                <span class="text-xs font-bold text-slate-400 uppercase">Interactive Design Canvas</span>
-                                <h2 id="blueprint-title" class="text-2xl font-black text-slate-900 uppercase mt-0.5 tracking-tight">AI Pipeline Blueprint</h2>
+                                <span class="text-xs font-bold text-slate-400 uppercase">Live Architect flow</span>
+                                <h3 class="text-xl font-black text-[#001C48] uppercase tracking-tight">Visual Logical Pipeline</h3>
                             </div>
-                            <div class="flex gap-3">
-                                <button onclick="simulateStressTest()" class="bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-indigo-700 font-extrabold text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full transition">
-                                    ⚡ Stress Test
-                                </button>
-                                <span id="p-active-badge" class="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100/60 px-3 py-1.5 rounded-full">Secure Render</span>
-                            </div>
+                            <span class="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100/60 px-3 py-1 rounded-full">Secure Render</span>
                         </div>
 
-                        <!-- Flowchart Interactive Canvas -->
-                        <div class="relative w-full h-[450px] bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl overflow-hidden console-grid flex items-center justify-center">
-                            <canvas id="blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
+                        <!-- Canvas containing blurred preview -->
+                        <div class="relative w-full h-[400px] bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl overflow-hidden console-grid flex items-center justify-center">
+                            <canvas id="blueprint-canvas" class="w-full h-full" width="800" height="400"></canvas>
                             
-                            <!-- Stress testing overlay ring -->
-                            <div id="stress-test-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm hidden flex-col items-center justify-center text-white space-y-4">
-                                <div class="relative w-24 h-24 flex items-center justify-center">
-                                    <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-                                        <circle cx="48" cy="48" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent"/>
-                                        <circle id="stress-progress-ring" cx="48" cy="48" r="40" stroke="#818CF8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-width="8" fill="transparent" class="transition-all duration-100"/>
-                                    </svg>
-                                    <span id="stress-counter-text" class="font-mono text-xl font-bold">0</span>
-                                </div>
-                                <h4 class="font-extrabold text-sm uppercase tracking-widest">Simulating load pipeline...</h4>
-                                <p id="stress-log-text" class="text-[11px] text-slate-400 font-mono">Tasks generated: 0 / 1000</p>
-                            </div>
-
-                            <!-- Semi-transparent overlay watermark -->
-                            <div id="unpurchased-watermark" class="absolute inset-0 pointer-events-none flex items-center justify-center rotate-[-15deg] select-none opacity-[0.08]">
-                                <span class="text-slate-900 font-black text-4xl tracking-widest uppercase">HAAS PLAYGROUND • PRE-PURCHASED DEMO</span>
-                            </div>
-                        </div>
-
-                        <!-- Actions Panel -->
-                        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4 border-t border-stone-100 pt-6">
-                            <div class="text-left">
-                                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Save To Enterprise Vault</h4>
-                                <p class="text-[10px] text-slate-400 mt-0.5">Professional blueprints are free to design. Unlock full documentation and raw code exports to implement this in your business today.</p>
-                            </div>
-                            <button onclick="triggerExportPayment()" class="btn-primary w-full sm:w-auto px-8 py-4 flex items-center justify-center gap-2 font-black text-xs uppercase tracking-widest">
-                                <span>Unlock Full Guide ($5.00)</span> <span>💳</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Time-To-Value ROI Calculator Card -->
-                    <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl text-left space-y-6">
-                        <div>
-                            <span class="text-xs font-bold text-slate-400 uppercase">ROI Tool</span>
-                            <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Time-To-Value Calculator</h2>
-                            <p class="text-xs text-slate-500 mt-1">Compare manual labor costs against Haas automation efficiency to see when your automation pays for itself.</p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6 items-center">
-                            <div class="space-y-4">
-                                <div class="space-y-1.5">
-                                    <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Employee Hourly Rate ($)</label>
-                                    <input type="number" id="roi-rate" value="25" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:border-indigo-500 transition">
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Weekly Hours Spent On Task</label>
-                                    <input type="number" id="roi-hours" value="10" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:border-indigo-500 transition">
-                                </div>
-                            </div>
-
-                            <!-- Interactive ROI cost bars -->
-                            <div class="bg-stone-50 rounded-2xl p-6 border border-stone-100 space-y-4">
-                                <div class="space-y-1.5">
-                                    <div class="flex justify-between text-xs font-bold">
-                                        <span class="text-slate-500 uppercase">Yearly Manual Cost:</span>
-                                        <span id="roi-manual-cost" class="text-rose-600 font-extrabold">$13,000</span>
-                                    </div>
-                                    <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
-                                        <div id="roi-manual-bar" class="h-full bg-rose-500 w-full transition-all duration-500"></div>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-1.5">
-                                    <div class="flex justify-between text-xs font-bold">
-                                        <span class="text-slate-500 uppercase">Yearly Haas Cost:</span>
-                                        <span class="text-emerald-600 font-extrabold">$600</span>
-                                    </div>
-                                    <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-emerald-500 w-[5%]"></div>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-stone-200/60 pt-3 text-center">
-                                    <p class="text-xs font-bold text-slate-800">Your Haas Automation pays for itself in <span id="roi-payback-days" class="text-indigo-600 font-black">17 Days</span>!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Developer toolkit and API map -->
-                    <div class="grid md:grid-cols-2 gap-8 text-left">
-                        <!-- JSON Schema Previewer -->
-                        <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 shadow-xl space-y-4 flex flex-col justify-between">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Developer JSON Schema</h4>
-                                <p class="text-[10px] text-slate-500 mt-1">Raw blueprint payload exported directly to system nodes.</p>
-                            </div>
-                            <pre class="bg-slate-900 text-slate-300 font-mono text-[9px] p-4 rounded-xl overflow-x-auto max-h-[150px] border border-slate-800" id="json-preview"></pre>
-                        </div>
-
-                        <!-- App integrations map -->
-                        <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 shadow-xl space-y-4">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Integrations Map</h4>
-                                <p class="text-[10px] text-slate-500 mt-1">Fully compatible applications that Haas speaks to natively.</p>
-                            </div>
-                            <div class="grid grid-cols-4 gap-2 pt-2">
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Gmail</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Stripe</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Slack</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Shopify</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Airtable</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Firebase</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Twilio</span></div>
-                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Zapier</span></div>
+                            <!-- Paywall locked trigger blur overlay -->
+                            <div id="stripe-lock-overlay" class="absolute inset-0 bg-white/70 backdrop-blur-md hidden flex flex-col items-center justify-center p-6 text-center space-y-4">
+                                <span class="text-3xl">🔒</span>
+                                <h4 class="font-black text-lg text-[#001C48] uppercase">Premium Executive Blueprint Locked</h4>
+                                <p class="text-xs text-slate-500 font-bold max-w-sm">Unlock the full technical documentation, raw JSON schema configurations, and customized Strategic Roadmap PDF for your operations.</p>
+                                <button onclick="simulateStripeCheckout()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full transition shadow-lg shadow-indigo-100 flex items-center gap-2">
+                                    <span>Unlock Strategy Blueprint ($5.00)</span> <span>💳</span>
+                                </button>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Sleek Studio Dark Terminal (1/3 Col) -->
+                <!-- ROI & cost charts column (1/3 Col) -->
                 <div class="space-y-6 text-left">
-                    <div class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6 shadow-2xl relative overflow-hidden h-[620px] flex flex-col justify-between">
-                        <div class="absolute inset-x-0 top-0 h-12 bg-slate-900 border-b border-slate-800/80 px-6 flex justify-between items-center z-10">
-                            <div class="flex items-center space-x-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <div class="limestone-card rounded-[2rem] p-6 shadow-xl space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Business Audit ROI</span>
+                            <h4 class="text-lg font-black text-[#001C48] uppercase mt-0.5">Human vs. Haas Cost</h4>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1">Calculate how much payroll capital is lost weekly to repetitive workflow coordinates.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Employee Hourly Rate ($)</label>
+                                <input type="number" id="roi-rate" value="25" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:brand-indigo-border transition">
                             </div>
-                            <span class="font-mono text-[10px] text-slate-500 font-bold tracking-wider">haas-terminal@studio-console</span>
-                            <span class="w-4 h-4 text-slate-600">⚡</span>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Weekly Repetitive Hours</label>
+                                <input type="number" id="roi-hours" value="10" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:brand-indigo-border transition">
+                            </div>
                         </div>
 
-                        <!-- Streaming logs (Light blue pastel and bolded white text - NO GREEN) -->
-                        <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-2.5 font-mono text-xs text-sky-200 text-left" id="terminal-stream-log">
-                            <p class="text-slate-500">// Haas Studio Engine v1.4.2</p>
-                            <p class="text-slate-500">// Standing by for user generation requests...</p>
-                            <p class="text-white font-bold">Ready.</p>
-                            <div class="w-2.5 h-4 bg-sky-300 inline-block animate-pulse"></div>
-                        </div>
+                        <div class="bg-stone-50 rounded-xl p-5 space-y-4 border border-stone-100">
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-slate-500 uppercase">Yearly Human Cost:</span>
+                                    <span id="roi-manual-cost" class="text-rose-600 font-extrabold">$13,000</span>
+                                </div>
+                                <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
+                                    <div id="roi-manual-bar" class="h-full bg-rose-500 w-full transition-all duration-500"></div>
+                                </div>
+                            </div>
 
-                        <div class="pt-4 border-t border-slate-800">
-                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest text-center">Thinking Terminal • real-time stream execution</p>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-slate-500 uppercase">Yearly Haas Cost:</span>
+                                    <span class="text-emerald-600 font-extrabold">$600</span>
+                                </div>
+                                <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-emerald-500 w-[5%]"></div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-stone-200 pt-3 text-center">
+                                <p class="text-xs font-bold text-slate-800 leading-relaxed">Your custom Haas pipeline pays for itself in <span id="roi-payback-days" class="text-indigo-600 font-black">17 Days</span>!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2329,118 +2318,195 @@
         <!-- ================= VIEW 2: YOUNG INNOVATOR TRACK (17 & UNDER) ================= -->
         <div id="young-innovator-dashboard" class="hidden space-y-10">
             
-            <!-- Children track top header saying exactly what you wanted -->
-            <div class="w-full bg-gradient-to-r from-amber-200 via-pink-200 to-sky-200 border-4 border-black rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-[8px_8px_0px_#000] relative overflow-hidden text-left">
-                <div class="space-y-2 relative z-10 max-w-4xl">
+            <!-- Welcome Header Panel (Legos bubble theme - Always Free) -->
+            <div class="w-full bg-gradient-to-r from-yellow-300 via-pink-200 to-sky-200 border-4 border-black rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-[8px_8px_0px_#000] relative overflow-hidden text-left">
+                <div class="space-y-2 relative z-10 max-w-4xl text-black">
                     <span class="bg-black text-yellow-300 font-black text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border-2 border-black">Always 100% Free!</span>
-                    <h3 class="text-2xl md:text-3xl font-black text-black uppercase tracking-tight">Welcome to Haas Youth Playground</h3>
-                    <p class="text-black font-extrabold text-sm leading-relaxed">
-                        Welcome to Haas Youth Playground where everything is always free of charge to help provide our young people with the knowledge of Technology. Build workflows like digital Legos!
+                    <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight">Welcome to Haas Youth Playground</h3>
+                    <p class="font-extrabold text-sm leading-relaxed">
+                        Welcome to Haas Youth Playground where everything is always free of charge to help provide our young people with the knowledge of Technology. Connect course modules, build projects, and unlock certificates!
                     </p>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-4 items-center relative z-10 w-full md:w-auto">
-                    <!-- Dropdown for kids templates -->
-                    <select id="kids-toolkit-selector" onchange="loadKidsTemplate()" class="bg-white border-4 border-black rounded-xl px-4 py-3 text-xs font-black uppercase tracking-wider text-black outline-none shadow-[3px_3px_0px_#000]">
-                        <option value="Homework">📚 Homework Hero</option>
-                        <option value="Pet">🤖 My AI Robot Pet</option>
-                        <option value="Creator">🎨 Designer Soundboard</option>
-                    </select>
-                    <button onclick="triggerKidsGeneration()" class="btn-lego bg-yellow-300 hover:bg-yellow-400 text-black px-6 py-3.5 w-full sm:w-auto">
-                        Snap Together Lego Blocks!
-                    </button>
                 </div>
             </div>
 
-            <!-- Lego style Dashboard layout -->
+            <!-- Dashboard Row: Pixel Pet, Course Academy & Multi-level Bridge Game -->
             <div class="grid lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- Bubbly, Lego-like Bouncy Block Canvas (2/3 Col) -->
+                <!-- 5-Module Academy Checklist & Level Puzzles (2/3 Col) -->
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="lego-card p-6 md:p-8">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">My Digital Lego Sandbox</span>
-                                <h2 id="kids-canvas-title" class="text-2xl font-black text-black uppercase mt-0.5">Lego Connector Grid</h2>
-                            </div>
-                            <span class="bg-emerald-300 text-black font-black text-[10px] uppercase tracking-widest border-2 border-black px-3 py-1.5 rounded-full">Always Free!</span>
+                    
+                    <!-- 5-Module Coding Courses -->
+                    <div class="kids-lego-card p-6 md:p-8 text-left space-y-6">
+                        <div>
+                            <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Hoosier Coding Academy</span>
+                            <h3 class="text-2xl font-black text-black uppercase">🎓 5-Module Tech Explorer Course</h3>
+                            <p class="text-xs text-stone-500 font-bold mt-1">Complete all 5 technology modules below to power up your virtual robot pet and unlock the final Certification Exam!</p>
                         </div>
 
-                        <!-- Canvas layout -->
-                        <div class="relative w-full h-[450px] bg-white border-4 border-black rounded-2xl overflow-hidden flex items-center justify-center">
-                            <canvas id="kids-blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
-                        </div>
-
-                        <!-- Kids actions -->
-                        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4 border-t-4 border-black pt-6 text-left">
-                            <div>
-                                <h4 class="font-black text-black text-sm uppercase">Get Your Certificate of Innovation!</h4>
-                                <p class="text-xs text-stone-500 font-bold">Claim your personalized Certificate representing your first Haas Automation workflow. 100% free!</p>
+                        <div class="grid md:grid-cols-5 gap-3">
+                            <div id="course-card-1" onclick="completeAcademyModule(1)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-1">📋</span>
+                                <h5 class="text-[10px] font-black uppercase">1. Build a Workflow</h5>
+                                <span id="course-status-1" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
                             </div>
-                            <button onclick="generateInnovationCertificate()" class="btn-lego bg-emerald-400 hover:bg-emerald-500 text-black px-8 py-4 flex items-center justify-center gap-2">
-                                <span>Get My Free Certificate!</span> <span>🎓</span>
-                            </button>
+                            <div id="course-card-2" onclick="completeAcademyModule(2)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-2">🧩</span>
+                                <h5 class="text-[10px] font-black uppercase">2. App Integration</h5>
+                                <span id="course-status-2" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
+                            <div id="course-card-3" onclick="completeAcademyModule(3)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-3">💻</span>
+                                <h5 class="text-[10px] font-black uppercase">3. Create Website</h5>
+                                <span id="course-status-3" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
+                            <div id="course-card-4" onclick="completeAcademyModule(4)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-4">📱</span>
+                                <h5 class="text-[10px] font-black uppercase">4. Build PWA App</h5>
+                                <span id="course-status-4" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
+                            <div id="course-card-5" onclick="completeAcademyModule(5)" class="border-4 border-black rounded-2xl p-4 text-center cursor-pointer bg-white transition hover:scale-105 space-y-2">
+                                <span class="text-2xl" id="course-icon-5">📣</span>
+                                <h5 class="text-[10px] font-black uppercase">5. Create Ad</h5>
+                                <span id="course-status-5" class="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Incomplete</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Mini-games: Logic Puzzles / The Broken Bridge -->
-                    <div class="lego-card p-6 md:p-8 text-left space-y-6">
-                        <div>
-                            <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Fun Game Level 1</span>
-                            <h3 class="text-xl font-black text-black uppercase tracking-tight">🌉 The Broken Bridge Game</h3>
-                            <p class="text-xs text-stone-500 font-bold mt-1">An automation flow has a missing node (it forgot to save a file!). Pick the correct "Logic Block" below to fix the bridge and complete the path!</p>
+                    <!-- 10-Question interactive Exam Section -->
+                    <div id="exam-card" class="kids-lego-card p-6 md:p-8 text-left space-y-6 opacity-40 pointer-events-none transition-all duration-300">
+                        <div class="flex justify-between items-center border-b-2 border-black pb-4">
+                            <div>
+                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Level Final Challenge</span>
+                                <h3 class="text-2xl font-black text-black uppercase">🧠 Technology Certification Exam</h3>
+                                <p class="text-xs text-stone-500 font-bold">You must complete all 5 modules first. Score 90% or higher (9 out of 10) to earn your Official Certificate!</p>
+                            </div>
+                            <div id="exam-score-badge" class="bg-indigo-600 text-white font-black text-xs px-3 py-1.5 rounded-full border-2 border-black">
+                                Question 1 of 10
+                            </div>
+                        </div>
+
+                        <!-- Active Question Display -->
+                        <div class="space-y-4" id="exam-question-box">
+                            <h4 id="question-text" class="text-base font-black text-black leading-relaxed">1. What is an automation workflow?</h4>
+                            <div class="grid md:grid-cols-2 gap-3" id="answer-choices-box">
+                                <!-- Choices populated in JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multiple Level Logic Bridge puzzles (Responsive to Age Group selection) -->
+                    <div class="kids-lego-card p-6 md:p-8 text-left space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider" id="game-age-label">Ages 10-12 Tracker</span>
+                                <h3 class="text-xl font-black text-black uppercase">🌉 The Multi-Level Logic Bridge Game</h3>
+                            </div>
+                            <!-- Level selector -->
+                            <div class="flex gap-2">
+                                <span class="bg-black text-yellow-300 font-black text-[9px] px-2 py-1 rounded border border-black uppercase" id="game-level-badge">Level 1: Beginner</span>
+                            </div>
                         </div>
 
                         <div class="border-4 border-black bg-stone-50 rounded-2xl p-5 relative overflow-hidden">
-                            <!-- Visual game board -->
-                            <div class="flex items-center justify-center gap-4 py-4">
-                                <div class="bg-blue-300 border-2 border-black rounded-xl p-3 font-black text-xs">📧 New Message</div>
+                            <!-- Graphical flowchart connector representation -->
+                            <div class="flex items-center justify-center gap-4 py-4" id="game-board-elements">
+                                <div class="bg-sky-300 border-2 border-black rounded-xl p-3 font-black text-xs">📧 New Message</div>
                                 <div class="text-xl">➡️</div>
                                 <div id="game-bridge-slot" class="bg-stone-200 border-4 border-dashed border-black rounded-xl p-3 font-black text-xs text-stone-400 h-12 w-36 flex items-center justify-center">? Missing Node</div>
+                                <div class="text-xl text-hidden" id="level-branch-arrow">➡️</div>
+                                <div id="level-branch-box" class="bg-pink-300 border-2 border-black rounded-xl p-3 font-black text-xs hidden">🧠 Condition Split</div>
                                 <div class="text-xl">➡️</div>
                                 <div class="bg-emerald-300 border-2 border-black rounded-xl p-3 font-black text-xs">📅 Save to Calendar</div>
                             </div>
 
-                            <!-- Choice buttons -->
-                            <div class="flex justify-center gap-3 pt-4 border-t-2 border-stone-200">
+                            <!-- Choice button layout -->
+                            <div class="flex justify-center gap-3 pt-4 border-t-2 border-stone-200" id="game-choices-wrapper">
                                 <button onclick="selectGameChoice('Wrong')" class="btn-lego bg-pink-300 text-xs px-4 py-2">🎨 Draw Picture</button>
                                 <button onclick="selectGameChoice('Right')" class="btn-lego bg-yellow-300 text-xs px-4 py-2">🧠 Haas Thinks</button>
                                 <button onclick="selectGameChoice('Wrong')" class="btn-lego bg-rose-300 text-xs px-4 py-2">🎈 Blow Up Balloon</button>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
-                <!-- Emoji Stream Logic tracker & Designer soundboard (1/3 Col) -->
+                <!-- AI Pixel Virtual Pet Companion & Creator Studio (1/3 Col) -->
                 <div class="space-y-6 text-left">
                     
-                    <!-- Soundboard & voice sounds toolkit -->
-                    <div class="lego-card p-6 space-y-4 bg-sky-100">
-                        <h4 class="font-black text-black text-sm uppercase">🎨 Kids Creator Soundboard</h4>
-                        <p class="text-[10px] text-stone-600 font-bold">Download fun, bubbly system notification sounds for your tablet!</p>
-                        <div class="grid grid-cols-2 gap-2 pt-2">
-                            <button onclick="playSFX('bubble')" class="btn-lego bg-yellow-200 text-[10px] p-2">🫧 Bubble SFX</button>
-                            <button onclick="playSFX('sparkle')" class="btn-lego bg-pink-200 text-[10px] p-2">✨ Sparkle SFX</button>
-                            <button onclick="playSFX('correct')" class="btn-lego bg-emerald-200 text-[10px] p-2">🔔 Success Ping</button>
-                            <button onclick="playSFX('lego')" class="btn-lego bg-purple-200 text-[10px] p-2">🧱 Lego Snap</button>
+                    <!-- Pixelated Virtual Pet card -->
+                    <div class="kids-lego-card p-6 text-center space-y-4 bg-gradient-to-b from-sky-50 to-indigo-50">
+                        <span class="text-[9px] font-black text-stone-400 uppercase tracking-widest block">AI Pixel Companion</span>
+                        
+                        <!-- Retro Pixel Art Bot Puppy -->
+                        <div class="pixel-grid border-4 border-black p-1 bg-white rounded-lg shadow-inner">
+                            <div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div><div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-orange"></div><div class="pixel-cell pixel-orange"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-white"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div>
+                            <div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-indigo"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div>
+                            <div class="pixel-cell"></div><div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div><div class="pixel-cell"></div><div class="pixel-cell pixel-black"></div><div class="pixel-cell"></div><div class="pixel-cell"></div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <h4 id="pet-name" class="font-black text-black uppercase text-base">Byte the HaasBot</h4>
+                            <p id="pet-status" class="text-xs text-stone-500 font-bold">State: Cozy & Sleeping 😴</p>
+                        </div>
+
+                        <!-- Stats bars -->
+                        <div class="space-y-2 text-left pt-2">
+                            <div class="text-[10px] font-extrabold text-stone-600 flex justify-between uppercase">
+                                <span>Health Level:</span>
+                                <span id="pet-health-text">20%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-stone-200 border-2 border-black rounded-full overflow-hidden">
+                                <div id="pet-health-bar" class="h-full bg-red-400 w-1/5 transition-all duration-500"></div>
+                            </div>
+
+                            <div class="text-[10px] font-extrabold text-stone-600 flex justify-between uppercase">
+                                <span>Tech Wisdom:</span>
+                                <span id="pet-wisdom-text">10%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-stone-200 border-2 border-black rounded-full overflow-hidden">
+                                <div id="pet-wisdom-bar" class="h-full bg-indigo-500 w-[10%] transition-all duration-500"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Visual logs with Emojis and Icons -->
-                    <div class="lego-card p-6 h-[430px] flex flex-col justify-between bg-yellow-50 relative overflow-hidden">
-                        <div class="absolute inset-x-0 top-0 h-12 bg-yellow-100 border-b-4 border-black px-6 flex justify-between items-center z-10">
-                            <span class="font-black text-[10px] text-black uppercase tracking-wider">🌟 Haas Kid Companion</span>
-                            <span class="text-xs">😊</span>
+                    <!-- Kids Creator Studio Panel Dropdown -->
+                    <div class="kids-lego-card p-6 space-y-4 bg-yellow-50">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-black text-black uppercase text-sm">🎨 Creator Studio (For Kids)</h4>
+                            <span class="text-xs">🎨</span>
                         </div>
+                        <p class="text-[10px] text-stone-600 font-extrabold leading-relaxed">Customize your own Soundboards, Playful retro icons, backgrounds, and music tracks! Download your pack free.</p>
+                        
+                        <!-- Dropdown menus for resources selection -->
+                        <div class="space-y-3 pt-2">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[9px] font-black uppercase text-stone-500">Select Sound FX Pack</label>
+                                <select id="kids-sfx-dropdown" class="bg-white border-2 border-black rounded-lg px-2 py-1.5 text-xs font-bold text-slate-800 outline-none">
+                                    <option value="bubble">🫧 Bubble Pop synthesizer</option>
+                                    <option value="sparkle">✨ Retro Sparkle chime</option>
+                                    <option value="correct">🔔 Arpeggio Victory success</option>
+                                    <option value="lego">🧱 Block Snap clicker</option>
+                                </select>
+                            </div>
 
-                        <!-- Stream log visual list -->
-                        <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-3 font-bold text-xs text-stone-700 text-left" id="kids-stream-log">
-                            <p class="text-indigo-600">👋 Hi there, Young Innovator! Let's build something awesome!</p>
-                            <p class="text-stone-400">Click the yellow "Snap Together Lego Blocks" button to start your journey!</p>
-                        </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[9px] font-black uppercase text-stone-500">Select Wallpapers & Music</label>
+                                <select id="kids-assets-dropdown" class="bg-white border-2 border-black rounded-lg px-2 py-1.5 text-xs font-bold text-slate-800 outline-none">
+                                    <option value="LegoWallpaper">🧱 Colorful LEGO blocks background</option>
+                                    <option value="PixelVibeMusic">🎵 8-Bit Pixelated Theme Song</option>
+                                    <option value="ByteIcons">🐕 Byte pixelated Desktop Icons</option>
+                                </select>
+                            </div>
 
-                        <div class="pt-4 border-t-2 border-black/20 flex items-center justify-center gap-2">
-                            <span>🛡️</span>
-                            <p class="text-[9px] font-black text-stone-400 uppercase tracking-widest">100% Student Safe Environment</p>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="previewCreatorAsset()" class="w-1/2 btn-lego bg-pink-200 text-[10px] py-2">🔊 Preview Pack</button>
+                                <button onclick="downloadCreatorPack()" class="w-1/2 btn-lego bg-emerald-300 text-[10px] py-2">📥 Download Pack</button>
+                            </div>
                         </div>
                     </div>
 
@@ -2451,52 +2517,102 @@
 
     </div>
 
-    <!-- Certificate Mock Modal (Floating modal dynamically populated and printed) -->
+    <!-- Official Certificate Mock Modal -->
     <div id="cert-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
-        <div class="max-w-2xl w-full bg-white border-8 border-black rounded-[2.5rem] p-8 md:p-12 relative shadow-[12px_12px_0px_#000] text-center space-y-6">
-            <!-- Close button -->
+        <div class="max-w-2xl w-full bg-white border-[10px] border-black rounded-[2.5rem] p-8 md:p-12 relative shadow-[12px_12px_0px_#000] text-center space-y-6">
+            
+            <!-- Close trigger -->
             <button onclick="closeCertModal()" class="absolute top-4 right-4 text-xl font-black">✕</button>
             
-            <!-- Certificate frame border -->
-            <div class="border-4 border-double border-black p-8 rounded-2xl bg-amber-50 space-y-6">
-                <span class="text-3xl">🎓</span>
+            <!-- Certificate Layout -->
+            <div class="border-[6px] border-double border-black p-8 rounded-2xl bg-[#FAF9F5] space-y-6 relative overflow-hidden">
+                
+                <!-- Official Gold Seal stamp -->
+                <div class="absolute bottom-6 right-6 w-24 h-24 rounded-full bg-amber-400 border-4 border-black flex items-center justify-center shadow-lg transform rotate-12">
+                    <div class="text-center">
+                        <span class="text-[9px] font-black text-black block uppercase tracking-tighter">OFFICIAL</span>
+                        <span class="text-[10px] font-extrabold text-black block leading-none">HAAS SEAL</span>
+                        <span class="text-[8px] font-black text-black block uppercase">LLC</span>
+                    </div>
+                </div>
+
+                <span class="text-4xl">🎓</span>
                 <h1 class="font-black text-2xl md:text-3xl uppercase tracking-wider text-black">Certificate of Innovation</h1>
-                <p class="text-xs font-bold text-slate-500 tracking-widest uppercase">Presented Proudly to</p>
-                <h2 id="cert-recipient-name" class="text-3xl font-black text-indigo-600 uppercase italic tracking-wide">Young Innovator</h2>
+                <p class="text-xs font-bold text-slate-500 tracking-widest uppercase">This official credential certifies that</p>
+                
+                <!-- Double text inputs for full name validation -->
+                <div class="max-w-md mx-auto space-y-3" id="cert-name-input-block">
+                    <p class="text-xs font-black uppercase text-indigo-600">Please enter your First and Last name to write onto your Certificate:</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="cert-first-name" placeholder="First Name" class="w-1/2 bg-white border-2 border-black rounded-lg p-2 text-xs font-bold">
+                        <input type="text" id="cert-last-name" placeholder="Last Name" class="w-1/2 bg-white border-2 border-black rounded-lg p-2 text-xs font-bold">
+                    </div>
+                    <button onclick="applyNameToCertificate()" class="btn-lego bg-indigo-500 text-white text-xs px-4 py-2">Lock in Name ✍️</button>
+                </div>
+
+                <!-- Live locked Name header -->
+                <h2 id="cert-recipient-name" class="text-3xl font-black text-indigo-600 uppercase italic tracking-wide hidden">Young Innovator</h2>
+                
                 <div class="w-1/2 h-1 bg-black mx-auto"></div>
-                <p class="text-xs font-bold text-slate-700 max-w-md mx-auto leading-relaxed">
-                    successfully constructed their very first Haas automation loop logic workflow in the Hoosier AI Youth Playground!
+                <p class="text-xs font-extrabold text-slate-700 max-w-md mx-auto leading-relaxed">
+                    has successfully completed the complete 5-Module Technology Explorer course syllabus and successfully cleared the official technology credentialing examination.
                 </p>
-                <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider" id="cert-date-text">Verified Secure on May 12, 2026</p>
+                <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest" id="cert-date-text">Seal authenticated on May 12, 2026</p>
             </div>
             
             <div class="flex gap-4">
                 <button onclick="closeCertModal()" class="w-1/2 btn-lego bg-stone-100 text-xs py-3.5">Close</button>
-                <button onclick="window.print()" class="w-1/2 btn-lego bg-yellow-300 text-xs py-3.5">Print Certificate 🖨️</button>
+                <button id="print-cert-btn" disabled onclick="window.print()" class="w-1/2 btn-lego bg-stone-200 text-stone-400 cursor-not-allowed text-xs py-3.5">Print Certificate 🖨️</button>
             </div>
         </div>
     </div>
 
-    <!-- Footer with customized educational messaging -->
+    <!-- Stripe Secure Checkout Prompt Modal -->
+    <div id="stripe-checkout-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
+        <div class="max-w-md w-full bg-white border-4 border-indigo-900 rounded-[2rem] p-8 shadow-2xl text-center space-y-6">
+            <span class="text-3xl">💳</span>
+            <h3 class="font-black text-xl text-[#001C48] uppercase">Stripe Secure Checkout</h3>
+            <p class="text-xs text-slate-500 font-bold leading-relaxed">You are purchasing the <strong>Premium Operational Strategy PDF Roadmap Package</strong> for your selected business pipeline template. This transaction is 100% secure.</p>
+            
+            <div class="border border-stone-200 rounded-xl p-4 bg-stone-50 space-y-2 text-left">
+                <div class="flex justify-between text-xs font-extrabold text-slate-700">
+                    <span>Haas Pipeline Strategy Plan</span>
+                    <span>$5.00</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-slate-400">
+                    <span>Includes PDF roadmap & JSON configuration files</span>
+                    <span>Free Updates</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeStripeModal()" class="w-1/3 bg-stone-100 hover:bg-stone-200 text-slate-500 font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl transition">Cancel</button>
+                <button onclick="completeStripeTransaction()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl transition shadow">Confirm & Pay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Footer -->
     <footer class="py-16 border-t border-stone-200 text-center text-slate-500 text-xs tracking-widest uppercase px-6 flex flex-col items-center justify-center space-y-6">
-        <!-- Indiana Outline Badge -->
+        <!-- Indiana Outline Badge with Pulsing Bedford Star -->
         <div class="inline-flex items-center space-x-3 bg-white border border-stone-200 px-6 py-3.5 rounded-full shadow-md">
+            <!-- Indiana Outline SVG -->
             <svg class="h-10 w-auto text-indigo-600" viewBox="0 0 100 140" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M 36,16 C 45,14 65,15 84,14 C 85,30 84,65 83,95 C 82,104 80,110 78,111 C 74,111 68,117 65,119 C 59,122 55,115 50,121 C 46,126 40,125 36,122 C 28,118 24,124 19,124 C 22,118 28,108 30,103 C 32,96 30,85 32,75 C 34,60 35,35 34,16 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="4.5" />
                 <path d="M 48,90 L 50,85 L 52,90 L 57,90 L 53,93 L 55,98 L 50,95 L 45,98 L 47,93 L 43,90 Z" fill="#F59E0B" class="star-pulse" />
             </svg>
             <div class="text-left leading-tight">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Enterprise Class</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Born in Bedford</p>
                 <p class="text-xs font-black text-slate-800 uppercase tracking-wider">Hoosier AI Automations LLC</p>
                 <p class="text-[9px] font-bold text-indigo-500 uppercase tracking-widest">Bedford, Indiana</p>
             </div>
         </div>
-        <div class="space-y-2 text-center text-[11px]" id="playground-footer-text">
-            <p>&copy; 2026 Hoosier AI Automations. Built for the next generation of Hoosier creators. Keep dreaming, keep building.</p>
+        <div class="space-y-2 text-center text-[11px]">
+            <p>&copy; 2026 Hoosier AI Automations LLC. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Custom Toast Container -->
+    <!-- Toast Notifications -->
     <div id="toast-container" class="fixed top-24 right-6 z-[110] space-y-3 pointer-events-none"></div>
 
     <script src="chat.js"></script>
@@ -2961,65 +3077,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// =========================================================================
-// ================ GLOBAL NAV WATER RIPPLE TRANSITION =====================
-// =========================================================================
-document.addEventListener("DOMContentLoaded", () => {
-    // Intercept clicks to any link pointing to the playground
-    const navCtas = document.querySelectorAll('a[href="playground.html"], .nav-cta');
-    navCtas.forEach(cta => {
-        cta.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetUrl = cta.getAttribute('href') || 'playground.html';
-            
-            // Trigger the custom organic ripple exit transition
-            createGlobalRippleAndNavigate(targetUrl, e.clientX, e.clientY);
-        });
-    });
-});
-
-function createGlobalRippleAndNavigate(targetUrl, clickX, clickY) {
-    let canvas = document.getElementById('global-ripple-canvas');
-    if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.id = 'global-ripple-canvas';
-        canvas.style.position = 'fixed';
-        canvas.style.inset = '0';
-        canvas.style.zIndex = '1000';
-        canvas.style.pointerEvents = 'none';
-        document.body.appendChild(canvas);
-    }
-    
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let radius = 0;
-    const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
-
-    function animate() {
-        if (radius < maxRadius) {
-            radius += 36;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Circular organic wash expanding smoothly from coordinates
-            const gradient = ctx.createRadialGradient(clickX, clickY, radius * 0.05, clickX, clickY, radius);
-            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.98)');
-            gradient.addColorStop(0.4, 'rgba(99, 102, 241, 0.85)');
-            gradient.addColorStop(1, 'rgba(250, 249, 245, 0)');
-            
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(clickX, clickY, radius, 0, Math.PI * 2);
-            ctx.fill();
-            
-            requestAnimationFrame(animate);
-        } else {
-            window.location.href = targetUrl + "?transition=ripple";
-        }
-    }
-    animate();
-}
 
 ```
 
@@ -3027,33 +3084,94 @@ function createGlobalRippleAndNavigate(targetUrl, clickX, clickY) {
 
 ## File: Assets/playground.js
 ```javascript
-// Haas Playground Dynamic Controller - Hoosier AI Automations
+// Hoosier AI Automations - Haas Playground Controller
+let userName = '';
 let userRole = '';
 let userIntent = '';
-let userName = '';
 let userAge = 18;
 
-// PWA Install Event Handler
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // Show custom installation banner
-    const banner = document.getElementById('pwa-install-banner');
-    if (banner) banner.classList.remove('hidden');
-});
+// Academy Modules Tracker
+let completedModules = {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false
+};
+
+// Exam State Tracker
+let examCurrentQuestion = 0;
+let examScore = 0;
+const examQuestions = [
+    {
+        q: "1. What is an automation workflow?",
+        a: ["A type of running shoes", "A series of steps that automates a task automatically", "Homework assigned on weekends", "A streaming music app"],
+        correct: 1
+    },
+    {
+        q: "2. What is a software integration?",
+        a: ["Deleting computer files", "Connecting two or more apps so they can talk to each other", "A phone screen protector", "A coding keyboard"],
+        correct: 1
+    },
+    {
+        q: "3. What is an app?",
+        a: ["A quick nap during the day", "An apple pie slice", "A software application that performs a specific function on your device", "The computer charger"],
+        correct: 2
+    },
+    {
+        q: "4. What is a URL used for?",
+        a: ["Unlocking your door", "A web address pointing to a specific page on the Internet", "Recording sounds", "Drawing rectangles"],
+        correct: 1
+    },
+    {
+        q: "5. What is a prompt?",
+        a: ["Arriving exactly on time", "An instruction or question you give to an AI to tell it what to do", "A type of battery", "A web browser"],
+        correct: 1
+    },
+    {
+        q: "6. What is SaaS?",
+        a: ["Talking back to your teachers", "Software as a Service - software hosted on the web that you use online", "A system for printing paper", "A video gaming console"],
+        correct: 1
+    },
+    {
+        q: "7. How do Ads help companies sell products?",
+        a: ["By hiding products in secret boxes", "By informing people about a product and showing its value", "By turning off the internet", "By changing the logo colors"],
+        correct: 1
+    },
+    {
+        q: "8. Which one of these is a type of software integration?",
+        a: ["Plugging in headphones", "Connecting Shopify to Slack to notify you of sales", "Painting your computer", "Writing on a whiteboard"],
+        correct: 1
+    },
+    {
+        q: "9. What is Artificial Intelligence (AI)?",
+        a: ["A metal robot that cleans your room", "Smart computer systems that can think, learn, and solve problems like humans", "An internet cable", "A math textbook"],
+        correct: 1
+    },
+    {
+        q: "10. Name things you've learned! (Freebie)",
+        a: ["Coding is boring and hard", "How workflows, apps, and software integrations help automate business tasks!", "Absolutely nothing at all", "How to eat cookies"],
+        correct: 1
+    }
+];
+
+// =========================================================================
+// ==================== ONBOARDING FLOW ACTIONS ============================
+// =========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('Service Worker Registered Successfully! Scope:', reg.scope))
-            .catch(err => console.error('Service Worker Registration Failed:', err));
+            .then(reg => console.log('Service Worker Registered scope:', reg.scope))
+            .catch(err => console.error('Service Worker fail:', err));
     }
 
     // Populate Age Dropdown Selector dynamically
     const ageSelect = document.getElementById('user-age-select');
     if (ageSelect) {
+        // Clear any previous mockup content
+        ageSelect.innerHTML = '<option value="" disabled selected>Choose Your Age</option>';
         for (let i = 10; i <= 80; i++) {
             const opt = document.createElement('option');
             opt.value = i;
@@ -3067,49 +3185,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Bind PWA Install triggers
-    const installBtn = document.getElementById('pwa-install-btn');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to PWA prompt: ${outcome}`);
-                deferredPrompt = null;
-                document.getElementById('pwa-install-banner').classList.add('hidden');
-            }
-        });
-    }
-
-    const dismissBtn = document.getElementById('pwa-dismiss');
-    if (dismissBtn) {
-        dismissBtn.addEventListener('click', () => {
-            document.getElementById('pwa-install-banner').classList.add('hidden');
-        });
-    }
-
-    // Initial default calculations
+    // Setup initial calculations
     calculateROI();
 });
-
-// =========================================================================
-// ==================== ONBOARDING FLOW ACTIONS ============================
-// =========================================================================
 
 function selectRole(role) {
     userRole = role;
     
-    // Highlight selected card
+    // Highlight role card border
     document.querySelectorAll('.role-card').forEach(card => {
-        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/10');
         card.classList.add('border-stone-200/60');
     });
     
-    const selectedCard = event.currentTarget;
-    selectedCard.classList.remove('border-stone-200/60');
-    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
+    const card = event.currentTarget;
+    card.classList.remove('border-stone-200/60');
+    card.classList.add('border-indigo-600', 'bg-indigo-50/10');
 
-    // Dynamic response messages
+    // Display localized feedback
     const feedbackBox = document.getElementById('role-feedback-box');
     const feedbackText = document.getElementById('role-feedback-text');
     feedbackBox.classList.remove('hidden');
@@ -3117,31 +3210,31 @@ function selectRole(role) {
     let text = "";
     switch (role) {
         case "Founder/Owner":
-            text = "🚀 Awesome choice! As a Founder or Owner, we'll customize your dashboard to focus on ROI calculation, time-saving metrics, and production-ready pipelines.";
+            text = "🚀 Excellent! As a business founder/owner, we will structure your console to demonstrate operational ROI, human payback speeds, and workflow translations.";
             break;
         case "Developer":
-            text = "💻 Welcome, engineer! The Professional Console will provide raw JSON schemas, API mapping tools, and advanced integration blueprints.";
+            text = "💻 Welcome, engineer! The console provides real-time flowchart renders, database webhook maps, and multi-channel integration options.";
             break;
         case "Innovator":
-            text = "🧠 Brilliant! As an Innovator, you'll be shown futuristic automation frameworks to spark creative design patterns and logic streams.";
+            text = "🧠 Outstanding! Discover state-of-the-art AI architectures, document processors, and automated tracking modules.";
             break;
         case "Marketer":
-            text = "📣 Marketing expert! We will pre-load lead response, CRM syncing, and stock monitoring pipelines built to keep clients engaged.";
+            text = "📣 Marketing specialist! Focus on instantaneous lead form responder pipelines, CRM synchronizers, and Shopify low-stock alert triggers.";
             break;
         case "Student":
-            text = "🎓 Great! We'll gear your workspace toward interactive educational tools to simplify how apps connect and perform algorithms.";
+            text = "🎓 Fantastic! Welcome to our coding workspace. Learn how databases, triggers, and actions talk to each other without jargon.";
             break;
         case "Start-Up":
-            text = "⚡ Speed is key! As a Start-Up focus, we'll demonstrate lightweight automations that replace full departments on a shoestring budget.";
+            text = "⚡ Speed is key! Explore lightweight architectures that replace hundreds of weekly administrative hours on autopilot.";
             break;
     }
     feedbackText.textContent = text;
 
-    // Enable continue button
+    // Enable continue trigger
     const btn = document.getElementById('btn-continue-step-1');
     btn.removeAttribute('disabled');
     btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
-    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+    btn.classList.add('bg-indigo-600', 'text-white', 'cursor-pointer', 'hover:bg-indigo-700', 'shadow');
 }
 
 function selectIntent(intent) {
@@ -3149,15 +3242,15 @@ function selectIntent(intent) {
     
     // Highlight intent card
     document.querySelectorAll('.intent-card').forEach(card => {
-        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/10');
         card.classList.add('border-stone-200/60');
     });
     
-    const selectedCard = event.currentTarget;
-    selectedCard.classList.remove('border-stone-200/60');
-    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
+    const card = event.currentTarget;
+    card.classList.remove('border-stone-200/60');
+    card.classList.add('border-indigo-600', 'bg-indigo-50/10');
 
-    // Intent feedback responses
+    // Display intent feedback
     const feedbackBox = document.getElementById('intent-feedback-box');
     const feedbackText = document.getElementById('intent-feedback-text');
     feedbackBox.classList.remove('hidden');
@@ -3165,40 +3258,38 @@ function selectIntent(intent) {
     let text = "";
     switch (intent) {
         case "Playground":
-            text = "🎠 Perfect! You're entering the live playground dashboard where you can stress-test automations, stream thoughts, and customize layouts.";
+            text = "🎠 Perfect choice! You are entering the Haas Live Playground workspace where you can preview automations and simulate stress tests.";
             break;
         case "Workflows":
-            text = "🔗 Heavy duty design! We'll render structured network paths showing how data moves across standard platforms secure and fast.";
+            text = "🔗 Technical mapping! Let's examine real-world bottlenecks translated into streamlined, sequential flowchart actions.";
             break;
         case "Fun":
-            text = "🎪 Pure curiosity! Relax and explore. You can play custom built logic games, trigger sound effects, and claim visual rewards.";
+            text = "🎪 Creativity first! Enjoy logic bridge puzzles, synthesize your own sound tracks, and claim custom innovation credentials.";
             break;
         case "NotSure":
-            text = "🧭 No problem! We'll load simple and friendly preset blueprints to guide you through what Haas automations make possible.";
+            text = "🧭 No worries! We will pre-load friendly, pre-configured templates to guide you through the process step-by-step.";
             break;
     }
     feedbackText.textContent = text;
 
-    // Enable continue button
+    // Enable step continue button
     const btn = document.getElementById('btn-continue-step-2');
     btn.removeAttribute('disabled');
     btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
-    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+    btn.classList.add('bg-indigo-600', 'text-white', 'cursor-pointer', 'hover:bg-indigo-700', 'shadow');
 }
 
 function nextStep(stepNumber) {
-    // Hide all steps
+    // Toggle wizard steps
     document.getElementById('onboarding-step-1').classList.add('hidden');
     document.getElementById('onboarding-step-2').classList.add('hidden');
     document.getElementById('onboarding-step-3').classList.add('hidden');
 
-    // Show selected step
     document.getElementById(`onboarding-step-${stepNumber}`).classList.remove('hidden');
 
-    // Update progress bar & headers
     const fill = document.getElementById('progress-bar-fill');
     const counter = document.getElementById('step-counter');
-    
+
     if (stepNumber === 1) {
         fill.style.width = "33.33%";
         counter.textContent = "Step 1 of 3";
@@ -3216,303 +3307,349 @@ function completeOnboarding() {
     const ageSelect = document.getElementById('user-age-select');
 
     if (!nameInput.value.trim()) {
-        showToast("⚠️ Please enter your name!", "warning");
+        showToast("⚠️ Please enter your name to authenticate the playground!", "warning");
         nameInput.focus();
         return;
     }
 
     userName = nameInput.value.trim();
-    userAge = parseInt(ageSelect.value);
+    userAge = parseInt(ageSelect.value) || 18;
 
-    // Hide wizard flow
+    // Transition off wizard
     document.getElementById('onboarding-stage').classList.add('hidden');
     
-    // Display actual workspace console
-    const dashboard = document.getElementById('playground-dashboard');
-    dashboard.classList.remove('hidden');
+    // Reveal dashboard console
+    document.getElementById('playground-dashboard').classList.remove('hidden');
 
     if (userAge >= 18) {
-        // Adult Professional Track
+        // Adult Professional Studio
         document.getElementById('professional-dashboard').classList.remove('hidden');
-        showToast(`🎉 Welcome to Pro Studio, ${userName}!`, "success");
+        showToast(`💼 Welcome to Executive Studio, ${userName}!`, "success");
         initProfessionalConsole();
     } else {
         // Youth Innovator Track
         document.getElementById('young-innovator-dashboard').classList.remove('hidden');
-        showToast(`🎈 Welcome, Young Innovator ${userName}!`, "success");
+        showToast(`🎈 Welcome, Young Innovator ${userName}! Let's build!`, "success");
         initYouthPlayground();
     }
 }
 
+
 // =========================================================================
-// ==================== PROFESSIONAL STUDIO CONSOLE (18+) ==================
+// ==================== EXECUTIVE PROFESSIONAL CONSOLE ====================
 // =========================================================================
 
-let proStreamLogs = [];
-const proBlueprints = {
-    RealEstate: {
-        title: "🏡 Real Estate Lead Generation Pipeline",
+// High-fidelity pipeline parameters matching requirements
+const businessScenarios = {
+    SME_Scheduling: {
+        title: "Retail Scheduling Automated Sync",
+        catch: "Customer books appointment via your online form.",
+        decision: "Haas AI filters available calendar blocks and staff availability.",
+        action: "Saves details to central system and auto-sends SMS pings.",
+        result: "Manual schedule management and client follow-ups cut by 100%.",
         nodes: [
-            { text: "Lead Enters Form", x: 100, y: 225, type: "trigger" },
-            { text: "Filter & Validate", x: 260, y: 225, type: "action" },
-            { text: "Sync CRM Contact", x: 420, y: 225, type: "action" },
-            { text: "Notify Agent SMS", x: 580, y: 150, type: "action" },
-            { text: "Trigger Lead Nurture", x: 580, y: 300, type: "action" }
+            { text: "Trigger Form Book", x: 100, y: 200, type: "trigger" },
+            { text: "AI Calendar Parse", x: 300, y: 150, type: "decision" },
+            { text: "Save Central DB", x: 500, y: 200, type: "action" },
+            { text: "Twilio SMS Ping", x: 700, y: 200, type: "result" }
         ],
-        connections: [[0, 1], [1, 2], [2, 3], [2, 4]],
-        json: {
-            pipeline_name: "Real_Estate_Leads_V1",
-            trigger_node: "Web_Form_Submit",
-            filters: ["address_exists", "phone_verified"],
-            crm_target: "Firebase_DB",
-            notifiers: ["Twilio_SMS_Agent", "Sendgrid_Email_Lead_Nurture"]
-        }
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: false
     },
-    Logistics: {
-        title: "🚛 Smart Logistics & Routing Pipeline",
+    SME_Dispatch: {
+        title: "Logistics Automated Fleet Dispatch",
+        catch: "New load dispatcher assigns routing details.",
+        decision: "Haas evaluates active driver geographic boundary zones.",
+        action: "Sends exact coordinates to the closest driver's terminal.",
+        result: "Eliminated driver idle intervals, boosting delivery speeds 3x.",
         nodes: [
-            { text: "GPS Location Pulse", x: 80, y: 225, type: "trigger" },
-            { text: "Geofence Check", x: 230, y: 150, type: "action" },
-            { text: "Validate Delivery Status", x: 380, y: 225, type: "action" },
-            { text: "ETA Prediction API", x: 530, y: 225, type: "action" },
-            { text: "Notify Customer SMS", x: 680, y: 225, type: "action" }
+            { text: "Order Dispatched", x: 100, y: 200, type: "trigger" },
+            { text: "Geofence Check", x: 300, y: 150, type: "decision" },
+            { text: "Terminal Coordinates", x: 500, y: 200, type: "action" },
+            { text: "Live Delivery Route", x: 700, y: 200, type: "result" }
         ],
-        connections: [[0, 1], [0, 2], [2, 3], [3, 4]],
-        json: {
-            pipeline_name: "Logistics_Smart_Route",
-            trigger_node: "GPS_Ping",
-            geofence_boundary_miles: 5,
-            prediction_algorithm: "ETA_Random_Forest",
-            notifiers: ["Twilio_SMS_Customer_ETA"]
-        }
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: false
     },
-    Retail: {
-        title: "🛒 Retail Inventory Low-Stock Sync",
+    SME_Responder: {
+        title: "Fast Lead Form Autopilot Response",
+        catch: "Lead completes form request on website.",
+        decision: "Haas analyzes inquiry coordinates and client parameters.",
+        action: "Instantly generates and emails a custom operational brief.",
+        result: "Inbound response delay cut to 3 minutes, tripling sales closed.",
         nodes: [
-            { text: "Item Sold Shopify", x: 100, y: 225, type: "trigger" },
-            { text: "Database Count Check", x: 260, y: 225, type: "action" },
-            { text: "Construct PO Order", x: 420, y: 150, type: "action" },
-            { text: "Notify Wholesale API", x: 580, y: 225, type: "action" },
-            { text: "Slack Alert low stock", x: 580, y: 300, type: "action" }
+            { text: "Lead Submission", x: 100, y: 200, type: "trigger" },
+            { text: "Inquiry Analysis", x: 300, y: 150, type: "decision" },
+            { text: "Generate Brief", x: 500, y: 200, type: "action" },
+            { text: "Outbox Email Send", x: 700, y: 200, type: "result" }
         ],
-        connections: [[0, 1], [1, 2], [2, 3], [1, 4]],
-        json: {
-            pipeline_name: "Shopify_Low_Stock_Sync",
-            trigger_node: "Shopify_Webhook_Order",
-            threshold: 15,
-            auto_wholesale_purchase: true,
-            alert_channels: ["Slack_Operations"]
-        }
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: false
+    },
+    ENT_Inventory: {
+        title: "ERP Multi-Channel Inventory Synchronizer",
+        catch: "Stock inventory levels update inside main warehouse ERP database.",
+        decision: "Haas evaluates stock thresholds across active products.",
+        action: "Coordinates dynamic stock counts on Shopify, Amazon, and eBay.",
+        result: "Cut multi-channel over-selling margins to absolutely 0.0%.",
+        nodes: [
+            { text: "Warehouse ERP Ingest", x: 100, y: 200, type: "trigger" },
+            { text: "Threshold Check", x: 300, y: 150, type: "decision" },
+            { text: "Shopify Sync Multi", x: 500, y: 200, type: "action" },
+            { text: "Live Stock Update", x: 700, y: 200, type: "result" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: true
+    },
+    ENT_Telemetry: {
+        title: "Fleet Telemetry Hub & Tracking Engine",
+        catch: "Active heavy freight fleet routes geofenced boundaries.",
+        decision: "Engine parses vehicular load weight and fuel coefficients.",
+        action: "Streams routing coordinates to operational dashboards.",
+        result: "Maximized routing efficiencies, shaving thousands off freight costs.",
+        nodes: [
+            { text: "GPS Boundary Ingest", x: 100, y: 200, type: "trigger" },
+            { text: "Load Coefficient AI", x: 300, y: 150, type: "decision" },
+            { text: "Dashboard Publish", x: 500, y: 200, type: "action" },
+            { text: "Freight Optimized", x: 700, y: 200, type: "result" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: true
+    },
+    ENT_Processor: {
+        title: "AI Document Processor & Invoicer",
+        catch: "PDF digital invoice arrives inside operations inbox folder.",
+        decision: "Optical AI extracts matching supplier, pricing, and VAT details.",
+        action: "Generates accounting ledger record and fires auto-reconcile triggers.",
+        result: "Cut business invoicing labor costs by a verified 82%.",
+        nodes: [
+            { text: "Inbound PDF Mail", x: 100, y: 200, type: "trigger" },
+            { text: "Optical Extract AI", x: 300, y: 150, type: "decision" },
+            { text: "Reconcile Ledger", x: 500, y: 200, type: "action" },
+            { text: "Financial Audited", x: 700, y: 200, type: "result" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: true
     }
 };
 
 function initProfessionalConsole() {
-    loadIndustryTemplate();
+    // Load default scenario
+    triggerPresetScenario('SME_Scheduling');
 }
 
-function loadIndustryTemplate() {
-    const selected = document.getElementById('industry-selector').value;
-    const blueprint = proBlueprints[selected];
+function loadBusinessScenario(type) {
+    const selector = type === 'sme' ? document.getElementById('sme-selector') : document.getElementById('ent-selector');
+    const selected = selector.value;
+    if (selected) {
+        triggerPresetScenario(selected);
+        // Clear opposing selector
+        const opposing = type === 'sme' ? document.getElementById('ent-selector') : document.getElementById('sme-selector');
+        opposing.selectedIndex = 0;
+    }
+}
+
+function triggerPresetScenario(scKey) {
+    const sc = businessScenarios[scKey];
+    if (!sc) return;
+
+    // Update non-technical Human Roadmap headers
+    document.getElementById('catch-text').textContent = sc.catch;
+    document.getElementById('decision-text').textContent = sc.decision;
+    document.getElementById('action-text').textContent = sc.action;
+    document.getElementById('result-text').textContent = sc.result;
+
+    // Manage Premium locked paywall blurring
+    const overlay = document.getElementById('stripe-lock-overlay');
+    const canvas = document.getElementById('blueprint-canvas');
+
+    if (sc.premium) {
+        overlay.classList.remove('hidden');
+        canvas.classList.add('paywall-blur');
+    } else {
+        overlay.classList.add('hidden');
+        canvas.classList.remove('paywall-blur');
+    }
+
+    // Trigger canvas logic flow drawing
+    drawProfessionalFlowchart(sc);
+    showToast(`📍 Loaded: ${sc.title}`, "success");
+}
+
+function translateCustomProblem() {
+    const input = document.getElementById('custom-problem-input').value.trim();
+    if (!input) {
+        showToast("⚠️ Please enter a custom operational problem to translate!", "warning");
+        return;
+    }
+
+    const lower = input.toLowerCase();
+    let selectedScenario = 'SME_Responder'; // fallback default
+
+    if (lower.includes('schedule') || lower.includes('calendar') || lower.includes('appointment')) {
+        selectedScenario = 'SME_Scheduling';
+    } else if (lower.includes('dispatch') || lower.includes('driver') || lower.includes('freight') || lower.includes('delivery')) {
+        selectedScenario = 'SME_Dispatch';
+    } else if (lower.includes('lead') || lower.includes('sale') || lower.includes('form') || lower.includes('customer')) {
+        selectedScenario = 'SME_Responder';
+    } else if (lower.includes('inventory') || lower.includes('stock') || lower.includes('warehouse')) {
+        selectedScenario = 'ENT_Inventory';
+    } else if (lower.includes('invoice') || lower.includes('invoice') || lower.includes('pdf') || lower.includes('reconcile')) {
+        selectedScenario = 'ENT_Processor';
+    }
+
+    // Build bespoke translation matching user input
+    const baseScenario = businessScenarios[selectedScenario];
     
-    // Set title
-    document.getElementById('blueprint-title').textContent = blueprint.title;
+    document.getElementById('catch-text').textContent = `Your custom bottleneck: "${input}" triggers automated sensors.`;
+    document.getElementById('decision-text').textContent = baseScenario.decision;
+    document.getElementById('action-text').textContent = baseScenario.action;
+    document.getElementById('result-text').textContent = `Eliminates manual task overhead and saves 10-15+ hours weekly.`;
 
-    // Set JSON Preview
-    document.getElementById('json-preview').textContent = JSON.stringify(blueprint.json, null, 2);
+    const overlay = document.getElementById('stripe-lock-overlay');
+    const canvas = document.getElementById('blueprint-canvas');
 
-    // Stream logs to thinking terminal
-    proStreamLogs = [
-        `[SYSTEM]: Initializing Haas Logic Engine for ${selected}...`,
-        `[ANALYSIS]: Identifying manual bottlenecks in system paths...`,
-        `[ACTION]: Mapping active trigger payload parameters...`,
-        `[VERIFY]: Resolving system webhooks and verifying APIs...`,
-        `[SUCCESS]: Blueprint compiled successfully.`
-    ];
-    streamTerminalLogs();
+    if (baseScenario.premium) {
+        overlay.classList.remove('hidden');
+        canvas.classList.add('paywall-blur');
+    } else {
+        overlay.classList.add('hidden');
+        canvas.classList.remove('paywall-blur');
+    }
 
-    // Render on Canvas
-    drawProfessionalBlueprint(blueprint);
+    drawProfessionalFlowchart(baseScenario);
+    showToast("✨ Custom Bottleneck Translated Successfully!", "success");
 }
 
-function drawProfessionalBlueprint(blueprint) {
+function drawProfessionalFlowchart(sc) {
     const canvas = document.getElementById('blueprint-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw lines
-    ctx.lineWidth = 2.5;
-    blueprint.connections.forEach(conn => {
-        const from = blueprint.nodes[conn[0]];
-        const to = blueprint.nodes[conn[1]];
-        
-        ctx.strokeStyle = "#818CF8"; // Indigo
+    // Draw grid coordinate lines
+    ctx.strokeStyle = "rgba(0, 28, 72, 0.03)";
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 30) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
+
+    // Draw active data path connectors (Hoosier Indigo)
+    ctx.lineWidth = 3;
+    sc.connections.forEach(conn => {
+        const from = sc.nodes[conn[0]];
+        const to = sc.nodes[conn[1]];
+
+        ctx.strokeStyle = "#4F46E5";
         ctx.beginPath();
         ctx.moveTo(from.x, from.y);
         ctx.lineTo(to.x, to.y);
         ctx.stroke();
 
-        // Draw arrow tip
-        const angle = Math.atan2(to.y - from.y, to.x - from.x);
-        ctx.fillStyle = "#818CF8";
+        // Draw animated data flow pulses
+        const now = Date.now();
+        const pct = (now % 2000) / 2000;
+        const pulseX = from.x + (to.x - from.x) * pct;
+        const pulseY = from.y + (to.y - from.y) * pct;
+
+        ctx.fillStyle = "#F59E0B"; // Gold active pulse
         ctx.beginPath();
-        ctx.arc(to.x - 10 * Math.cos(angle), to.y - 10 * Math.sin(angle), 5, 0, Math.PI * 2);
+        ctx.arc(pulseX, pulseY, 5, 0, Math.PI * 2);
         ctx.fill();
     });
 
-    // Draw nodes
-    blueprint.nodes.forEach(node => {
-        ctx.fillStyle = node.type === "trigger" ? "#4F46E5" : "#FAF9F5";
-        ctx.strokeStyle = "#4F46E5";
+    // Draw clean geometric outline nodes
+    sc.nodes.forEach(node => {
+        ctx.strokeStyle = "#001C48"; // Hoosier Indigo
         ctx.lineWidth = 3;
 
-        // Rounded card draw
-        drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 12, node.type === "trigger", true);
+        if (node.type === "trigger") {
+            ctx.fillStyle = "#001C48";
+            // Rounded RectangleTrigger
+            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 10, true, true);
+            ctx.fillStyle = "#FFFFFF";
+        } else if (node.type === "decision") {
+            ctx.fillStyle = "#FAF9F5";
+            // Diamond Decision Node
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y - 30);
+            ctx.lineTo(node.x + 70, node.y);
+            ctx.lineTo(node.x, node.y + 30);
+            ctx.lineTo(node.x - 70, node.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = "#001C48";
+        } else if (node.type === "action") {
+            ctx.fillStyle = "#FAF9F5";
+            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 10, true, true);
+            ctx.fillStyle = "#001C48";
+        } else {
+            // Result Node (Pill style)
+            ctx.fillStyle = "#EEF2FF";
+            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 25, true, true);
+            ctx.fillStyle = "#4F46E5";
+        }
 
-        // Text print
-        ctx.fillStyle = node.type === "trigger" ? "#FFFFFF" : "#1E293B";
-        ctx.font = "bold 11px 'Inter', sans-serif";
+        // Render text without jargon
+        ctx.font = "bold 10px 'Inter', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(node.text, node.x, node.y);
     });
 }
 
-function drawRoundedRect(ctx, x, y, width, height, radius, fill, stroke) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    if (fill) ctx.fill();
-    if (stroke) ctx.stroke();
-}
-
-function streamTerminalLogs() {
-    const term = document.getElementById('terminal-stream-log');
-    term.innerHTML = "";
-    let i = 0;
-
-    function addLog() {
-        if (i < proStreamLogs.length) {
-            const p = document.createElement('p');
-            if (proStreamLogs[i].includes('SUCCESS')) {
-                p.className = 'text-white font-bold tracking-wide border-l-2 border-indigo-500 pl-2';
-            } else if (proStreamLogs[i].includes('SYSTEM')) {
-                p.className = 'text-indigo-300 font-medium';
-            } else {
-                p.className = 'text-sky-200';
-            }
-            p.textContent = proStreamLogs[i];
-            term.appendChild(p);
-            term.scrollTop = term.scrollHeight;
-            i++;
-            setTimeout(addLog, 450);
-        } else {
-            const cursor = document.createElement('div');
-            cursor.className = 'w-2.5 h-4 bg-sky-300 inline-block animate-pulse mt-1';
-            term.appendChild(cursor);
-        }
-    }
-    addLog();
-}
-
-// 1,000 Task Stress Test Simulator
-function simulateStressTest() {
-    const overlay = document.getElementById('stress-test-overlay');
-    overlay.classList.remove('hidden');
-
-    let count = 0;
-    const ring = document.getElementById('stress-progress-ring');
-    const countText = document.getElementById('stress-counter-text');
-    const logText = document.getElementById('stress-log-text');
-    
-    // Add logs to terminal in the background
-    const term = document.getElementById('terminal-stream-log');
-    const p = document.createElement('p');
-    p.className = 'text-yellow-300 font-bold';
-    p.textContent = `[STRESS TEST]: Commencing 1,000 tasks simulation pipeline run...`;
-    term.appendChild(p);
-
-    const interval = setInterval(() => {
-        if (count < 1000) {
-            count += 40;
-            if (count > 1000) count = 1000;
-            
-            // Progress ring calculation
-            const pct = count / 1000;
-            const offset = 251.2 - (251.2 * pct);
-            ring.style.strokeDashoffset = offset;
-            
-            countText.textContent = count;
-            logText.textContent = `Tasks generated: ${count} / 1000`;
-            
-            if (count % 200 === 0) {
-                const subP = document.createElement('p');
-                subP.className = 'text-sky-100 font-mono text-[10px] pl-2';
-                subP.textContent = `⚡ [STRESS] Simulating concurrency block load: ${count} payloads successfully completed.`;
-                term.appendChild(subP);
-                term.scrollTop = term.scrollHeight;
-            }
-        } else {
-            clearInterval(interval);
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                showToast("✅ Concurrency Stress Test Completed! 0 Failures detected.", "success");
-                
-                const finalP = document.createElement('p');
-                finalP.className = 'text-emerald-300 font-bold';
-                finalP.textContent = `[STRESS COMPLETED]: 1,000 / 1,000 loops finished securely in 2.5s. Ready.`;
-                term.appendChild(finalP);
-                term.scrollTop = term.scrollHeight;
-            }, 600);
-        }
-    }, 100);
-}
-
-// Time-To-Value ROI Calculator logic
+// ROI Calculator Comparison Calculations
 function calculateROI() {
     const rate = parseFloat(document.getElementById('roi-rate').value) || 0;
     const hours = parseFloat(document.getElementById('roi-hours').value) || 0;
 
-    const yearlyManual = rate * hours * 52;
+    const manualYearly = rate * hours * 52;
     const manualCostText = document.getElementById('roi-manual-cost');
     const manualBar = document.getElementById('roi-manual-bar');
     const paybackText = document.getElementById('roi-payback-days');
 
-    // Display formatted cost
-    manualCostText.textContent = yearlyManual.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    manualCostText.textContent = manualYearly.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
-    // Animate manual bar relative to maximum height representation
-    const maxVal = 50000;
-    const percentage = Math.min((yearlyManual / maxVal) * 100, 100);
-    manualBar.style.width = `${percentage}%`;
+    const maxVal = 40000;
+    const pct = Math.min((manualYearly / maxVal) * 100, 100);
+    manualBar.style.width = `${pct}%`;
 
-    // Payback day threshold crossover point representation
-    if (yearlyManual > 0) {
-        // Haas SaaS pipeline setup costs fixed $300 + hosting $25/mo
-        const baseCost = 600; 
+    if (manualYearly > 0) {
+        const haasSaaSYearly = 600;
         const dailySavings = (rate * hours) / 7;
-        const paybackDays = Math.ceil(baseCost / dailySavings);
-        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Less than a Year";
+        const paybackDays = Math.ceil(haasSaaSYearly / dailySavings);
+        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Under 1 Year";
     } else {
         paybackText.textContent = "0 Days";
     }
 }
 
-// Paywall vault trigger
-function triggerExportPayment() {
-    showToast("💳 Redirecting to Stripe Secure Portal Checkout...", "success");
-    setTimeout(() => {
-        // Mock success callback scenario
-        showToast("✨ Payment Completed! Downloading standard blueprint package containing JSON schematics...", "success");
-    }, 2000);
+// Stripe Simulation triggers
+function simulateStripeCheckout() {
+    document.getElementById('stripe-checkout-modal').classList.remove('hidden');
+}
+
+function closeStripeModal() {
+    document.getElementById('stripe-checkout-modal').classList.add('hidden');
+}
+
+function completeStripeTransaction() {
+    closeStripeModal();
+    showToast("💳 Stripe Secure Transaction Complete! Generating Strategy Package...", "success");
+    
+    // Unlock blurred canvas & trigger success path download
+    document.getElementById('stripe-lock-overlay').classList.add('hidden');
+    document.getElementById('blueprint-canvas').classList.remove('paywall-blur');
 }
 
 
@@ -3520,129 +3657,313 @@ function triggerExportPayment() {
 // ==================== YOUNG INNOVATOR TRACK (17 & UNDER) =================
 // =========================================================================
 
-const kidsBlueprints = {
-    Homework: {
-        title: "📚 Homework Hero Magic Chain",
-        nodes: [
-            { text: "🏫 Posts Homework", x: 100, y: 225 },
-            { text: "🧩 Sort in Planner", x: 300, y: 225 },
-            { text: "📱 Call Phone Reminder", x: 500, y: 225 }
-        ],
-        logs: [
-            "🎈 Initializing Homework Hero pipeline...",
-            "🧱 Snapping 'Posts Homework' blocks into 'Sort in Planner' nodes...",
-            "🌟 Success! Your robot assistant is set up to phone you alerts!"
-        ]
+// Kid Game Multi-level Configurations responsive to selected age group
+const levelPuzzles = {
+    Beginner: {
+        label: "Ages 10-12 (Beginner)",
+        badge: "Level 1: Beginner",
+        desc: "Build a trigger communication bridge to log tasks.",
+        elements: { trigger: "📧 New Message", action: "📅 Save to Calendar" },
+        choices: ["🎨 Draw Picture", "🧠 Haas Thinks", "🎈 Blow Up Balloon"],
+        correct: 1
     },
-    Pet: {
-        title: "🤖 My AI Robot Pet Companion",
-        nodes: [
-            { text: "💬 Ask Robot Pet", x: 100, y: 225 },
-            { text: "🧠 Think Prompt", x: 300, y: 225 },
-            { text: "📣 Fun Speech Voice", x: 500, y: 225 }
-        ],
-        logs: [
-            "🔮 Training mini assistant helper robot pet...",
-            "🌟 Give him a personality wizard, funny alien, or helpful robot!",
-            "🎉 Your virtual pet is active! Click creator board to hear him speak."
-        ]
+    Intermediate: {
+        label: "Ages 13-15 (Intermediate)",
+        badge: "Level 2: Intermediate",
+        desc: "Construct conditional branches to process inventory.",
+        elements: { trigger: "🛒 Item Ordered", action: "🧠 Condition Split", action2: "📦 Ship Product" },
+        choices: ["Write Essay", "Haas Syncs Database", "Play Basketball"],
+        correct: 1
     },
-    Creator: {
-        title: "🎨 Kids Digital Designer Space",
-        nodes: [
-            { text: "📐 Drag Shape", x: 100, y: 225 },
-            { text: "🎨 Choose Colors", x: 300, y: 225 },
-            { text: "📥 Save Poster", x: 500, y: 225 }
-        ],
-        logs: [
-            "🧸 Loading Design Space Assets...",
-            "🎈 Preparing wallpapers, icon packs, and custom notification tones...",
-            "✨ Grab your Innovation Certificate below to download!"
-        ]
+    Advanced: {
+        label: "Ages 16-17 (Advanced)",
+        badge: "Level 3: Advanced",
+        desc: "Design real-time API integrations and loops.",
+        elements: { trigger: "📈 Lead Ingest", action: "📊 Sync Hub", action2: "📱 SMS Notify" },
+        choices: ["Bake Bread", "Haas API Connector", "Do Homework"],
+        correct: 1
     }
 };
 
 function initYouthPlayground() {
-    loadKidsTemplate();
-}
-
-function loadKidsTemplate() {
-    const selected = document.getElementById('kids-toolkit-selector').value;
-    const blueprint = kidsBlueprints[selected];
-    
-    document.getElementById('kids-canvas-title').textContent = blueprint.title;
-
-    // Load logs
-    const logContainer = document.getElementById('kids-stream-log');
-    logContainer.innerHTML = "";
-    blueprint.logs.forEach(msg => {
-        const p = document.createElement('p');
-        p.className = "text-slate-800 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left";
-        p.textContent = msg;
-        logContainer.appendChild(p);
-    });
-
-    drawKidsBlueprint(blueprint);
-}
-
-function drawKidsBlueprint(blueprint) {
-    const canvas = document.getElementById('kids-blueprint-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw bubbly lego dots background
-    ctx.fillStyle = "rgba(0,0,0,0.03)";
-    for (let x = 12; x < canvas.width; x += 24) {
-        for (let y = 12; y < canvas.height; y += 24) {
-            ctx.beginPath();
-            ctx.arc(x, y, 3, 0, Math.PI * 2);
-            ctx.fill();
-        }
+    // Customize logic levels dynamically based on onboarding age selection
+    let puzzleKey = "Beginner";
+    if (userAge >= 13 && userAge <= 15) {
+        puzzleKey = "Intermediate";
+    } else if (userAge >= 16 && userAge <= 17) {
+        puzzleKey = "Advanced";
     }
 
-    // Draw connect chains with thick lego outline
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(100, 225);
-    ctx.lineTo(500, 225);
-    ctx.stroke();
+    loadPuzzleLevel(puzzleKey);
+    updatePixelPetState("Sleeping");
+}
 
-    // Draw bubbly kids cards
-    blueprint.nodes.forEach((node, idx) => {
-        const colors = ["#F3A8E2", "#90E0EF", "#FFE3E3", "#FFF3B0", "#CAFFBF"];
-        ctx.fillStyle = colors[idx % colors.length];
-        ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 4;
+function loadPuzzleLevel(lvlKey) {
+    const lvl = levelPuzzles[lvlKey];
+    if (!lvl) return;
 
-        // Bubbly rounded rectangles
-        drawRoundedRect(ctx, node.x - 70, node.y - 35, 140, 70, 18, true, true);
+    document.getElementById('game-age-label').textContent = lvl.label;
+    document.getElementById('game-level-badge').textContent = lvl.badge;
 
-        // Draw top lego connectors
-        ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.arc(node.x - 30, node.y - 35, 10, 0, Math.PI * 2);
-        ctx.arc(node.x + 30, node.y - 35, 10, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
+    // Redraw Game Board Elements
+    const wrapper = document.getElementById('game-board-elements');
+    wrapper.innerHTML = "";
 
-        // Print text
-        ctx.fillStyle = "#000000";
-        ctx.font = "900 12px 'Inter', sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(node.text, node.x, node.y);
+    // Node 1: Trigger
+    const tNode = document.createElement('div');
+    tNode.className = "bg-sky-300 border-2 border-black rounded-xl p-3 font-black text-xs";
+    tNode.textContent = lvl.elements.trigger;
+    wrapper.appendChild(tNode);
+
+    // Arrow
+    const arrow1 = document.createElement('div');
+    arrow1.className = "text-xl";
+    arrow1.textContent = "➡️";
+    wrapper.appendChild(arrow1);
+
+    // Node 2: Missing Bridge Slot
+    const slot = document.createElement('div');
+    slot.id = "game-bridge-slot";
+    slot.className = "bg-stone-200 border-4 border-dashed border-black rounded-xl p-3 font-black text-xs text-stone-400 h-12 w-36 flex items-center justify-center animate-pulse";
+    slot.textContent = "? Missing Node";
+    wrapper.appendChild(slot);
+
+    // Optional Extra Nodes
+    if (lvl.elements.action2) {
+        const arrowX = document.createElement('div');
+        arrowX.className = "text-xl";
+        arrowX.textContent = "➡️";
+        wrapper.appendChild(arrowX);
+
+        const extra = document.createElement('div');
+        extra.className = "bg-pink-300 border-2 border-black rounded-xl p-3 font-black text-xs";
+        extra.textContent = lvl.elements.action;
+        wrapper.appendChild(extra);
+    }
+
+    // Arrow Final
+    const arrowF = document.createElement('div');
+    arrowF.className = "text-xl";
+    arrowF.textContent = "➡️";
+    wrapper.appendChild(arrowF);
+
+    // Node 3: Result
+    const rNode = document.createElement('div');
+    rNode.className = "bg-emerald-300 border-2 border-black rounded-xl p-3 font-black text-xs";
+    rNode.textContent = lvl.elements.action2 || lvl.elements.action;
+    wrapper.appendChild(rNode);
+
+    // Load Game Choices
+    const choicesWrapper = document.getElementById('game-choices-wrapper');
+    choicesWrapper.innerHTML = "";
+    lvl.choices.forEach((ch, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-lego bg-yellow-100 text-xs px-4 py-2 text-slate-800 font-extrabold";
+        btn.textContent = ch;
+        btn.onclick = () => selectGameChoice(idx === lvl.correct ? 'Right' : 'Wrong');
+        choicesWrapper.appendChild(btn);
     });
 }
 
-function triggerKidsGeneration() {
-    playSFX('lego');
-    showToast("🧱 Snapping digital Lego Blocks together! ✨", "success");
-    loadKidsTemplate();
+function selectGameChoice(outcome) {
+    if (outcome === 'Right') {
+        playSFX('correct');
+        const slot = document.getElementById('game-bridge-slot');
+        slot.textContent = "✅ Block Snapped!";
+        slot.className = "bg-emerald-400 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
+        
+        showToast("🌟 Hurray! You fixed the logic pipeline bridge!", "success");
+        updatePixelPetState("Happy");
+    } else {
+        playSFX('bubble');
+        showToast("🎈 Oops! That logical command doesn't fit here. Try another!", "warning");
+    }
 }
 
-// Bouncy synthesized sound engine using HTML5 Web Audio API
+// 5-Module Academy Course completions
+function completeAcademyModule(modNum) {
+    if (completedModules[modNum]) return; // already done
+
+    completedModules[modNum] = true;
+    playSFX('lego');
+
+    // Flip card styling
+    const card = document.getElementById(`course-card-${modNum}`);
+    const badge = document.getElementById(`course-status-${modNum}`);
+    const icon = document.getElementById(`course-icon-${modNum}`);
+
+    card.classList.remove('bg-white');
+    card.classList.add('bg-emerald-100', 'border-emerald-500');
+    badge.textContent = "Completed! ✅";
+    badge.className = "text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full";
+    icon.textContent = "✨";
+
+    // Power up Pixel Pet Stats
+    updatePixelPetStats();
+
+    showToast(`📚 Module ${modNum} Checked off successfully!`, "success");
+
+    // Check if all 5 completed
+    const allDone = Object.values(completedModules).every(v => v === true);
+    if (allDone) {
+        // Enable Certification Exam Panel
+        const exam = document.getElementById('exam-card');
+        exam.classList.remove('opacity-40', 'pointer-events-none');
+        showToast("🎓 All Courses Completed! The Certification Exam is now Unlocked! 🧠", "success");
+        loadExamQuestion(0);
+        updatePixelPetState("Genius");
+    }
+}
+
+function updatePixelPetStats() {
+    let count = Object.values(completedModules).filter(v => v === true).length;
+    
+    // Max stats on 5 modules
+    const health = 20 + (count * 16);
+    const wisdom = 10 + (count * 18);
+
+    document.getElementById('pet-health-text').textContent = `${health}%`;
+    document.getElementById('pet-health-bar').style.width = `${health}%`;
+
+    document.getElementById('pet-wisdom-text').textContent = `${wisdom}%`;
+    document.getElementById('pet-wisdom-bar').style.width = `${wisdom}%`;
+}
+
+function updatePixelPetState(state) {
+    const statusText = document.getElementById('pet-status');
+    const cells = document.querySelectorAll('.pixel-cell');
+
+    if (state === "Sleeping") {
+        statusText.textContent = "State: Cozy & Sleeping 😴";
+    } else if (state === "Happy") {
+        statusText.textContent = "State: Playful & Active! 😃";
+        // change pixel elements color to represent awake puppy
+        cells.forEach(c => {
+            if (c.classList.contains('pixel-orange')) {
+                c.classList.remove('pixel-orange');
+                c.classList.add('pixel-white');
+            }
+        });
+    } else if (state === "Genius") {
+        statusText.textContent = "State: Super Smart Genius! 🧠";
+        cells.forEach(c => {
+            if (c.classList.contains('pixel-indigo')) {
+                c.classList.remove('pixel-indigo');
+                c.classList.add('pixel-orange');
+            }
+        });
+    }
+}
+
+// Technology Certification Exam Controller
+function loadExamQuestion(qIdx) {
+    examCurrentQuestion = qIdx;
+    if (qIdx >= examQuestions.length) {
+        gradeExamResult();
+        return;
+    }
+
+    const q = examQuestions[qIdx];
+    document.getElementById('exam-score-badge').textContent = `Question ${qIdx + 1} of 10`;
+    document.getElementById('question-text').textContent = q.q;
+
+    // Load Multiple Choice Answers
+    const box = document.getElementById('answer-choices-box');
+    box.innerHTML = "";
+
+    q.a.forEach((choice, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-lego bg-white border-2 border-black hover:bg-stone-50 text-left text-xs font-bold p-3 rounded-xl transition flex justify-between items-center text-slate-800";
+        btn.innerHTML = `<span>${choice}</span> <span class="opacity-0">➡️</span>`;
+        btn.onclick = () => submitExamAnswer(idx);
+        box.appendChild(btn);
+    });
+}
+
+function submitExamAnswer(ansIdx) {
+    const q = examQuestions[examCurrentQuestion];
+    if (ansIdx === q.correct) {
+        examScore++;
+        playSFX('sparkle');
+    } else {
+        playSFX('bubble');
+    }
+
+    // Go to next question
+    loadExamQuestion(examCurrentQuestion + 1);
+}
+
+function gradeExamResult() {
+    const passingGrade = 9; // 90%
+    if (examScore >= passingGrade) {
+        playSFX('correct');
+        showToast("🎓 Brilliant! You passed with a 90%+ score! Unlocking your Certificate!", "success");
+        revealCertificateModal();
+    } else {
+        playSFX('bubble');
+        showToast(`❌ Scored ${examScore}/10. You need a 90% (9 correct) to clear your exam. Let's try again!`, "warning");
+        // Reset and restart
+        examScore = 0;
+        loadExamQuestion(0);
+    }
+}
+
+function revealCertificateModal() {
+    document.getElementById('cert-modal').classList.remove('hidden');
+}
+
+function closeCertModal() {
+    document.getElementById('cert-modal').classList.add('hidden');
+}
+
+// First and Last Name Certificate Validations
+function applyNameToCertificate() {
+    const first = document.getElementById('cert-first-name').value.trim();
+    const last = document.getElementById('cert-last-name').value.trim();
+
+    if (!first || !last) {
+        showToast("⚠️ Please enter both First and Last names to write your seal!", "warning");
+        return;
+    }
+
+    // Lock text fields & print header
+    document.getElementById('cert-name-input-block').classList.add('hidden');
+    
+    const display = document.getElementById('cert-recipient-name');
+    display.textContent = `${first} ${last}`;
+    display.classList.remove('hidden');
+
+    // Enable print triggers
+    const printBtn = document.getElementById('print-cert-btn');
+    printBtn.removeAttribute('disabled');
+    printBtn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
+    printBtn.classList.add('bg-indigo-600', 'text-white', 'hover:bg-indigo-700');
+
+    playSFX('correct');
+    showToast("✍️ Certificate name locked and authenticated!", "success");
+}
+
+// Kids Creator Studio Assets
+function previewCreatorAsset() {
+    const sfx = document.getElementById('kids-sfx-dropdown').value;
+    const asset = document.getElementById('kids-assets-dropdown').value;
+
+    playSFX(sfx);
+    showToast(`🎨 Previewing Pack: [${sfx.toUpperCase()}] and Wallpapers for [${asset}]!`, "success");
+}
+
+function downloadCreatorPack() {
+    const sfx = document.getElementById('kids-sfx-dropdown').value;
+    const asset = document.getElementById('kids-assets-dropdown').value;
+
+    showToast(`📥 Customized Asset Pack Downloaded for Free! Contains: ${sfx}_sound.mp3, ${asset}.png, and app_icons.zip!`, "success");
+}
+
+
+// =========================================================================
+// ==================== SYSTEM GENERAL UTILITIES ==========================
+// =========================================================================
+
 function playSFX(type) {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -3670,7 +3991,6 @@ function playSFX(type) {
             osc.start(now);
             osc.stop(now + 0.25);
         } else if (type === 'correct') {
-            // Arpeggio
             osc.type = 'sine';
             osc.frequency.setValueAtTime(523.25, now); // C5
             osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
@@ -3680,7 +4000,6 @@ function playSFX(type) {
             osc.start(now);
             osc.stop(now + 0.4);
         } else if (type === 'lego') {
-            // Wood block click sound
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(180, now);
             osc.frequency.setValueAtTime(120, now + 0.05);
@@ -3690,57 +4009,9 @@ function playSFX(type) {
             osc.stop(now + 0.08);
         }
     } catch (e) {
-        console.warn("HTML5 Synth oscillator audio context deferred until interactive click.", e);
+        console.warn("AudioContext deferred until click event.", e);
     }
 }
-
-// Interactive Broken Bridge Game Logic Selector
-function selectGameChoice(outcome) {
-    if (outcome === 'Right') {
-        playSFX('correct');
-        const slot = document.getElementById('game-bridge-slot');
-        slot.textContent = "🧠 Haas Thinks";
-        slot.className = "bg-yellow-300 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
-        
-        // Push logging response to kid stream log
-        const log = document.getElementById('kids-stream-log');
-        const p = document.createElement('p');
-        p.className = "text-emerald-600 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left mt-2";
-        p.textContent = "🎉 HURRAY! You picked 'Haas Thinks'! The bridge is fixed and your Lego automation works beautifully! Let's build another!";
-        log.appendChild(p);
-        log.scrollTop = log.scrollHeight;
-
-        showToast("🌟 Beautiful! You completed the logic puzzle bridge!", "success");
-    } else {
-        playSFX('bubble');
-        showToast("🎈 Oops! That logic block didn't fit. Try another block!", "warning");
-    }
-}
-
-// innovation Certificate modal trigger
-function generateInnovationCertificate() {
-    playSFX('correct');
-    
-    // Populate dynamic user metrics
-    document.getElementById('cert-recipient-name').textContent = userName || "Young Innovator";
-    
-    // Set current formatted date
-    const opt = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateText = new Date().toLocaleDateString('en-US', opt);
-    document.getElementById('cert-date-text').textContent = `Official Seal Authenticated on ${dateText}`;
-
-    // Reveal certificate modal
-    const modal = document.getElementById('cert-modal');
-    modal.classList.remove('hidden');
-}
-
-function closeCertModal() {
-    document.getElementById('cert-modal').classList.add('hidden');
-}
-
-// =========================================================================
-// ==================== SYSTEM GENERAL UTILITIES ==========================
-// =========================================================================
 
 function showToast(message, type = "success") {
     const container = document.getElementById('toast-container');
@@ -3760,12 +4031,10 @@ function showToast(message, type = "success") {
     toast.textContent = message;
     container.appendChild(toast);
 
-    // Bouncy reveal
     setTimeout(() => {
         toast.classList.remove('translate-x-12', 'opacity-0');
     }, 10);
 
-    // Automatically prune
     setTimeout(() => {
         toast.classList.add('translate-x-12', 'opacity-0');
         setTimeout(() => {

@@ -1,30 +1,91 @@
-// Haas Playground Dynamic Controller - Hoosier AI Automations
+// Hoosier AI Automations - Haas Playground Controller
+let userName = '';
 let userRole = '';
 let userIntent = '';
-let userName = '';
 let userAge = 18;
 
-// PWA Install Event Handler
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // Show custom installation banner
-    const banner = document.getElementById('pwa-install-banner');
-    if (banner) banner.classList.remove('hidden');
-});
+// Academy Modules Tracker
+let completedModules = {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false
+};
+
+// Exam State Tracker
+let examCurrentQuestion = 0;
+let examScore = 0;
+const examQuestions = [
+    {
+        q: "1. What is an automation workflow?",
+        a: ["A type of running shoes", "A series of steps that automates a task automatically", "Homework assigned on weekends", "A streaming music app"],
+        correct: 1
+    },
+    {
+        q: "2. What is a software integration?",
+        a: ["Deleting computer files", "Connecting two or more apps so they can talk to each other", "A phone screen protector", "A coding keyboard"],
+        correct: 1
+    },
+    {
+        q: "3. What is an app?",
+        a: ["A quick nap during the day", "An apple pie slice", "A software application that performs a specific function on your device", "The computer charger"],
+        correct: 2
+    },
+    {
+        q: "4. What is a URL used for?",
+        a: ["Unlocking your door", "A web address pointing to a specific page on the Internet", "Recording sounds", "Drawing rectangles"],
+        correct: 1
+    },
+    {
+        q: "5. What is a prompt?",
+        a: ["Arriving exactly on time", "An instruction or question you give to an AI to tell it what to do", "A type of battery", "A web browser"],
+        correct: 1
+    },
+    {
+        q: "6. What is SaaS?",
+        a: ["Talking back to your teachers", "Software as a Service - software hosted on the web that you use online", "A system for printing paper", "A video gaming console"],
+        correct: 1
+    },
+    {
+        q: "7. How do Ads help companies sell products?",
+        a: ["By hiding products in secret boxes", "By informing people about a product and showing its value", "By turning off the internet", "By changing the logo colors"],
+        correct: 1
+    },
+    {
+        q: "8. Which one of these is a type of software integration?",
+        a: ["Plugging in headphones", "Connecting Shopify to Slack to notify you of sales", "Painting your computer", "Writing on a whiteboard"],
+        correct: 1
+    },
+    {
+        q: "9. What is Artificial Intelligence (AI)?",
+        a: ["A metal robot that cleans your room", "Smart computer systems that can think, learn, and solve problems like humans", "An internet cable", "A math textbook"],
+        correct: 1
+    },
+    {
+        q: "10. Name things you've learned! (Freebie)",
+        a: ["Coding is boring and hard", "How workflows, apps, and software integrations help automate business tasks!", "Absolutely nothing at all", "How to eat cookies"],
+        correct: 1
+    }
+];
+
+// =========================================================================
+// ==================== ONBOARDING FLOW ACTIONS ============================
+// =========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('Service Worker Registered Successfully! Scope:', reg.scope))
-            .catch(err => console.error('Service Worker Registration Failed:', err));
+            .then(reg => console.log('Service Worker Registered scope:', reg.scope))
+            .catch(err => console.error('Service Worker fail:', err));
     }
 
     // Populate Age Dropdown Selector dynamically
     const ageSelect = document.getElementById('user-age-select');
     if (ageSelect) {
+        // Clear any previous mockup content
+        ageSelect.innerHTML = '<option value="" disabled selected>Choose Your Age</option>';
         for (let i = 10; i <= 80; i++) {
             const opt = document.createElement('option');
             opt.value = i;
@@ -38,49 +99,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Bind PWA Install triggers
-    const installBtn = document.getElementById('pwa-install-btn');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to PWA prompt: ${outcome}`);
-                deferredPrompt = null;
-                document.getElementById('pwa-install-banner').classList.add('hidden');
-            }
-        });
-    }
-
-    const dismissBtn = document.getElementById('pwa-dismiss');
-    if (dismissBtn) {
-        dismissBtn.addEventListener('click', () => {
-            document.getElementById('pwa-install-banner').classList.add('hidden');
-        });
-    }
-
-    // Initial default calculations
+    // Setup initial calculations
     calculateROI();
 });
-
-// =========================================================================
-// ==================== ONBOARDING FLOW ACTIONS ============================
-// =========================================================================
 
 function selectRole(role) {
     userRole = role;
     
-    // Highlight selected card
+    // Highlight role card border
     document.querySelectorAll('.role-card').forEach(card => {
-        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/10');
         card.classList.add('border-stone-200/60');
     });
     
-    const selectedCard = event.currentTarget;
-    selectedCard.classList.remove('border-stone-200/60');
-    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
+    const card = event.currentTarget;
+    card.classList.remove('border-stone-200/60');
+    card.classList.add('border-indigo-600', 'bg-indigo-50/10');
 
-    // Dynamic response messages
+    // Display localized feedback
     const feedbackBox = document.getElementById('role-feedback-box');
     const feedbackText = document.getElementById('role-feedback-text');
     feedbackBox.classList.remove('hidden');
@@ -88,31 +124,31 @@ function selectRole(role) {
     let text = "";
     switch (role) {
         case "Founder/Owner":
-            text = "🚀 Awesome choice! As a Founder or Owner, we'll customize your dashboard to focus on ROI calculation, time-saving metrics, and production-ready pipelines.";
+            text = "🚀 Excellent! As a business founder/owner, we will structure your console to demonstrate operational ROI, human payback speeds, and workflow translations.";
             break;
         case "Developer":
-            text = "💻 Welcome, engineer! The Professional Console will provide raw JSON schemas, API mapping tools, and advanced integration blueprints.";
+            text = "💻 Welcome, engineer! The console provides real-time flowchart renders, database webhook maps, and multi-channel integration options.";
             break;
         case "Innovator":
-            text = "🧠 Brilliant! As an Innovator, you'll be shown futuristic automation frameworks to spark creative design patterns and logic streams.";
+            text = "🧠 Outstanding! Discover state-of-the-art AI architectures, document processors, and automated tracking modules.";
             break;
         case "Marketer":
-            text = "📣 Marketing expert! We will pre-load lead response, CRM syncing, and stock monitoring pipelines built to keep clients engaged.";
+            text = "📣 Marketing specialist! Focus on instantaneous lead form responder pipelines, CRM synchronizers, and Shopify low-stock alert triggers.";
             break;
         case "Student":
-            text = "🎓 Great! We'll gear your workspace toward interactive educational tools to simplify how apps connect and perform algorithms.";
+            text = "🎓 Fantastic! Welcome to our coding workspace. Learn how databases, triggers, and actions talk to each other without jargon.";
             break;
         case "Start-Up":
-            text = "⚡ Speed is key! As a Start-Up focus, we'll demonstrate lightweight automations that replace full departments on a shoestring budget.";
+            text = "⚡ Speed is key! Explore lightweight architectures that replace hundreds of weekly administrative hours on autopilot.";
             break;
     }
     feedbackText.textContent = text;
 
-    // Enable continue button
+    // Enable continue trigger
     const btn = document.getElementById('btn-continue-step-1');
     btn.removeAttribute('disabled');
     btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
-    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+    btn.classList.add('bg-indigo-600', 'text-white', 'cursor-pointer', 'hover:bg-indigo-700', 'shadow');
 }
 
 function selectIntent(intent) {
@@ -120,15 +156,15 @@ function selectIntent(intent) {
     
     // Highlight intent card
     document.querySelectorAll('.intent-card').forEach(card => {
-        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/10');
         card.classList.add('border-stone-200/60');
     });
     
-    const selectedCard = event.currentTarget;
-    selectedCard.classList.remove('border-stone-200/60');
-    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
+    const card = event.currentTarget;
+    card.classList.remove('border-stone-200/60');
+    card.classList.add('border-indigo-600', 'bg-indigo-50/10');
 
-    // Intent feedback responses
+    // Display intent feedback
     const feedbackBox = document.getElementById('intent-feedback-box');
     const feedbackText = document.getElementById('intent-feedback-text');
     feedbackBox.classList.remove('hidden');
@@ -136,40 +172,38 @@ function selectIntent(intent) {
     let text = "";
     switch (intent) {
         case "Playground":
-            text = "🎠 Perfect! You're entering the live playground dashboard where you can stress-test automations, stream thoughts, and customize layouts.";
+            text = "🎠 Perfect choice! You are entering the Haas Live Playground workspace where you can preview automations and simulate stress tests.";
             break;
         case "Workflows":
-            text = "🔗 Heavy duty design! We'll render structured network paths showing how data moves across standard platforms secure and fast.";
+            text = "🔗 Technical mapping! Let's examine real-world bottlenecks translated into streamlined, sequential flowchart actions.";
             break;
         case "Fun":
-            text = "🎪 Pure curiosity! Relax and explore. You can play custom built logic games, trigger sound effects, and claim visual rewards.";
+            text = "🎪 Creativity first! Enjoy logic bridge puzzles, synthesize your own sound tracks, and claim custom innovation credentials.";
             break;
         case "NotSure":
-            text = "🧭 No problem! We'll load simple and friendly preset blueprints to guide you through what Haas automations make possible.";
+            text = "🧭 No worries! We will pre-load friendly, pre-configured templates to guide you through the process step-by-step.";
             break;
     }
     feedbackText.textContent = text;
 
-    // Enable continue button
+    // Enable step continue button
     const btn = document.getElementById('btn-continue-step-2');
     btn.removeAttribute('disabled');
     btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
-    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+    btn.classList.add('bg-indigo-600', 'text-white', 'cursor-pointer', 'hover:bg-indigo-700', 'shadow');
 }
 
 function nextStep(stepNumber) {
-    // Hide all steps
+    // Toggle wizard steps
     document.getElementById('onboarding-step-1').classList.add('hidden');
     document.getElementById('onboarding-step-2').classList.add('hidden');
     document.getElementById('onboarding-step-3').classList.add('hidden');
 
-    // Show selected step
     document.getElementById(`onboarding-step-${stepNumber}`).classList.remove('hidden');
 
-    // Update progress bar & headers
     const fill = document.getElementById('progress-bar-fill');
     const counter = document.getElementById('step-counter');
-    
+
     if (stepNumber === 1) {
         fill.style.width = "33.33%";
         counter.textContent = "Step 1 of 3";
@@ -187,303 +221,349 @@ function completeOnboarding() {
     const ageSelect = document.getElementById('user-age-select');
 
     if (!nameInput.value.trim()) {
-        showToast("⚠️ Please enter your name!", "warning");
+        showToast("⚠️ Please enter your name to authenticate the playground!", "warning");
         nameInput.focus();
         return;
     }
 
     userName = nameInput.value.trim();
-    userAge = parseInt(ageSelect.value);
+    userAge = parseInt(ageSelect.value) || 18;
 
-    // Hide wizard flow
+    // Transition off wizard
     document.getElementById('onboarding-stage').classList.add('hidden');
     
-    // Display actual workspace console
-    const dashboard = document.getElementById('playground-dashboard');
-    dashboard.classList.remove('hidden');
+    // Reveal dashboard console
+    document.getElementById('playground-dashboard').classList.remove('hidden');
 
     if (userAge >= 18) {
-        // Adult Professional Track
+        // Adult Professional Studio
         document.getElementById('professional-dashboard').classList.remove('hidden');
-        showToast(`🎉 Welcome to Pro Studio, ${userName}!`, "success");
+        showToast(`💼 Welcome to Executive Studio, ${userName}!`, "success");
         initProfessionalConsole();
     } else {
         // Youth Innovator Track
         document.getElementById('young-innovator-dashboard').classList.remove('hidden');
-        showToast(`🎈 Welcome, Young Innovator ${userName}!`, "success");
+        showToast(`🎈 Welcome, Young Innovator ${userName}! Let's build!`, "success");
         initYouthPlayground();
     }
 }
 
+
 // =========================================================================
-// ==================== PROFESSIONAL STUDIO CONSOLE (18+) ==================
+// ==================== EXECUTIVE PROFESSIONAL CONSOLE ====================
 // =========================================================================
 
-let proStreamLogs = [];
-const proBlueprints = {
-    RealEstate: {
-        title: "🏡 Real Estate Lead Generation Pipeline",
+// High-fidelity pipeline parameters matching requirements
+const businessScenarios = {
+    SME_Scheduling: {
+        title: "Retail Scheduling Automated Sync",
+        catch: "Customer books appointment via your online form.",
+        decision: "Haas AI filters available calendar blocks and staff availability.",
+        action: "Saves details to central system and auto-sends SMS pings.",
+        result: "Manual schedule management and client follow-ups cut by 100%.",
         nodes: [
-            { text: "Lead Enters Form", x: 100, y: 225, type: "trigger" },
-            { text: "Filter & Validate", x: 260, y: 225, type: "action" },
-            { text: "Sync CRM Contact", x: 420, y: 225, type: "action" },
-            { text: "Notify Agent SMS", x: 580, y: 150, type: "action" },
-            { text: "Trigger Lead Nurture", x: 580, y: 300, type: "action" }
+            { text: "Trigger Form Book", x: 100, y: 200, type: "trigger" },
+            { text: "AI Calendar Parse", x: 300, y: 150, type: "decision" },
+            { text: "Save Central DB", x: 500, y: 200, type: "action" },
+            { text: "Twilio SMS Ping", x: 700, y: 200, type: "result" }
         ],
-        connections: [[0, 1], [1, 2], [2, 3], [2, 4]],
-        json: {
-            pipeline_name: "Real_Estate_Leads_V1",
-            trigger_node: "Web_Form_Submit",
-            filters: ["address_exists", "phone_verified"],
-            crm_target: "Firebase_DB",
-            notifiers: ["Twilio_SMS_Agent", "Sendgrid_Email_Lead_Nurture"]
-        }
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: false
     },
-    Logistics: {
-        title: "🚛 Smart Logistics & Routing Pipeline",
+    SME_Dispatch: {
+        title: "Logistics Automated Fleet Dispatch",
+        catch: "New load dispatcher assigns routing details.",
+        decision: "Haas evaluates active driver geographic boundary zones.",
+        action: "Sends exact coordinates to the closest driver's terminal.",
+        result: "Eliminated driver idle intervals, boosting delivery speeds 3x.",
         nodes: [
-            { text: "GPS Location Pulse", x: 80, y: 225, type: "trigger" },
-            { text: "Geofence Check", x: 230, y: 150, type: "action" },
-            { text: "Validate Delivery Status", x: 380, y: 225, type: "action" },
-            { text: "ETA Prediction API", x: 530, y: 225, type: "action" },
-            { text: "Notify Customer SMS", x: 680, y: 225, type: "action" }
+            { text: "Order Dispatched", x: 100, y: 200, type: "trigger" },
+            { text: "Geofence Check", x: 300, y: 150, type: "decision" },
+            { text: "Terminal Coordinates", x: 500, y: 200, type: "action" },
+            { text: "Live Delivery Route", x: 700, y: 200, type: "result" }
         ],
-        connections: [[0, 1], [0, 2], [2, 3], [3, 4]],
-        json: {
-            pipeline_name: "Logistics_Smart_Route",
-            trigger_node: "GPS_Ping",
-            geofence_boundary_miles: 5,
-            prediction_algorithm: "ETA_Random_Forest",
-            notifiers: ["Twilio_SMS_Customer_ETA"]
-        }
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: false
     },
-    Retail: {
-        title: "🛒 Retail Inventory Low-Stock Sync",
+    SME_Responder: {
+        title: "Fast Lead Form Autopilot Response",
+        catch: "Lead completes form request on website.",
+        decision: "Haas analyzes inquiry coordinates and client parameters.",
+        action: "Instantly generates and emails a custom operational brief.",
+        result: "Inbound response delay cut to 3 minutes, tripling sales closed.",
         nodes: [
-            { text: "Item Sold Shopify", x: 100, y: 225, type: "trigger" },
-            { text: "Database Count Check", x: 260, y: 225, type: "action" },
-            { text: "Construct PO Order", x: 420, y: 150, type: "action" },
-            { text: "Notify Wholesale API", x: 580, y: 225, type: "action" },
-            { text: "Slack Alert low stock", x: 580, y: 300, type: "action" }
+            { text: "Lead Submission", x: 100, y: 200, type: "trigger" },
+            { text: "Inquiry Analysis", x: 300, y: 150, type: "decision" },
+            { text: "Generate Brief", x: 500, y: 200, type: "action" },
+            { text: "Outbox Email Send", x: 700, y: 200, type: "result" }
         ],
-        connections: [[0, 1], [1, 2], [2, 3], [1, 4]],
-        json: {
-            pipeline_name: "Shopify_Low_Stock_Sync",
-            trigger_node: "Shopify_Webhook_Order",
-            threshold: 15,
-            auto_wholesale_purchase: true,
-            alert_channels: ["Slack_Operations"]
-        }
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: false
+    },
+    ENT_Inventory: {
+        title: "ERP Multi-Channel Inventory Synchronizer",
+        catch: "Stock inventory levels update inside main warehouse ERP database.",
+        decision: "Haas evaluates stock thresholds across active products.",
+        action: "Coordinates dynamic stock counts on Shopify, Amazon, and eBay.",
+        result: "Cut multi-channel over-selling margins to absolutely 0.0%.",
+        nodes: [
+            { text: "Warehouse ERP Ingest", x: 100, y: 200, type: "trigger" },
+            { text: "Threshold Check", x: 300, y: 150, type: "decision" },
+            { text: "Shopify Sync Multi", x: 500, y: 200, type: "action" },
+            { text: "Live Stock Update", x: 700, y: 200, type: "result" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: true
+    },
+    ENT_Telemetry: {
+        title: "Fleet Telemetry Hub & Tracking Engine",
+        catch: "Active heavy freight fleet routes geofenced boundaries.",
+        decision: "Engine parses vehicular load weight and fuel coefficients.",
+        action: "Streams routing coordinates to operational dashboards.",
+        result: "Maximized routing efficiencies, shaving thousands off freight costs.",
+        nodes: [
+            { text: "GPS Boundary Ingest", x: 100, y: 200, type: "trigger" },
+            { text: "Load Coefficient AI", x: 300, y: 150, type: "decision" },
+            { text: "Dashboard Publish", x: 500, y: 200, type: "action" },
+            { text: "Freight Optimized", x: 700, y: 200, type: "result" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: true
+    },
+    ENT_Processor: {
+        title: "AI Document Processor & Invoicer",
+        catch: "PDF digital invoice arrives inside operations inbox folder.",
+        decision: "Optical AI extracts matching supplier, pricing, and VAT details.",
+        action: "Generates accounting ledger record and fires auto-reconcile triggers.",
+        result: "Cut business invoicing labor costs by a verified 82%.",
+        nodes: [
+            { text: "Inbound PDF Mail", x: 100, y: 200, type: "trigger" },
+            { text: "Optical Extract AI", x: 300, y: 150, type: "decision" },
+            { text: "Reconcile Ledger", x: 500, y: 200, type: "action" },
+            { text: "Financial Audited", x: 700, y: 200, type: "result" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3]],
+        premium: true
     }
 };
 
 function initProfessionalConsole() {
-    loadIndustryTemplate();
+    // Load default scenario
+    triggerPresetScenario('SME_Scheduling');
 }
 
-function loadIndustryTemplate() {
-    const selected = document.getElementById('industry-selector').value;
-    const blueprint = proBlueprints[selected];
+function loadBusinessScenario(type) {
+    const selector = type === 'sme' ? document.getElementById('sme-selector') : document.getElementById('ent-selector');
+    const selected = selector.value;
+    if (selected) {
+        triggerPresetScenario(selected);
+        // Clear opposing selector
+        const opposing = type === 'sme' ? document.getElementById('ent-selector') : document.getElementById('sme-selector');
+        opposing.selectedIndex = 0;
+    }
+}
+
+function triggerPresetScenario(scKey) {
+    const sc = businessScenarios[scKey];
+    if (!sc) return;
+
+    // Update non-technical Human Roadmap headers
+    document.getElementById('catch-text').textContent = sc.catch;
+    document.getElementById('decision-text').textContent = sc.decision;
+    document.getElementById('action-text').textContent = sc.action;
+    document.getElementById('result-text').textContent = sc.result;
+
+    // Manage Premium locked paywall blurring
+    const overlay = document.getElementById('stripe-lock-overlay');
+    const canvas = document.getElementById('blueprint-canvas');
+
+    if (sc.premium) {
+        overlay.classList.remove('hidden');
+        canvas.classList.add('paywall-blur');
+    } else {
+        overlay.classList.add('hidden');
+        canvas.classList.remove('paywall-blur');
+    }
+
+    // Trigger canvas logic flow drawing
+    drawProfessionalFlowchart(sc);
+    showToast(`📍 Loaded: ${sc.title}`, "success");
+}
+
+function translateCustomProblem() {
+    const input = document.getElementById('custom-problem-input').value.trim();
+    if (!input) {
+        showToast("⚠️ Please enter a custom operational problem to translate!", "warning");
+        return;
+    }
+
+    const lower = input.toLowerCase();
+    let selectedScenario = 'SME_Responder'; // fallback default
+
+    if (lower.includes('schedule') || lower.includes('calendar') || lower.includes('appointment')) {
+        selectedScenario = 'SME_Scheduling';
+    } else if (lower.includes('dispatch') || lower.includes('driver') || lower.includes('freight') || lower.includes('delivery')) {
+        selectedScenario = 'SME_Dispatch';
+    } else if (lower.includes('lead') || lower.includes('sale') || lower.includes('form') || lower.includes('customer')) {
+        selectedScenario = 'SME_Responder';
+    } else if (lower.includes('inventory') || lower.includes('stock') || lower.includes('warehouse')) {
+        selectedScenario = 'ENT_Inventory';
+    } else if (lower.includes('invoice') || lower.includes('invoice') || lower.includes('pdf') || lower.includes('reconcile')) {
+        selectedScenario = 'ENT_Processor';
+    }
+
+    // Build bespoke translation matching user input
+    const baseScenario = businessScenarios[selectedScenario];
     
-    // Set title
-    document.getElementById('blueprint-title').textContent = blueprint.title;
+    document.getElementById('catch-text').textContent = `Your custom bottleneck: "${input}" triggers automated sensors.`;
+    document.getElementById('decision-text').textContent = baseScenario.decision;
+    document.getElementById('action-text').textContent = baseScenario.action;
+    document.getElementById('result-text').textContent = `Eliminates manual task overhead and saves 10-15+ hours weekly.`;
 
-    // Set JSON Preview
-    document.getElementById('json-preview').textContent = JSON.stringify(blueprint.json, null, 2);
+    const overlay = document.getElementById('stripe-lock-overlay');
+    const canvas = document.getElementById('blueprint-canvas');
 
-    // Stream logs to thinking terminal
-    proStreamLogs = [
-        `[SYSTEM]: Initializing Haas Logic Engine for ${selected}...`,
-        `[ANALYSIS]: Identifying manual bottlenecks in system paths...`,
-        `[ACTION]: Mapping active trigger payload parameters...`,
-        `[VERIFY]: Resolving system webhooks and verifying APIs...`,
-        `[SUCCESS]: Blueprint compiled successfully.`
-    ];
-    streamTerminalLogs();
+    if (baseScenario.premium) {
+        overlay.classList.remove('hidden');
+        canvas.classList.add('paywall-blur');
+    } else {
+        overlay.classList.add('hidden');
+        canvas.classList.remove('paywall-blur');
+    }
 
-    // Render on Canvas
-    drawProfessionalBlueprint(blueprint);
+    drawProfessionalFlowchart(baseScenario);
+    showToast("✨ Custom Bottleneck Translated Successfully!", "success");
 }
 
-function drawProfessionalBlueprint(blueprint) {
+function drawProfessionalFlowchart(sc) {
     const canvas = document.getElementById('blueprint-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw lines
-    ctx.lineWidth = 2.5;
-    blueprint.connections.forEach(conn => {
-        const from = blueprint.nodes[conn[0]];
-        const to = blueprint.nodes[conn[1]];
-        
-        ctx.strokeStyle = "#818CF8"; // Indigo
+    // Draw grid coordinate lines
+    ctx.strokeStyle = "rgba(0, 28, 72, 0.03)";
+    ctx.lineWidth = 1;
+    for (let x = 0; x < canvas.width; x += 30) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
+
+    // Draw active data path connectors (Hoosier Indigo)
+    ctx.lineWidth = 3;
+    sc.connections.forEach(conn => {
+        const from = sc.nodes[conn[0]];
+        const to = sc.nodes[conn[1]];
+
+        ctx.strokeStyle = "#4F46E5";
         ctx.beginPath();
         ctx.moveTo(from.x, from.y);
         ctx.lineTo(to.x, to.y);
         ctx.stroke();
 
-        // Draw arrow tip
-        const angle = Math.atan2(to.y - from.y, to.x - from.x);
-        ctx.fillStyle = "#818CF8";
+        // Draw animated data flow pulses
+        const now = Date.now();
+        const pct = (now % 2000) / 2000;
+        const pulseX = from.x + (to.x - from.x) * pct;
+        const pulseY = from.y + (to.y - from.y) * pct;
+
+        ctx.fillStyle = "#F59E0B"; // Gold active pulse
         ctx.beginPath();
-        ctx.arc(to.x - 10 * Math.cos(angle), to.y - 10 * Math.sin(angle), 5, 0, Math.PI * 2);
+        ctx.arc(pulseX, pulseY, 5, 0, Math.PI * 2);
         ctx.fill();
     });
 
-    // Draw nodes
-    blueprint.nodes.forEach(node => {
-        ctx.fillStyle = node.type === "trigger" ? "#4F46E5" : "#FAF9F5";
-        ctx.strokeStyle = "#4F46E5";
+    // Draw clean geometric outline nodes
+    sc.nodes.forEach(node => {
+        ctx.strokeStyle = "#001C48"; // Hoosier Indigo
         ctx.lineWidth = 3;
 
-        // Rounded card draw
-        drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 12, node.type === "trigger", true);
+        if (node.type === "trigger") {
+            ctx.fillStyle = "#001C48";
+            // Rounded RectangleTrigger
+            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 10, true, true);
+            ctx.fillStyle = "#FFFFFF";
+        } else if (node.type === "decision") {
+            ctx.fillStyle = "#FAF9F5";
+            // Diamond Decision Node
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y - 30);
+            ctx.lineTo(node.x + 70, node.y);
+            ctx.lineTo(node.x, node.y + 30);
+            ctx.lineTo(node.x - 70, node.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = "#001C48";
+        } else if (node.type === "action") {
+            ctx.fillStyle = "#FAF9F5";
+            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 10, true, true);
+            ctx.fillStyle = "#001C48";
+        } else {
+            // Result Node (Pill style)
+            ctx.fillStyle = "#EEF2FF";
+            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 25, true, true);
+            ctx.fillStyle = "#4F46E5";
+        }
 
-        // Text print
-        ctx.fillStyle = node.type === "trigger" ? "#FFFFFF" : "#1E293B";
-        ctx.font = "bold 11px 'Inter', sans-serif";
+        // Render text without jargon
+        ctx.font = "bold 10px 'Inter', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(node.text, node.x, node.y);
     });
 }
 
-function drawRoundedRect(ctx, x, y, width, height, radius, fill, stroke) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    if (fill) ctx.fill();
-    if (stroke) ctx.stroke();
-}
-
-function streamTerminalLogs() {
-    const term = document.getElementById('terminal-stream-log');
-    term.innerHTML = "";
-    let i = 0;
-
-    function addLog() {
-        if (i < proStreamLogs.length) {
-            const p = document.createElement('p');
-            if (proStreamLogs[i].includes('SUCCESS')) {
-                p.className = 'text-white font-bold tracking-wide border-l-2 border-indigo-500 pl-2';
-            } else if (proStreamLogs[i].includes('SYSTEM')) {
-                p.className = 'text-indigo-300 font-medium';
-            } else {
-                p.className = 'text-sky-200';
-            }
-            p.textContent = proStreamLogs[i];
-            term.appendChild(p);
-            term.scrollTop = term.scrollHeight;
-            i++;
-            setTimeout(addLog, 450);
-        } else {
-            const cursor = document.createElement('div');
-            cursor.className = 'w-2.5 h-4 bg-sky-300 inline-block animate-pulse mt-1';
-            term.appendChild(cursor);
-        }
-    }
-    addLog();
-}
-
-// 1,000 Task Stress Test Simulator
-function simulateStressTest() {
-    const overlay = document.getElementById('stress-test-overlay');
-    overlay.classList.remove('hidden');
-
-    let count = 0;
-    const ring = document.getElementById('stress-progress-ring');
-    const countText = document.getElementById('stress-counter-text');
-    const logText = document.getElementById('stress-log-text');
-    
-    // Add logs to terminal in the background
-    const term = document.getElementById('terminal-stream-log');
-    const p = document.createElement('p');
-    p.className = 'text-yellow-300 font-bold';
-    p.textContent = `[STRESS TEST]: Commencing 1,000 tasks simulation pipeline run...`;
-    term.appendChild(p);
-
-    const interval = setInterval(() => {
-        if (count < 1000) {
-            count += 40;
-            if (count > 1000) count = 1000;
-            
-            // Progress ring calculation
-            const pct = count / 1000;
-            const offset = 251.2 - (251.2 * pct);
-            ring.style.strokeDashoffset = offset;
-            
-            countText.textContent = count;
-            logText.textContent = `Tasks generated: ${count} / 1000`;
-            
-            if (count % 200 === 0) {
-                const subP = document.createElement('p');
-                subP.className = 'text-sky-100 font-mono text-[10px] pl-2';
-                subP.textContent = `⚡ [STRESS] Simulating concurrency block load: ${count} payloads successfully completed.`;
-                term.appendChild(subP);
-                term.scrollTop = term.scrollHeight;
-            }
-        } else {
-            clearInterval(interval);
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                showToast("✅ Concurrency Stress Test Completed! 0 Failures detected.", "success");
-                
-                const finalP = document.createElement('p');
-                finalP.className = 'text-emerald-300 font-bold';
-                finalP.textContent = `[STRESS COMPLETED]: 1,000 / 1,000 loops finished securely in 2.5s. Ready.`;
-                term.appendChild(finalP);
-                term.scrollTop = term.scrollHeight;
-            }, 600);
-        }
-    }, 100);
-}
-
-// Time-To-Value ROI Calculator logic
+// ROI Calculator Comparison Calculations
 function calculateROI() {
     const rate = parseFloat(document.getElementById('roi-rate').value) || 0;
     const hours = parseFloat(document.getElementById('roi-hours').value) || 0;
 
-    const yearlyManual = rate * hours * 52;
+    const manualYearly = rate * hours * 52;
     const manualCostText = document.getElementById('roi-manual-cost');
     const manualBar = document.getElementById('roi-manual-bar');
     const paybackText = document.getElementById('roi-payback-days');
 
-    // Display formatted cost
-    manualCostText.textContent = yearlyManual.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    manualCostText.textContent = manualYearly.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
-    // Animate manual bar relative to maximum height representation
-    const maxVal = 50000;
-    const percentage = Math.min((yearlyManual / maxVal) * 100, 100);
-    manualBar.style.width = `${percentage}%`;
+    const maxVal = 40000;
+    const pct = Math.min((manualYearly / maxVal) * 100, 100);
+    manualBar.style.width = `${pct}%`;
 
-    // Payback day threshold crossover point representation
-    if (yearlyManual > 0) {
-        // Haas SaaS pipeline setup costs fixed $300 + hosting $25/mo
-        const baseCost = 600; 
+    if (manualYearly > 0) {
+        const haasSaaSYearly = 600;
         const dailySavings = (rate * hours) / 7;
-        const paybackDays = Math.ceil(baseCost / dailySavings);
-        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Less than a Year";
+        const paybackDays = Math.ceil(haasSaaSYearly / dailySavings);
+        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Under 1 Year";
     } else {
         paybackText.textContent = "0 Days";
     }
 }
 
-// Paywall vault trigger
-function triggerExportPayment() {
-    showToast("💳 Redirecting to Stripe Secure Portal Checkout...", "success");
-    setTimeout(() => {
-        // Mock success callback scenario
-        showToast("✨ Payment Completed! Downloading standard blueprint package containing JSON schematics...", "success");
-    }, 2000);
+// Stripe Simulation triggers
+function simulateStripeCheckout() {
+    document.getElementById('stripe-checkout-modal').classList.remove('hidden');
+}
+
+function closeStripeModal() {
+    document.getElementById('stripe-checkout-modal').classList.add('hidden');
+}
+
+function completeStripeTransaction() {
+    closeStripeModal();
+    showToast("💳 Stripe Secure Transaction Complete! Generating Strategy Package...", "success");
+    
+    // Unlock blurred canvas & trigger success path download
+    document.getElementById('stripe-lock-overlay').classList.add('hidden');
+    document.getElementById('blueprint-canvas').classList.remove('paywall-blur');
 }
 
 
@@ -491,129 +571,313 @@ function triggerExportPayment() {
 // ==================== YOUNG INNOVATOR TRACK (17 & UNDER) =================
 // =========================================================================
 
-const kidsBlueprints = {
-    Homework: {
-        title: "📚 Homework Hero Magic Chain",
-        nodes: [
-            { text: "🏫 Posts Homework", x: 100, y: 225 },
-            { text: "🧩 Sort in Planner", x: 300, y: 225 },
-            { text: "📱 Call Phone Reminder", x: 500, y: 225 }
-        ],
-        logs: [
-            "🎈 Initializing Homework Hero pipeline...",
-            "🧱 Snapping 'Posts Homework' blocks into 'Sort in Planner' nodes...",
-            "🌟 Success! Your robot assistant is set up to phone you alerts!"
-        ]
+// Kid Game Multi-level Configurations responsive to selected age group
+const levelPuzzles = {
+    Beginner: {
+        label: "Ages 10-12 (Beginner)",
+        badge: "Level 1: Beginner",
+        desc: "Build a trigger communication bridge to log tasks.",
+        elements: { trigger: "📧 New Message", action: "📅 Save to Calendar" },
+        choices: ["🎨 Draw Picture", "🧠 Haas Thinks", "🎈 Blow Up Balloon"],
+        correct: 1
     },
-    Pet: {
-        title: "🤖 My AI Robot Pet Companion",
-        nodes: [
-            { text: "💬 Ask Robot Pet", x: 100, y: 225 },
-            { text: "🧠 Think Prompt", x: 300, y: 225 },
-            { text: "📣 Fun Speech Voice", x: 500, y: 225 }
-        ],
-        logs: [
-            "🔮 Training mini assistant helper robot pet...",
-            "🌟 Give him a personality wizard, funny alien, or helpful robot!",
-            "🎉 Your virtual pet is active! Click creator board to hear him speak."
-        ]
+    Intermediate: {
+        label: "Ages 13-15 (Intermediate)",
+        badge: "Level 2: Intermediate",
+        desc: "Construct conditional branches to process inventory.",
+        elements: { trigger: "🛒 Item Ordered", action: "🧠 Condition Split", action2: "📦 Ship Product" },
+        choices: ["Write Essay", "Haas Syncs Database", "Play Basketball"],
+        correct: 1
     },
-    Creator: {
-        title: "🎨 Kids Digital Designer Space",
-        nodes: [
-            { text: "📐 Drag Shape", x: 100, y: 225 },
-            { text: "🎨 Choose Colors", x: 300, y: 225 },
-            { text: "📥 Save Poster", x: 500, y: 225 }
-        ],
-        logs: [
-            "🧸 Loading Design Space Assets...",
-            "🎈 Preparing wallpapers, icon packs, and custom notification tones...",
-            "✨ Grab your Innovation Certificate below to download!"
-        ]
+    Advanced: {
+        label: "Ages 16-17 (Advanced)",
+        badge: "Level 3: Advanced",
+        desc: "Design real-time API integrations and loops.",
+        elements: { trigger: "📈 Lead Ingest", action: "📊 Sync Hub", action2: "📱 SMS Notify" },
+        choices: ["Bake Bread", "Haas API Connector", "Do Homework"],
+        correct: 1
     }
 };
 
 function initYouthPlayground() {
-    loadKidsTemplate();
-}
-
-function loadKidsTemplate() {
-    const selected = document.getElementById('kids-toolkit-selector').value;
-    const blueprint = kidsBlueprints[selected];
-    
-    document.getElementById('kids-canvas-title').textContent = blueprint.title;
-
-    // Load logs
-    const logContainer = document.getElementById('kids-stream-log');
-    logContainer.innerHTML = "";
-    blueprint.logs.forEach(msg => {
-        const p = document.createElement('p');
-        p.className = "text-slate-800 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left";
-        p.textContent = msg;
-        logContainer.appendChild(p);
-    });
-
-    drawKidsBlueprint(blueprint);
-}
-
-function drawKidsBlueprint(blueprint) {
-    const canvas = document.getElementById('kids-blueprint-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw bubbly lego dots background
-    ctx.fillStyle = "rgba(0,0,0,0.03)";
-    for (let x = 12; x < canvas.width; x += 24) {
-        for (let y = 12; y < canvas.height; y += 24) {
-            ctx.beginPath();
-            ctx.arc(x, y, 3, 0, Math.PI * 2);
-            ctx.fill();
-        }
+    // Customize logic levels dynamically based on onboarding age selection
+    let puzzleKey = "Beginner";
+    if (userAge >= 13 && userAge <= 15) {
+        puzzleKey = "Intermediate";
+    } else if (userAge >= 16 && userAge <= 17) {
+        puzzleKey = "Advanced";
     }
 
-    // Draw connect chains with thick lego outline
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(100, 225);
-    ctx.lineTo(500, 225);
-    ctx.stroke();
+    loadPuzzleLevel(puzzleKey);
+    updatePixelPetState("Sleeping");
+}
 
-    // Draw bubbly kids cards
-    blueprint.nodes.forEach((node, idx) => {
-        const colors = ["#F3A8E2", "#90E0EF", "#FFE3E3", "#FFF3B0", "#CAFFBF"];
-        ctx.fillStyle = colors[idx % colors.length];
-        ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 4;
+function loadPuzzleLevel(lvlKey) {
+    const lvl = levelPuzzles[lvlKey];
+    if (!lvl) return;
 
-        // Bubbly rounded rectangles
-        drawRoundedRect(ctx, node.x - 70, node.y - 35, 140, 70, 18, true, true);
+    document.getElementById('game-age-label').textContent = lvl.label;
+    document.getElementById('game-level-badge').textContent = lvl.badge;
 
-        // Draw top lego connectors
-        ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.arc(node.x - 30, node.y - 35, 10, 0, Math.PI * 2);
-        ctx.arc(node.x + 30, node.y - 35, 10, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
+    // Redraw Game Board Elements
+    const wrapper = document.getElementById('game-board-elements');
+    wrapper.innerHTML = "";
 
-        // Print text
-        ctx.fillStyle = "#000000";
-        ctx.font = "900 12px 'Inter', sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(node.text, node.x, node.y);
+    // Node 1: Trigger
+    const tNode = document.createElement('div');
+    tNode.className = "bg-sky-300 border-2 border-black rounded-xl p-3 font-black text-xs";
+    tNode.textContent = lvl.elements.trigger;
+    wrapper.appendChild(tNode);
+
+    // Arrow
+    const arrow1 = document.createElement('div');
+    arrow1.className = "text-xl";
+    arrow1.textContent = "➡️";
+    wrapper.appendChild(arrow1);
+
+    // Node 2: Missing Bridge Slot
+    const slot = document.createElement('div');
+    slot.id = "game-bridge-slot";
+    slot.className = "bg-stone-200 border-4 border-dashed border-black rounded-xl p-3 font-black text-xs text-stone-400 h-12 w-36 flex items-center justify-center animate-pulse";
+    slot.textContent = "? Missing Node";
+    wrapper.appendChild(slot);
+
+    // Optional Extra Nodes
+    if (lvl.elements.action2) {
+        const arrowX = document.createElement('div');
+        arrowX.className = "text-xl";
+        arrowX.textContent = "➡️";
+        wrapper.appendChild(arrowX);
+
+        const extra = document.createElement('div');
+        extra.className = "bg-pink-300 border-2 border-black rounded-xl p-3 font-black text-xs";
+        extra.textContent = lvl.elements.action;
+        wrapper.appendChild(extra);
+    }
+
+    // Arrow Final
+    const arrowF = document.createElement('div');
+    arrowF.className = "text-xl";
+    arrowF.textContent = "➡️";
+    wrapper.appendChild(arrowF);
+
+    // Node 3: Result
+    const rNode = document.createElement('div');
+    rNode.className = "bg-emerald-300 border-2 border-black rounded-xl p-3 font-black text-xs";
+    rNode.textContent = lvl.elements.action2 || lvl.elements.action;
+    wrapper.appendChild(rNode);
+
+    // Load Game Choices
+    const choicesWrapper = document.getElementById('game-choices-wrapper');
+    choicesWrapper.innerHTML = "";
+    lvl.choices.forEach((ch, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-lego bg-yellow-100 text-xs px-4 py-2 text-slate-800 font-extrabold";
+        btn.textContent = ch;
+        btn.onclick = () => selectGameChoice(idx === lvl.correct ? 'Right' : 'Wrong');
+        choicesWrapper.appendChild(btn);
     });
 }
 
-function triggerKidsGeneration() {
-    playSFX('lego');
-    showToast("🧱 Snapping digital Lego Blocks together! ✨", "success");
-    loadKidsTemplate();
+function selectGameChoice(outcome) {
+    if (outcome === 'Right') {
+        playSFX('correct');
+        const slot = document.getElementById('game-bridge-slot');
+        slot.textContent = "✅ Block Snapped!";
+        slot.className = "bg-emerald-400 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
+        
+        showToast("🌟 Hurray! You fixed the logic pipeline bridge!", "success");
+        updatePixelPetState("Happy");
+    } else {
+        playSFX('bubble');
+        showToast("🎈 Oops! That logical command doesn't fit here. Try another!", "warning");
+    }
 }
 
-// Bouncy synthesized sound engine using HTML5 Web Audio API
+// 5-Module Academy Course completions
+function completeAcademyModule(modNum) {
+    if (completedModules[modNum]) return; // already done
+
+    completedModules[modNum] = true;
+    playSFX('lego');
+
+    // Flip card styling
+    const card = document.getElementById(`course-card-${modNum}`);
+    const badge = document.getElementById(`course-status-${modNum}`);
+    const icon = document.getElementById(`course-icon-${modNum}`);
+
+    card.classList.remove('bg-white');
+    card.classList.add('bg-emerald-100', 'border-emerald-500');
+    badge.textContent = "Completed! ✅";
+    badge.className = "text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full";
+    icon.textContent = "✨";
+
+    // Power up Pixel Pet Stats
+    updatePixelPetStats();
+
+    showToast(`📚 Module ${modNum} Checked off successfully!`, "success");
+
+    // Check if all 5 completed
+    const allDone = Object.values(completedModules).every(v => v === true);
+    if (allDone) {
+        // Enable Certification Exam Panel
+        const exam = document.getElementById('exam-card');
+        exam.classList.remove('opacity-40', 'pointer-events-none');
+        showToast("🎓 All Courses Completed! The Certification Exam is now Unlocked! 🧠", "success");
+        loadExamQuestion(0);
+        updatePixelPetState("Genius");
+    }
+}
+
+function updatePixelPetStats() {
+    let count = Object.values(completedModules).filter(v => v === true).length;
+    
+    // Max stats on 5 modules
+    const health = 20 + (count * 16);
+    const wisdom = 10 + (count * 18);
+
+    document.getElementById('pet-health-text').textContent = `${health}%`;
+    document.getElementById('pet-health-bar').style.width = `${health}%`;
+
+    document.getElementById('pet-wisdom-text').textContent = `${wisdom}%`;
+    document.getElementById('pet-wisdom-bar').style.width = `${wisdom}%`;
+}
+
+function updatePixelPetState(state) {
+    const statusText = document.getElementById('pet-status');
+    const cells = document.querySelectorAll('.pixel-cell');
+
+    if (state === "Sleeping") {
+        statusText.textContent = "State: Cozy & Sleeping 😴";
+    } else if (state === "Happy") {
+        statusText.textContent = "State: Playful & Active! 😃";
+        // change pixel elements color to represent awake puppy
+        cells.forEach(c => {
+            if (c.classList.contains('pixel-orange')) {
+                c.classList.remove('pixel-orange');
+                c.classList.add('pixel-white');
+            }
+        });
+    } else if (state === "Genius") {
+        statusText.textContent = "State: Super Smart Genius! 🧠";
+        cells.forEach(c => {
+            if (c.classList.contains('pixel-indigo')) {
+                c.classList.remove('pixel-indigo');
+                c.classList.add('pixel-orange');
+            }
+        });
+    }
+}
+
+// Technology Certification Exam Controller
+function loadExamQuestion(qIdx) {
+    examCurrentQuestion = qIdx;
+    if (qIdx >= examQuestions.length) {
+        gradeExamResult();
+        return;
+    }
+
+    const q = examQuestions[qIdx];
+    document.getElementById('exam-score-badge').textContent = `Question ${qIdx + 1} of 10`;
+    document.getElementById('question-text').textContent = q.q;
+
+    // Load Multiple Choice Answers
+    const box = document.getElementById('answer-choices-box');
+    box.innerHTML = "";
+
+    q.a.forEach((choice, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-lego bg-white border-2 border-black hover:bg-stone-50 text-left text-xs font-bold p-3 rounded-xl transition flex justify-between items-center text-slate-800";
+        btn.innerHTML = `<span>${choice}</span> <span class="opacity-0">➡️</span>`;
+        btn.onclick = () => submitExamAnswer(idx);
+        box.appendChild(btn);
+    });
+}
+
+function submitExamAnswer(ansIdx) {
+    const q = examQuestions[examCurrentQuestion];
+    if (ansIdx === q.correct) {
+        examScore++;
+        playSFX('sparkle');
+    } else {
+        playSFX('bubble');
+    }
+
+    // Go to next question
+    loadExamQuestion(examCurrentQuestion + 1);
+}
+
+function gradeExamResult() {
+    const passingGrade = 9; // 90%
+    if (examScore >= passingGrade) {
+        playSFX('correct');
+        showToast("🎓 Brilliant! You passed with a 90%+ score! Unlocking your Certificate!", "success");
+        revealCertificateModal();
+    } else {
+        playSFX('bubble');
+        showToast(`❌ Scored ${examScore}/10. You need a 90% (9 correct) to clear your exam. Let's try again!`, "warning");
+        // Reset and restart
+        examScore = 0;
+        loadExamQuestion(0);
+    }
+}
+
+function revealCertificateModal() {
+    document.getElementById('cert-modal').classList.remove('hidden');
+}
+
+function closeCertModal() {
+    document.getElementById('cert-modal').classList.add('hidden');
+}
+
+// First and Last Name Certificate Validations
+function applyNameToCertificate() {
+    const first = document.getElementById('cert-first-name').value.trim();
+    const last = document.getElementById('cert-last-name').value.trim();
+
+    if (!first || !last) {
+        showToast("⚠️ Please enter both First and Last names to write your seal!", "warning");
+        return;
+    }
+
+    // Lock text fields & print header
+    document.getElementById('cert-name-input-block').classList.add('hidden');
+    
+    const display = document.getElementById('cert-recipient-name');
+    display.textContent = `${first} ${last}`;
+    display.classList.remove('hidden');
+
+    // Enable print triggers
+    const printBtn = document.getElementById('print-cert-btn');
+    printBtn.removeAttribute('disabled');
+    printBtn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
+    printBtn.classList.add('bg-indigo-600', 'text-white', 'hover:bg-indigo-700');
+
+    playSFX('correct');
+    showToast("✍️ Certificate name locked and authenticated!", "success");
+}
+
+// Kids Creator Studio Assets
+function previewCreatorAsset() {
+    const sfx = document.getElementById('kids-sfx-dropdown').value;
+    const asset = document.getElementById('kids-assets-dropdown').value;
+
+    playSFX(sfx);
+    showToast(`🎨 Previewing Pack: [${sfx.toUpperCase()}] and Wallpapers for [${asset}]!`, "success");
+}
+
+function downloadCreatorPack() {
+    const sfx = document.getElementById('kids-sfx-dropdown').value;
+    const asset = document.getElementById('kids-assets-dropdown').value;
+
+    showToast(`📥 Customized Asset Pack Downloaded for Free! Contains: ${sfx}_sound.mp3, ${asset}.png, and app_icons.zip!`, "success");
+}
+
+
+// =========================================================================
+// ==================== SYSTEM GENERAL UTILITIES ==========================
+// =========================================================================
+
 function playSFX(type) {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -641,7 +905,6 @@ function playSFX(type) {
             osc.start(now);
             osc.stop(now + 0.25);
         } else if (type === 'correct') {
-            // Arpeggio
             osc.type = 'sine';
             osc.frequency.setValueAtTime(523.25, now); // C5
             osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
@@ -651,7 +914,6 @@ function playSFX(type) {
             osc.start(now);
             osc.stop(now + 0.4);
         } else if (type === 'lego') {
-            // Wood block click sound
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(180, now);
             osc.frequency.setValueAtTime(120, now + 0.05);
@@ -661,57 +923,9 @@ function playSFX(type) {
             osc.stop(now + 0.08);
         }
     } catch (e) {
-        console.warn("HTML5 Synth oscillator audio context deferred until interactive click.", e);
+        console.warn("AudioContext deferred until click event.", e);
     }
 }
-
-// Interactive Broken Bridge Game Logic Selector
-function selectGameChoice(outcome) {
-    if (outcome === 'Right') {
-        playSFX('correct');
-        const slot = document.getElementById('game-bridge-slot');
-        slot.textContent = "🧠 Haas Thinks";
-        slot.className = "bg-yellow-300 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
-        
-        // Push logging response to kid stream log
-        const log = document.getElementById('kids-stream-log');
-        const p = document.createElement('p');
-        p.className = "text-emerald-600 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left mt-2";
-        p.textContent = "🎉 HURRAY! You picked 'Haas Thinks'! The bridge is fixed and your Lego automation works beautifully! Let's build another!";
-        log.appendChild(p);
-        log.scrollTop = log.scrollHeight;
-
-        showToast("🌟 Beautiful! You completed the logic puzzle bridge!", "success");
-    } else {
-        playSFX('bubble');
-        showToast("🎈 Oops! That logic block didn't fit. Try another block!", "warning");
-    }
-}
-
-// innovation Certificate modal trigger
-function generateInnovationCertificate() {
-    playSFX('correct');
-    
-    // Populate dynamic user metrics
-    document.getElementById('cert-recipient-name').textContent = userName || "Young Innovator";
-    
-    // Set current formatted date
-    const opt = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateText = new Date().toLocaleDateString('en-US', opt);
-    document.getElementById('cert-date-text').textContent = `Official Seal Authenticated on ${dateText}`;
-
-    // Reveal certificate modal
-    const modal = document.getElementById('cert-modal');
-    modal.classList.remove('hidden');
-}
-
-function closeCertModal() {
-    document.getElementById('cert-modal').classList.add('hidden');
-}
-
-// =========================================================================
-// ==================== SYSTEM GENERAL UTILITIES ==========================
-// =========================================================================
 
 function showToast(message, type = "success") {
     const container = document.getElementById('toast-container');
@@ -731,12 +945,10 @@ function showToast(message, type = "success") {
     toast.textContent = message;
     container.appendChild(toast);
 
-    // Bouncy reveal
     setTimeout(() => {
         toast.classList.remove('translate-x-12', 'opacity-0');
     }, 10);
 
-    // Automatically prune
     setTimeout(() => {
         toast.classList.add('translate-x-12', 'opacity-0');
         setTimeout(() => {
