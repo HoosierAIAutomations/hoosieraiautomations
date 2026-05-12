@@ -11,6 +11,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#001C48">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="styles.css">
     <style>
         @keyframes pulse-star {
@@ -327,6 +330,55 @@
     </div>
 
 <script src="chat.js"></script>
+
+<!-- PWA Custom Installer Prompt -->
+<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
+    <div class="bg-white border-2 border-[#001C48] p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
+        <img src="icon-192.png" alt="Logo" class="w-12 h-12 rounded-lg">
+        <div class="flex-1">
+            <p class="text-sm font-bold text-[#001C48]">Install Hoosier AI</p>
+            <p class="text-xs text-slate-600">Add to home screen for instant access.</p>
+        </div>
+        <button id="install-button" class="bg-[#001C48] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition-transform">
+            Install
+        </button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    const installPrompt = document.getElementById('pwa-install-prompt');
+    const installBtn = document.getElementById('install-button');
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show the custom prompt after 3 seconds
+        setTimeout(() => {
+            if (installPrompt) {
+                installPrompt.classList.remove('hidden');
+            }
+        }, 3000);
+    });
+
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installPrompt.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+</script>
 </body>
 </html>
 ```
@@ -344,6 +396,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#001C48">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="styles.css">
     <style>
         @keyframes pulse-star {
@@ -994,6 +1049,54 @@
             });
         });
     </script>
+<!-- PWA Custom Installer Prompt -->
+<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
+    <div class="bg-white border-2 border-[#001C48] p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
+        <img src="icon-192.png" alt="Logo" class="w-12 h-12 rounded-lg">
+        <div class="flex-1">
+            <p class="text-sm font-bold text-[#001C48]">Install Hoosier AI</p>
+            <p class="text-xs text-slate-600">Add to home screen for instant access.</p>
+        </div>
+        <button id="install-button" class="bg-[#001C48] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition-transform">
+            Install
+        </button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    const installPrompt = document.getElementById('pwa-install-prompt');
+    const installBtn = document.getElementById('install-button');
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show the custom prompt after 3 seconds
+        setTimeout(() => {
+            if (installPrompt) {
+                installPrompt.classList.remove('hidden');
+            }
+        }, 3000);
+    });
+
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installPrompt.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+</script>
 </body>
 </html>
 ```
@@ -1011,6 +1114,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#001C48">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="styles.css">
     <style>
         @keyframes pulse-star {
@@ -1375,6 +1481,54 @@
             }
         });
     </script>
+<!-- PWA Custom Installer Prompt -->
+<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
+    <div class="bg-white border-2 border-[#001C48] p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
+        <img src="icon-192.png" alt="Logo" class="w-12 h-12 rounded-lg">
+        <div class="flex-1">
+            <p class="text-sm font-bold text-[#001C48]">Install Hoosier AI</p>
+            <p class="text-xs text-slate-600">Add to home screen for instant access.</p>
+        </div>
+        <button id="install-button" class="bg-[#001C48] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition-transform">
+            Install
+        </button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    const installPrompt = document.getElementById('pwa-install-prompt');
+    const installBtn = document.getElementById('install-button');
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show the custom prompt after 3 seconds
+        setTimeout(() => {
+            if (installPrompt) {
+                installPrompt.classList.remove('hidden');
+            }
+        }, 3000);
+    });
+
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installPrompt.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+</script>
 </body>
 </html>
 ```
@@ -1392,6 +1546,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#001C48">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="styles.css">
     <style>
         @keyframes pulse-star {
@@ -1632,6 +1789,55 @@
     </div>
 
     <script src="chat.js"></script>
+
+<!-- PWA Custom Installer Prompt -->
+<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
+    <div class="bg-white border-2 border-[#001C48] p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
+        <img src="icon-192.png" alt="Logo" class="w-12 h-12 rounded-lg">
+        <div class="flex-1">
+            <p class="text-sm font-bold text-[#001C48]">Install Hoosier AI</p>
+            <p class="text-xs text-slate-600">Add to home screen for instant access.</p>
+        </div>
+        <button id="install-button" class="bg-[#001C48] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition-transform">
+            Install
+        </button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    const installPrompt = document.getElementById('pwa-install-prompt');
+    const installBtn = document.getElementById('install-button');
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show the custom prompt after 3 seconds
+        setTimeout(() => {
+            if (installPrompt) {
+                installPrompt.classList.remove('hidden');
+            }
+        }, 3000);
+    });
+
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installPrompt.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+</script>
 </body>
 </html>
 ```
@@ -1649,6 +1855,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#001C48">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="styles.css">
     <style>
         @keyframes pulse-star {
@@ -1821,6 +2030,55 @@
     </div>
 
     <script src="chat.js"></script>
+
+<!-- PWA Custom Installer Prompt -->
+<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
+    <div class="bg-white border-2 border-[#001C48] p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
+        <img src="icon-192.png" alt="Logo" class="w-12 h-12 rounded-lg">
+        <div class="flex-1">
+            <p class="text-sm font-bold text-[#001C48]">Install Hoosier AI</p>
+            <p class="text-xs text-slate-600">Add to home screen for instant access.</p>
+        </div>
+        <button id="install-button" class="bg-[#001C48] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition-transform">
+            Install
+        </button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    const installPrompt = document.getElementById('pwa-install-prompt');
+    const installBtn = document.getElementById('install-button');
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show the custom prompt after 3 seconds
+        setTimeout(() => {
+            if (installPrompt) {
+                installPrompt.classList.remove('hidden');
+            }
+        }, 3000);
+    });
+
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installPrompt.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+</script>
 </body>
 </html>
 ```
@@ -2282,6 +2540,61 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+```
+
+---
+
+## File: Assets/manifest.json
+```json
+{
+  "name": "Hoosier AI Automations",
+  "short_name": "Hoosier AI",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FAF9F5",
+  "theme_color": "#001C48",
+  "description": "Software Simplified. Enterprise Elevated.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```
+
+---
+
+## File: Assets/sw.js
+```javascript
+const CACHE_NAME = 'hoosier-ai-v1';
+const ASSETS = [
+  '/',
+  '/index.html',
+  '/styles.css',
+  '/promise.html',
+  '/pricing.html',
+  '/portfolio.html',
+  '/hireus.html'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => response || fetch(event.request))
+  );
+});
 ```
 
 ---
