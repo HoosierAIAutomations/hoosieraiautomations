@@ -3,110 +3,56 @@ let userName = '';
 let userRole = '';
 let userIntent = '';
 let userAge = 18;
+let userTier = 3; // Tier 1: 5-8, Tier 2: 9-12, Tier 3: 13-17, 18+ is Executive
 
 // Academy Modules Tracker
-let completedModules = {
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false
-};
+let completedModules = { 1: false, 2: false, 3: false, 4: false, 5: false };
+let activeModule = 1;
 
-// Exam State Tracker
-let examCurrentQuestion = 0;
-let examScore = 0;
-const examQuestions = [
-    {
-        q: "1. What is an automation workflow?",
-        a: ["A type of running shoes", "A series of steps that automates a task automatically", "Homework assigned on weekends", "A streaming music app"],
-        correct: 1
-    },
-    {
-        q: "2. What is a software integration?",
-        a: ["Deleting computer files", "Connecting two or more apps so they can talk to each other", "A phone screen protector", "A coding keyboard"],
-        correct: 1
-    },
-    {
-        q: "3. What is an app?",
-        a: ["A quick nap during the day", "An apple pie slice", "A software application that performs a specific function on your device", "The computer charger"],
-        correct: 2
-    },
-    {
-        q: "4. What is a URL used for?",
-        a: ["Unlocking your door", "A web address pointing to a specific page on the Internet", "Recording sounds", "Drawing rectangles"],
-        correct: 1
-    },
-    {
-        q: "5. What is a prompt?",
-        a: ["Arriving exactly on time", "An instruction or question you give to an AI to tell it what to do", "A type of battery", "A web browser"],
-        correct: 1
-    },
-    {
-        q: "6. What is SaaS?",
-        a: ["Talking back to your teachers", "Software as a Service - software hosted on the web that you use online", "A system for printing paper", "A video gaming console"],
-        correct: 1
-    },
-    {
-        q: "7. How do Ads help companies sell products?",
-        a: ["By hiding products in secret boxes", "By informing people about a product and showing its value", "By turning off the internet", "By changing the logo colors"],
-        correct: 1
-    },
-    {
-        q: "8. Which one of these is a type of software integration?",
-        a: ["Plugging in headphones", "Connecting Shopify to Slack to notify you of sales", "Painting your computer", "Writing on a whiteboard"],
-        correct: 1
-    },
-    {
-        q: "9. What is Artificial Intelligence (AI)?",
-        a: ["A metal robot that cleans your room", "Smart computer systems that can think, learn, and solve problems like humans", "An internet cable", "A math textbook"],
-        correct: 1
-    },
-    {
-        q: "10. Name things you've learned! (Freebie)",
-        a: ["Coding is boring and hard", "How workflows, apps, and software integrations help automate business tasks!", "Absolutely nothing at all", "How to eat cookies"],
-        correct: 1
-    }
-];
+// Active Bridge Game logic sequence placements
+let bridgeNodesPlaced = [];
+const correctBridgeSequence = ["Trigger", "Filter", "Integration", "Action"];
 
-// =========================================================================
-// ==================== ONBOARDING FLOW ACTIONS ============================
-// =========================================================================
-
+// Onboarding page load populator
 document.addEventListener('DOMContentLoaded', () => {
-    // Register PWA Service Worker
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('Service Worker Registered scope:', reg.scope))
             .catch(err => console.error('Service Worker fail:', err));
     }
 
-    // Populate Age Dropdown Selector dynamically
+    // Populate Age Dropdown Selector dynamically (5 to 80 Years)
     const ageSelect = document.getElementById('user-age-select');
     if (ageSelect) {
-        // Clear any previous mockup content
         ageSelect.innerHTML = '<option value="" disabled selected>Choose Your Age</option>';
-        for (let i = 10; i <= 80; i++) {
+        for (let i = 5; i <= 80; i++) {
             const opt = document.createElement('option');
             opt.value = i;
-            if (i < 18) {
-                opt.textContent = `${i} Years (Young Innovator Track)`;
+            if (i >= 5 && i <= 8) {
+                opt.textContent = `${i} Years (Tier 1: Visual Association)`;
+            } else if (i >= 9 && i <= 12) {
+                opt.textContent = `${i} Years (Tier 2: Foundational Logic)`;
+            } else if (i >= 13 && i <= 17) {
+                opt.textContent = `${i} Years (Tier 3: Technical Architecture)`;
             } else {
-                opt.textContent = `${i} Years (Professional Console)`;
+                opt.textContent = `${i} Years (Professional Studio)`;
             }
             if (i === 18) opt.selected = true;
             ageSelect.appendChild(opt);
         }
     }
 
-    // Setup initial calculations
+    // Run original default calculatives
     calculateROI();
 });
 
+// =========================================================================
+// ==================== ONBOARDING FLOW ACTIONS ============================
+// =========================================================================
+
 function selectRole(role) {
     userRole = role;
-    
-    // Highlight role card border
     document.querySelectorAll('.role-card').forEach(card => {
         card.classList.remove('border-indigo-600', 'bg-indigo-50/10');
         card.classList.add('border-stone-200/60');
@@ -116,7 +62,6 @@ function selectRole(role) {
     card.classList.remove('border-stone-200/60');
     card.classList.add('border-indigo-600', 'bg-indigo-50/10');
 
-    // Display localized feedback
     const feedbackBox = document.getElementById('role-feedback-box');
     const feedbackText = document.getElementById('role-feedback-text');
     feedbackBox.classList.remove('hidden');
@@ -124,27 +69,26 @@ function selectRole(role) {
     let text = "";
     switch (role) {
         case "Founder/Owner":
-            text = "🚀 Excellent! As a business founder/owner, we will structure your console to demonstrate operational ROI, human payback speeds, and workflow translations.";
+            text = "🚀 Dynamic choice! As an owner, we will tailor your dashboard with payback metrics, visual flowcharts, and custom problem translators.";
             break;
         case "Developer":
-            text = "💻 Welcome, engineer! The console provides real-time flowchart renders, database webhook maps, and multi-channel integration options.";
+            text = "💻 Welcome, engineer! Discover live visual pipeline canvases, webhook setups, and raw API layouts.";
             break;
         case "Innovator":
-            text = "🧠 Outstanding! Discover state-of-the-art AI architectures, document processors, and automated tracking modules.";
+            text = "🧠 Excellent! Learn how neural architectures, document parsers, and custom integrations streamline businesses.";
             break;
         case "Marketer":
-            text = "📣 Marketing specialist! Focus on instantaneous lead form responder pipelines, CRM synchronizers, and Shopify low-stock alert triggers.";
+            text = "📣 Great focus! Focus on instant CRM sync triggers, Twilio automated texting, and low-stock alerts.";
             break;
         case "Student":
-            text = "🎓 Fantastic! Welcome to our coding workspace. Learn how databases, triggers, and actions talk to each other without jargon.";
+            text = "🎓 Super! Your playground will load friendly interactive modules designed to explain technology simply.";
             break;
         case "Start-Up":
-            text = "⚡ Speed is key! Explore lightweight architectures that replace hundreds of weekly administrative hours on autopilot.";
+            text = "⚡ Speed is key! Explore automated blueprints that handle manual administration with 0% error margins.";
             break;
     }
     feedbackText.textContent = text;
 
-    // Enable continue trigger
     const btn = document.getElementById('btn-continue-step-1');
     btn.removeAttribute('disabled');
     btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
@@ -153,8 +97,6 @@ function selectRole(role) {
 
 function selectIntent(intent) {
     userIntent = intent;
-    
-    // Highlight intent card
     document.querySelectorAll('.intent-card').forEach(card => {
         card.classList.remove('border-indigo-600', 'bg-indigo-50/10');
         card.classList.add('border-stone-200/60');
@@ -164,7 +106,6 @@ function selectIntent(intent) {
     card.classList.remove('border-stone-200/60');
     card.classList.add('border-indigo-600', 'bg-indigo-50/10');
 
-    // Display intent feedback
     const feedbackBox = document.getElementById('intent-feedback-box');
     const feedbackText = document.getElementById('intent-feedback-text');
     feedbackBox.classList.remove('hidden');
@@ -172,21 +113,20 @@ function selectIntent(intent) {
     let text = "";
     switch (intent) {
         case "Playground":
-            text = "🎠 Perfect choice! You are entering the Haas Live Playground workspace where you can preview automations and simulate stress tests.";
+            text = "🎠 Perfect! Enter our Haas Live Playground to simulate logic sequences and stress test architectures.";
             break;
         case "Workflows":
-            text = "🔗 Technical mapping! Let's examine real-world bottlenecks translated into streamlined, sequential flowchart actions.";
+            text = "🔗 Technical mapping! Let's translate real-world business bottlenecks into streamlined, automated pathways.";
             break;
         case "Fun":
-            text = "🎪 Creativity first! Enjoy logic bridge puzzles, synthesize your own sound tracks, and claim custom innovation credentials.";
+            text = "🎪 Creativity first! Complete courses, feed Haasy the Male Bearded Dragon, and earn credentials.";
             break;
         case "NotSure":
-            text = "🧭 No worries! We will pre-load friendly, pre-configured templates to guide you through the process step-by-step.";
+            text = "🧭 No worries! We will load friendly, pre-configured templates to guide you step-by-step.";
             break;
     }
     feedbackText.textContent = text;
 
-    // Enable step continue button
     const btn = document.getElementById('btn-continue-step-2');
     btn.removeAttribute('disabled');
     btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
@@ -194,7 +134,6 @@ function selectIntent(intent) {
 }
 
 function nextStep(stepNumber) {
-    // Toggle wizard steps
     document.getElementById('onboarding-step-1').classList.add('hidden');
     document.getElementById('onboarding-step-2').classList.add('hidden');
     document.getElementById('onboarding-step-3').classList.add('hidden');
@@ -221,7 +160,7 @@ function completeOnboarding() {
     const ageSelect = document.getElementById('user-age-select');
 
     if (!nameInput.value.trim()) {
-        showToast("⚠️ Please enter your name to authenticate the playground!", "warning");
+        showToast("⚠️ Please enter your name to authenticate!", "warning");
         nameInput.focus();
         return;
     }
@@ -231,571 +170,478 @@ function completeOnboarding() {
 
     // Transition off wizard
     document.getElementById('onboarding-stage').classList.add('hidden');
-    
-    // Reveal dashboard console
     document.getElementById('playground-dashboard').classList.remove('hidden');
 
     if (userAge >= 18) {
-        // Adult Professional Studio
         document.getElementById('professional-dashboard').classList.remove('hidden');
         showToast(`💼 Welcome to Executive Studio, ${userName}!`, "success");
         initProfessionalConsole();
     } else {
-        // Youth Innovator Track
         document.getElementById('young-innovator-dashboard').classList.remove('hidden');
-        showToast(`🎈 Welcome, Young Innovator ${userName}! Let's build!`, "success");
+        
+        // Define Active Age Tier
+        if (userAge >= 5 && userAge <= 8) {
+            userTier = 1;
+        } else if (userAge >= 9 && userAge <= 12) {
+            userTier = 2;
+        } else {
+            userTier = 3;
+        }
+
+        showToast(`🎈 Welcome, Young Innovator ${userName}! Loading Tier ${userTier} mode.`, "success");
         initYouthPlayground();
     }
 }
 
 
 // =========================================================================
-// ==================== EXECUTIVE PROFESSIONAL CONSOLE ====================
+// ==================== AGE-SCALE CONTROLLER (TIERS 1-3) ===================
 // =========================================================================
 
-// High-fidelity pipeline parameters matching requirements
-const businessScenarios = {
-    SME_Scheduling: {
-        title: "Retail Scheduling Automated Sync",
-        catch: "Customer books appointment via your online form.",
-        decision: "Haas AI filters available calendar blocks and staff availability.",
-        action: "Saves details to central system and auto-sends SMS pings.",
-        result: "Manual schedule management and client follow-ups cut by 100%.",
-        nodes: [
-            { text: "Trigger Form Book", x: 100, y: 200, type: "trigger" },
-            { text: "AI Calendar Parse", x: 300, y: 150, type: "decision" },
-            { text: "Save Central DB", x: 500, y: 200, type: "action" },
-            { text: "Twilio SMS Ping", x: 700, y: 200, type: "result" }
+// Visual text lessons matching age-group vocabulary
+const tierLessons = {
+    1: {
+        badge: "Tier 1: Visual association (Ages 5-8)",
+        welcomeTitle: "🎨 Haas Kid-Friendly Visual Creator Studio",
+        welcomeDesc: "Welcome to Haas Youth Playground! Today we are building a 🐶 Pet Walking Business. Drag large shapes, connect bright colors, and teach Haasy new tricks!",
+        modules: [
+            { title: "1. Start Button", text: "Place a big blue bubble shape. This acts as our <u><b>Start</b></u> node to signal when a client requests a pet walk! Every pipeline begins here." },
+            { title: "2. Color Match", text: "Match color blocks together. Complete the <u><b>Logic</b></u> of linking the request form block directly to our digital dog walking list!" },
+            { title: "3. Choose Tool", text: "Select a custom digital <u><b>Tool</b></u>. We will choose a notification bell tool that rings every time a new client submits a form!" },
+            { title: "4. Store Picture", text: "Let's upload a cute pet <u><b>Picture</b></u> onto your home-screen app! This visual makes your store look cozy and inviting." },
+            { title: "5. Ad Poster", text: "Create your own <u><b>Picture</b></u> poster. Pick a custom background, type a bubbly business name, and play retro bubble pop sounds!" }
         ],
-        connections: [[0, 1], [1, 2], [2, 3]],
-        premium: false
-    },
-    SME_Dispatch: {
-        title: "Logistics Automated Fleet Dispatch",
-        catch: "New load dispatcher assigns routing details.",
-        decision: "Haas evaluates active driver geographic boundary zones.",
-        action: "Sends exact coordinates to the closest driver's terminal.",
-        result: "Eliminated driver idle intervals, boosting delivery speeds 3x.",
-        nodes: [
-            { text: "Order Dispatched", x: 100, y: 200, type: "trigger" },
-            { text: "Geofence Check", x: 300, y: 150, type: "decision" },
-            { text: "Terminal Coordinates", x: 500, y: 200, type: "action" },
-            { text: "Live Delivery Route", x: 700, y: 200, type: "result" }
+        hints: [
+            "Match the red shapes! Click the blue <u><b>Start</b></u> button.",
+            "Color connections complete the active <u><b>Logic</b></u> path.",
+            "The alarm bell is a helpful automated notification <u><b>Tool</b></u>.",
+            "Check that your favorite cute puppy <u><b>Picture</b></u> is uploaded correctly."
         ],
-        connections: [[0, 1], [1, 2], [2, 3]],
-        premium: false
+        examQuestions: [
+            {
+                q: "1. Which block is used to begin your automation?",
+                a: ["A red stop light", "The blue <u><b>Start</b></u> button", "A green plant", "A crayon"],
+                correct: 1
+            },
+            {
+                q: "2. What describes drawing a line to connect two matching shapes?",
+                a: ["Cutting paper", "Linking automation <u><b>Logic</b></u> together", "Spilling juice", "Sleeping"],
+                correct: 1
+            },
+            {
+                q: "3. What is a digital application helper called?",
+                a: ["A cardboard box", "An automated software <u><b>Tool</b></u>", "A tree leaf", "A pillow"],
+                correct: 1
+            },
+            {
+                q: "4. What is a visual logo icon?",
+                a: ["A physical keyboard", "An app <u><b>Picture</b></u>", "A sound effect", "A charging wire"],
+                correct: 1
+            }
+        ]
     },
-    SME_Responder: {
-        title: "Fast Lead Form Autopilot Response",
-        catch: "Lead completes form request on website.",
-        decision: "Haas analyzes inquiry coordinates and client parameters.",
-        action: "Instantly generates and emails a custom operational brief.",
-        result: "Inbound response delay cut to 3 minutes, tripling sales closed.",
-        nodes: [
-            { text: "Lead Submission", x: 100, y: 200, type: "trigger" },
-            { text: "Inquiry Analysis", x: 300, y: 150, type: "decision" },
-            { text: "Generate Brief", x: 500, y: 200, type: "action" },
-            { text: "Outbox Email Send", x: 700, y: 200, type: "result" }
+    2: {
+        badge: "Tier 2: Foundational Logic (Ages 9-12)",
+        welcomeTitle: "🧩 Haas Block-Based Logic Sandbox",
+        welcomeDesc: "Welcome to Haas Youth Playground! Build a 🐶 Neighborhood Pet Walking Service using foundational workflow connectors, block connections, and automatic triggers.",
+        modules: [
+            { title: "1. Trigger Node", text: "A <u><b>Trigger</b></u> is the event that starts our automation. We program our system to listen for a client scheduling a pet walk on our website." },
+            { title: "2. Build Workflow", text: "Design your sequential <u><b>Workflow</b></u>. Create the automated link that routes pet details to active calendars with 0% error margin." },
+            { title: "3. Set Action", text: "An <u><b>Action</b></u> is what our automation performs automatically. Let's send an SMS text confirmation message to the client!" },
+            { title: "4. Logic Node", text: "Every circle in our layout is a <u><b>Node</b></u>. Connect the trigger <u><b>Node</b></u> to the SMS action to finalize your pipeline structure." },
+            { title: "5. Ad Studio", text: "Mix custom 8-bit chimes and wallpapers to compile your final business ad! Check off this step to earn your certificate." }
         ],
-        connections: [[0, 1], [1, 2], [2, 3]],
-        premium: false
-    },
-    ENT_Inventory: {
-        title: "ERP Multi-Channel Inventory Synchronizer",
-        catch: "Stock inventory levels update inside main warehouse ERP database.",
-        decision: "Haas evaluates stock thresholds across active products.",
-        action: "Coordinates dynamic stock counts on Shopify, Amazon, and eBay.",
-        result: "Cut multi-channel over-selling margins to absolutely 0.0%.",
-        nodes: [
-            { text: "Warehouse ERP Ingest", x: 100, y: 200, type: "trigger" },
-            { text: "Threshold Check", x: 300, y: 150, type: "decision" },
-            { text: "Shopify Sync Multi", x: 500, y: 200, type: "action" },
-            { text: "Live Stock Update", x: 700, y: 200, type: "result" }
+        hints: [
+            "Every automation starts when a <u><b>Trigger</b></u> event is detected.",
+            "Connect nodes sequentially to establish your active <u><b>Workflow</b></u>.",
+            "The SMS message is an automated <u><b>Action</b></u> completed in real-time.",
+            "Make sure your Trigger and Action blocks are connected inside the <u><b>Node</b></u>."
         ],
-        connections: [[0, 1], [1, 2], [2, 3]],
-        premium: true
+        examQuestions: [
+            {
+                q: "1. What is the event that starts an automated workflow?",
+                a: ["A physical keyboard", "A <u><b>Trigger</b></u>", "A battery pack", "A mouse click"],
+                correct: 1
+            },
+            {
+                q: "2. What is a series of automated steps called?",
+                a: ["A textbook", "A <u><b>Workflow</b></u>", "A website domain", "An envelope"],
+                correct: 1
+            },
+            {
+                q: "3. What is the automated execution performed after a trigger?",
+                a: ["A computer error", "An <u><b>Action</b></u>", "A manual spreadsheet", "A printer check"],
+                correct: 1
+            },
+            {
+                q: "4. What is each individual block inside a flowchart called?",
+                a: ["A browser tab", "A <u><b>Node</b></u>", "A cable cord", "A text document"],
+                correct: 1
+            }
+        ]
     },
-    ENT_Telemetry: {
-        title: "Fleet Telemetry Hub & Tracking Engine",
-        catch: "Active heavy freight fleet routes geofenced boundaries.",
-        decision: "Engine parses vehicular load weight and fuel coefficients.",
-        action: "Streams routing coordinates to operational dashboards.",
-        result: "Maximized routing efficiencies, shaving thousands off freight costs.",
-        nodes: [
-            { text: "GPS Boundary Ingest", x: 100, y: 200, type: "trigger" },
-            { text: "Load Coefficient AI", x: 300, y: 150, type: "decision" },
-            { text: "Dashboard Publish", x: 500, y: 200, type: "action" },
-            { text: "Freight Optimized", x: 700, y: 200, type: "result" }
+    3: {
+        badge: "Tier 3: Technical Architecture (Ages 13-17)",
+        welcomeTitle: "💻 Haas Advanced Architectural Workspace",
+        welcomeDesc: "Welcome to Haas Youth Playground! Architect your own 🐶 Pet Walking Business using high-fidelity APIs, home-screen PWAs, responsive layouts, and technical credentials.",
+        modules: [
+            { title: "1. Setup API", text: "An <u><b>API</b></u> allows programs to talk. Let's configure an <u><b>API</b></u> connector that parses incoming form submissions from our dog walking store." },
+            { title: "2. Build Integration", text: "Create an active database <u><b>Integration</b></u>. Haas dynamically parses client form data and schedules entries on active digital calendars." },
+            { title: "3. Design UI", text: "Build a beautiful <u><b>User Interface</b></u> (UI). Type prompt instructions to instantly generate styled limestone banners and buttons." },
+            { title: "4. Compile PWA", text: "Package your storefront into a <u><b>PWA</b></u> (Progressive Web App). Users can install your app onto their phone's home screen!" },
+            { title: "5. Launch Ad", text: "Write an ad script, mix custom synth audio frequencies, and click export to compile a 15-second business advertisement!" }
         ],
-        connections: [[0, 1], [1, 2], [2, 3]],
-        premium: true
-    },
-    ENT_Processor: {
-        title: "AI Document Processor & Invoicer",
-        catch: "PDF digital invoice arrives inside operations inbox folder.",
-        decision: "Optical AI extracts matching supplier, pricing, and VAT details.",
-        action: "Generates accounting ledger record and fires auto-reconcile triggers.",
-        result: "Cut business invoicing labor costs by a verified 82%.",
-        nodes: [
-            { text: "Inbound PDF Mail", x: 100, y: 200, type: "trigger" },
-            { text: "Optical Extract AI", x: 300, y: 150, type: "decision" },
-            { text: "Reconcile Ledger", x: 500, y: 200, type: "action" },
-            { text: "Financial Audited", x: 700, y: 200, type: "result" }
+        hints: [
+            "We parse and route customer request data using a custom <u><b>API</b></u> connector.",
+            "Create a database <u><b>Integration</b></u> to schedule walks automatically.",
+            "Type styled prompt coordinates to customize your storefront <u><b>User Interface</b></u>.",
+            "Package files into an offline-ready home-screen <u><b>PWA</b></u> application."
         ],
-        connections: [[0, 1], [1, 2], [2, 3]],
-        premium: true
-    }
-};
-
-function initProfessionalConsole() {
-    // Load default scenario
-    triggerPresetScenario('SME_Scheduling');
-}
-
-function loadBusinessScenario(type) {
-    const selector = type === 'sme' ? document.getElementById('sme-selector') : document.getElementById('ent-selector');
-    const selected = selector.value;
-    if (selected) {
-        triggerPresetScenario(selected);
-        // Clear opposing selector
-        const opposing = type === 'sme' ? document.getElementById('ent-selector') : document.getElementById('sme-selector');
-        opposing.selectedIndex = 0;
-    }
-}
-
-function triggerPresetScenario(scKey) {
-    const sc = businessScenarios[scKey];
-    if (!sc) return;
-
-    // Update non-technical Human Roadmap headers
-    document.getElementById('catch-text').textContent = sc.catch;
-    document.getElementById('decision-text').textContent = sc.decision;
-    document.getElementById('action-text').textContent = sc.action;
-    document.getElementById('result-text').textContent = sc.result;
-
-    // Manage Premium locked paywall blurring
-    const overlay = document.getElementById('stripe-lock-overlay');
-    const canvas = document.getElementById('blueprint-canvas');
-
-    if (sc.premium) {
-        overlay.classList.remove('hidden');
-        canvas.classList.add('paywall-blur');
-    } else {
-        overlay.classList.add('hidden');
-        canvas.classList.remove('paywall-blur');
-    }
-
-    // Trigger canvas logic flow drawing
-    drawProfessionalFlowchart(sc);
-    showToast(`📍 Loaded: ${sc.title}`, "success");
-}
-
-function translateCustomProblem() {
-    const input = document.getElementById('custom-problem-input').value.trim();
-    if (!input) {
-        showToast("⚠️ Please enter a custom operational problem to translate!", "warning");
-        return;
-    }
-
-    const lower = input.toLowerCase();
-    let selectedScenario = 'SME_Responder'; // fallback default
-
-    if (lower.includes('schedule') || lower.includes('calendar') || lower.includes('appointment')) {
-        selectedScenario = 'SME_Scheduling';
-    } else if (lower.includes('dispatch') || lower.includes('driver') || lower.includes('freight') || lower.includes('delivery')) {
-        selectedScenario = 'SME_Dispatch';
-    } else if (lower.includes('lead') || lower.includes('sale') || lower.includes('form') || lower.includes('customer')) {
-        selectedScenario = 'SME_Responder';
-    } else if (lower.includes('inventory') || lower.includes('stock') || lower.includes('warehouse')) {
-        selectedScenario = 'ENT_Inventory';
-    } else if (lower.includes('invoice') || lower.includes('invoice') || lower.includes('pdf') || lower.includes('reconcile')) {
-        selectedScenario = 'ENT_Processor';
-    }
-
-    // Build bespoke translation matching user input
-    const baseScenario = businessScenarios[selectedScenario];
-    
-    document.getElementById('catch-text').textContent = `Your custom bottleneck: "${input}" triggers automated sensors.`;
-    document.getElementById('decision-text').textContent = baseScenario.decision;
-    document.getElementById('action-text').textContent = baseScenario.action;
-    document.getElementById('result-text').textContent = `Eliminates manual task overhead and saves 10-15+ hours weekly.`;
-
-    const overlay = document.getElementById('stripe-lock-overlay');
-    const canvas = document.getElementById('blueprint-canvas');
-
-    if (baseScenario.premium) {
-        overlay.classList.remove('hidden');
-        canvas.classList.add('paywall-blur');
-    } else {
-        overlay.classList.add('hidden');
-        canvas.classList.remove('paywall-blur');
-    }
-
-    drawProfessionalFlowchart(baseScenario);
-    showToast("✨ Custom Bottleneck Translated Successfully!", "success");
-}
-
-function drawProfessionalFlowchart(sc) {
-    const canvas = document.getElementById('blueprint-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw grid coordinate lines
-    ctx.strokeStyle = "rgba(0, 28, 72, 0.03)";
-    ctx.lineWidth = 1;
-    for (let x = 0; x < canvas.width; x += 30) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-    }
-    for (let y = 0; y < canvas.height; y += 30) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-
-    // Draw active data path connectors (Hoosier Indigo)
-    ctx.lineWidth = 3;
-    sc.connections.forEach(conn => {
-        const from = sc.nodes[conn[0]];
-        const to = sc.nodes[conn[1]];
-
-        ctx.strokeStyle = "#4F46E5";
-        ctx.beginPath();
-        ctx.moveTo(from.x, from.y);
-        ctx.lineTo(to.x, to.y);
-        ctx.stroke();
-
-        // Draw animated data flow pulses
-        const now = Date.now();
-        const pct = (now % 2000) / 2000;
-        const pulseX = from.x + (to.x - from.x) * pct;
-        const pulseY = from.y + (to.y - from.y) * pct;
-
-        ctx.fillStyle = "#F59E0B"; // Gold active pulse
-        ctx.beginPath();
-        ctx.arc(pulseX, pulseY, 5, 0, Math.PI * 2);
-        ctx.fill();
-    });
-
-    // Draw clean geometric outline nodes
-    sc.nodes.forEach(node => {
-        ctx.strokeStyle = "#001C48"; // Hoosier Indigo
-        ctx.lineWidth = 3;
-
-        if (node.type === "trigger") {
-            ctx.fillStyle = "#001C48";
-            // Rounded RectangleTrigger
-            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 10, true, true);
-            ctx.fillStyle = "#FFFFFF";
-        } else if (node.type === "decision") {
-            ctx.fillStyle = "#FAF9F5";
-            // Diamond Decision Node
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y - 30);
-            ctx.lineTo(node.x + 70, node.y);
-            ctx.lineTo(node.x, node.y + 30);
-            ctx.lineTo(node.x - 70, node.y);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = "#001C48";
-        } else if (node.type === "action") {
-            ctx.fillStyle = "#FAF9F5";
-            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 10, true, true);
-            ctx.fillStyle = "#001C48";
-        } else {
-            // Result Node (Pill style)
-            ctx.fillStyle = "#EEF2FF";
-            drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 25, true, true);
-            ctx.fillStyle = "#4F46E5";
-        }
-
-        // Render text without jargon
-        ctx.font = "bold 10px 'Inter', sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(node.text, node.x, node.y);
-    });
-}
-
-// ROI Calculator Comparison Calculations
-function calculateROI() {
-    const rate = parseFloat(document.getElementById('roi-rate').value) || 0;
-    const hours = parseFloat(document.getElementById('roi-hours').value) || 0;
-
-    const manualYearly = rate * hours * 52;
-    const manualCostText = document.getElementById('roi-manual-cost');
-    const manualBar = document.getElementById('roi-manual-bar');
-    const paybackText = document.getElementById('roi-payback-days');
-
-    manualCostText.textContent = manualYearly.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-
-    const maxVal = 40000;
-    const pct = Math.min((manualYearly / maxVal) * 100, 100);
-    manualBar.style.width = `${pct}%`;
-
-    if (manualYearly > 0) {
-        const haasSaaSYearly = 600;
-        const dailySavings = (rate * hours) / 7;
-        const paybackDays = Math.ceil(haasSaaSYearly / dailySavings);
-        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Under 1 Year";
-    } else {
-        paybackText.textContent = "0 Days";
-    }
-}
-
-// Stripe Simulation triggers
-function simulateStripeCheckout() {
-    document.getElementById('stripe-checkout-modal').classList.remove('hidden');
-}
-
-function closeStripeModal() {
-    document.getElementById('stripe-checkout-modal').classList.add('hidden');
-}
-
-function completeStripeTransaction() {
-    closeStripeModal();
-    showToast("💳 Stripe Secure Transaction Complete! Generating Strategy Package...", "success");
-    
-    // Unlock blurred canvas & trigger success path download
-    document.getElementById('stripe-lock-overlay').classList.add('hidden');
-    document.getElementById('blueprint-canvas').classList.remove('paywall-blur');
-}
-
-
-// =========================================================================
-// ==================== YOUNG INNOVATOR TRACK (17 & UNDER) =================
-// =========================================================================
-
-// Kid Game Multi-level Configurations responsive to selected age group
-const levelPuzzles = {
-    Beginner: {
-        label: "Ages 10-12 (Beginner)",
-        badge: "Level 1: Beginner",
-        desc: "Build a trigger communication bridge to log tasks.",
-        elements: { trigger: "📧 New Message", action: "📅 Save to Calendar" },
-        choices: ["🎨 Draw Picture", "🧠 Haas Thinks", "🎈 Blow Up Balloon"],
-        correct: 1
-    },
-    Intermediate: {
-        label: "Ages 13-15 (Intermediate)",
-        badge: "Level 2: Intermediate",
-        desc: "Construct conditional branches to process inventory.",
-        elements: { trigger: "🛒 Item Ordered", action: "🧠 Condition Split", action2: "📦 Ship Product" },
-        choices: ["Write Essay", "Haas Syncs Database", "Play Basketball"],
-        correct: 1
-    },
-    Advanced: {
-        label: "Ages 16-17 (Advanced)",
-        badge: "Level 3: Advanced",
-        desc: "Design real-time API integrations and loops.",
-        elements: { trigger: "📈 Lead Ingest", action: "📊 Sync Hub", action2: "📱 SMS Notify" },
-        choices: ["Bake Bread", "Haas API Connector", "Do Homework"],
-        correct: 1
+        examQuestions: [
+            {
+                q: "1. What does an API allow applications to perform?",
+                a: ["Record background sound", "Communicate and share data between different software programs automatically", "Format physical hard-disks", "Draw geometric shapes"],
+                correct: 1
+            },
+            {
+                q: "2. What is connecting your app to a digital database calendar called?",
+                a: ["De-installing", "Setting up a software <u><b>Integration</b></u>", "Checking hard drive metrics", "Restarting"],
+                correct: 1
+            },
+            {
+                q: "3. What is an offline-ready home-screen app called?",
+                a: ["A local spreadsheet", "A <u><b>PWA</b></u> (Progressive Web App)", "An email draft", "An operating system"],
+                correct: 1
+            },
+            {
+                q: "4. What describes the visual buttons and layout on a web page?",
+                a: ["An API payload", "The <u><b>User Interface</b></u> (UI)", "A database query", "A webhook header"],
+                correct: 1
+            }
+        ]
     }
 };
 
 function initYouthPlayground() {
-    // Customize logic levels dynamically based on onboarding age selection
-    let puzzleKey = "Beginner";
-    if (userAge >= 13 && userAge <= 15) {
-        puzzleKey = "Intermediate";
-    } else if (userAge >= 16 && userAge <= 17) {
-        puzzleKey = "Advanced";
+    // Apply dynamic text scaling across titles and headers
+    const tier = tierLessons[userTier];
+    
+    document.getElementById('kids-welcome-title').textContent = tier.welcomeTitle;
+    document.getElementById('kids-welcome-desc').innerHTML = tier.welcomeDesc;
+    document.getElementById('kids-tier-badge').textContent = tier.badge;
+
+    // Load scaled module menu card titles
+    for (let i = 1; i <= 5; i++) {
+        document.getElementById(`mod-title-${i}`).textContent = tier.modules[i - 1].title;
     }
 
-    loadPuzzleLevel(puzzleKey);
-    updatePixelPetState("Sleeping");
+    // Load first workspace instruction
+    loadActiveModuleWorkspace(1);
+
+    // Initialize Broken Bridge Game choices based on age difficulty
+    initBrokenBridgeGame();
 }
 
-function loadPuzzleLevel(lvlKey) {
-    const lvl = levelPuzzles[lvlKey];
-    if (!lvl) return;
+// Interactive 5-Module Progress-Tracked Builder
+function loadActiveModuleWorkspace(modNum) {
+    activeModule = modNum;
+    const tier = tierLessons[userTier];
+    const moduleData = tier.modules[modNum - 1];
 
-    document.getElementById('game-age-label').textContent = lvl.label;
-    document.getElementById('game-level-badge').textContent = lvl.badge;
+    const container = document.getElementById('kids-active-workspace');
+    container.innerHTML = "";
 
-    // Redraw Game Board Elements
-    const wrapper = document.getElementById('game-board-elements');
-    wrapper.innerHTML = "";
+    // Header Title
+    const title = document.createElement('h4');
+    title.className = "font-black text-slate-800 uppercase text-xs mb-2 border-b border-stone-200 pb-1";
+    title.textContent = moduleData.title;
+    container.appendChild(title);
 
-    // Node 1: Trigger
-    const tNode = document.createElement('div');
-    tNode.className = "bg-sky-300 border-2 border-black rounded-xl p-3 font-black text-xs";
-    tNode.textContent = lvl.elements.trigger;
-    wrapper.appendChild(tNode);
+    // Instruction Text with bolded & underlined vocabulary
+    const desc = document.createElement('p');
+    desc.className = "text-xs text-slate-600 leading-relaxed font-semibold text-left mb-4";
+    desc.innerHTML = moduleData.text;
+    container.appendChild(desc);
 
-    // Arrow
-    const arrow1 = document.createElement('div');
-    arrow1.className = "text-xl";
-    arrow1.textContent = "➡️";
-    wrapper.appendChild(arrow1);
+    // Dynamic, engaging interactive widget based on current Module & Tier
+    const interactiveArea = document.createElement('div');
+    interactiveArea.className = "bg-white border-2 border-black rounded-xl p-4 flex flex-col items-center justify-center gap-3 shadow-inner";
 
-    // Node 2: Missing Bridge Slot
-    const slot = document.createElement('div');
-    slot.id = "game-bridge-slot";
-    slot.className = "bg-stone-200 border-4 border-dashed border-black rounded-xl p-3 font-black text-xs text-stone-400 h-12 w-36 flex items-center justify-center animate-pulse";
-    slot.textContent = "? Missing Node";
-    wrapper.appendChild(slot);
-
-    // Optional Extra Nodes
-    if (lvl.elements.action2) {
-        const arrowX = document.createElement('div');
-        arrowX.className = "text-xl";
-        arrowX.textContent = "➡️";
-        wrapper.appendChild(arrowX);
-
-        const extra = document.createElement('div');
-        extra.className = "bg-pink-300 border-2 border-black rounded-xl p-3 font-black text-xs";
-        extra.textContent = lvl.elements.action;
-        wrapper.appendChild(extra);
-    }
-
-    // Arrow Final
-    const arrowF = document.createElement('div');
-    arrowF.className = "text-xl";
-    arrowF.textContent = "➡️";
-    wrapper.appendChild(arrowF);
-
-    // Node 3: Result
-    const rNode = document.createElement('div');
-    rNode.className = "bg-emerald-300 border-2 border-black rounded-xl p-3 font-black text-xs";
-    rNode.textContent = lvl.elements.action2 || lvl.elements.action;
-    wrapper.appendChild(rNode);
-
-    // Load Game Choices
-    const choicesWrapper = document.getElementById('game-choices-wrapper');
-    choicesWrapper.innerHTML = "";
-    lvl.choices.forEach((ch, idx) => {
-        const btn = document.createElement('button');
-        btn.className = "btn-lego bg-yellow-100 text-xs px-4 py-2 text-slate-800 font-extrabold";
-        btn.textContent = ch;
-        btn.onclick = () => selectGameChoice(idx === lvl.correct ? 'Right' : 'Wrong');
-        choicesWrapper.appendChild(btn);
-    });
-}
-
-function selectGameChoice(outcome) {
-    if (outcome === 'Right') {
-        playSFX('correct');
-        const slot = document.getElementById('game-bridge-slot');
-        slot.textContent = "✅ Block Snapped!";
-        slot.className = "bg-emerald-400 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
-        
-        showToast("🌟 Hurray! You fixed the logic pipeline bridge!", "success");
-        updatePixelPetState("Happy");
+    if (modNum === 1) {
+        // Module 1: Workflow setup / Start button
+        if (userTier === 1) {
+            interactiveArea.innerHTML = `
+                <span class="text-xs font-black uppercase text-slate-400">Drag blue Start block here</span>
+                <button onclick="simulateModuleInteraction(1)" class="btn-lego bg-sky-400 text-white font-extrabold text-xs px-6 py-2.5 animate-bounce">
+                    <u><b>Start</b></u> Pipeline 🐶
+                </button>
+            `;
+        } else {
+            interactiveArea.innerHTML = `
+                <span class="text-xs font-black text-slate-400">Trigger Logic Check: If Client schedules Walk ➡️</span>
+                <button onclick="simulateModuleInteraction(1)" class="btn-lego bg-indigo-600 text-white font-black text-xs px-6 py-2.5">
+                    Trigger Workflow Logic Setup
+                </button>
+            `;
+        }
+    } else if (modNum === 2) {
+        // Module 2: Software Integration / API calendar
+        if (userTier === 1) {
+            interactiveArea.innerHTML = `
+                <span class="text-xs font-black text-slate-400">Connect the color shapes!</span>
+                <div class="flex gap-4 items-center">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-full border-2 border-black"></div>
+                    <div class="text-lg font-black text-slate-400">===</div>
+                    <button onclick="simulateModuleInteraction(2)" class="w-10 h-10 bg-indigo-600 hover:scale-110 transition rounded-full border-2 border-black animate-pulse"></button>
+                </div>
+            `;
+        } else {
+            interactiveArea.innerHTML = `
+                <span class="text-xs font-black text-slate-400 text-center">Set up calendar integration API keys:</span>
+                <div class="flex gap-2 w-full max-w-xs">
+                    <input type="text" id="api-key-input" placeholder="haas_api_live_keys_5419..." class="border-2 border-black rounded px-3 py-1 text-[11px] font-mono flex-1">
+                    <button onclick="simulateModuleInteraction(2)" class="btn-lego bg-indigo-600 text-white text-xs px-4 py-1.5">Connect API</button>
+                </div>
+            `;
+        }
+    } else if (modNum === 3) {
+        // Module 3: Storefront User Interface (Prompt generator)
+        interactiveArea.innerHTML = `
+            <span class="text-xs font-black text-slate-400">Type a design prompt for your storefront:</span>
+            <div class="flex flex-col gap-2 w-full max-w-sm text-left">
+                <input type="text" id="ui-prompt-input" value="A limestone-styled pet shop with bouncy indigo borders and friendly dog illustrations" class="border-2 border-black rounded px-3 py-2 text-xs font-semibold">
+                <button onclick="simulateModuleInteraction(3)" class="btn-lego bg-pink-300 text-black text-xs py-2">Generate User Interface (UI)</button>
+            </div>
+        `;
+    } else if (modNum === 4) {
+        // Module 4: Progressive Web App / Pack PWA
+        interactiveArea.innerHTML = `
+            <span class="text-xs font-black text-slate-400">Select home screen shortcut icon:</span>
+            <div class="flex gap-4">
+                <button onclick="simulateModuleInteraction(4)" class="w-12 h-12 bg-indigo-50 border-4 border-black hover:bg-indigo-100 rounded-xl text-xl flex items-center justify-center">🐶</button>
+                <button onclick="simulateModuleInteraction(4)" class="w-12 h-12 bg-indigo-50 border-4 border-black hover:bg-indigo-100 rounded-xl text-xl flex items-center justify-center">🦴</button>
+                <button onclick="simulateModuleInteraction(4)" class="w-12 h-12 bg-indigo-50 border-4 border-black hover:bg-indigo-100 rounded-xl text-xl flex items-center justify-center">🐾</button>
+            </div>
+            <span class="text-[9px] font-extrabold text-slate-400">Click icon to pack PWA</span>
+        `;
     } else {
-        playSFX('bubble');
-        showToast("🎈 Oops! That logical command doesn't fit here. Try another!", "warning");
+        // Module 5: Creator Studio Launch / Export ad
+        interactiveArea.innerHTML = `
+            <span class="text-xs font-black text-slate-400">Ad Creator Script Writer & Music Sync</span>
+            <div class="flex flex-col gap-2 w-full max-w-sm">
+                <textarea id="ad-script-textarea" class="border-2 border-black rounded p-2 text-xs font-semibold h-16 resize-none">The best dog walking service in Bedford, Indiana! Reliable, friendly, and 100% automated.</textarea>
+                <div class="flex gap-2">
+                    <button onclick="playSFX('sparkle')" class="w-1/2 btn-lego bg-pink-100 text-[10px] py-1.5">🎵 Mix Audio</button>
+                    <button onclick="simulateModuleInteraction(5)" class="w-1/2 btn-lego bg-emerald-300 text-[10px] py-1.5">📤 Export ad Track</button>
+                </div>
+            </div>
+        `;
     }
+
+    container.appendChild(interactiveArea);
 }
 
-// 5-Module Academy Course completions
-function completeAcademyModule(modNum) {
-    if (completedModules[modNum]) return; // already done
+function simulateModuleInteraction(modNum) {
+    if (modNum === 2 && userTier > 1) {
+        const val = document.getElementById('api-key-input').value.trim();
+        if (!val) {
+            showToast("⚠️ Please enter a mock API coordinate key!", "warning");
+            return;
+        }
+    }
 
-    completedModules[modNum] = true;
-    playSFX('lego');
+    playSFX('correct');
+    showToast(`🌟 Successfully completed Module ${modNum}!`, "success");
 
-    // Flip card styling
+    // Check off module inside Checklist
     const card = document.getElementById(`course-card-${modNum}`);
     const badge = document.getElementById(`course-status-${modNum}`);
-    const icon = document.getElementById(`course-icon-${modNum}`);
-
+    
     card.classList.remove('bg-white');
     card.classList.add('bg-emerald-100', 'border-emerald-500');
     badge.textContent = "Completed! ✅";
-    badge.className = "text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full";
-    icon.textContent = "✨";
+    badge.className = "text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full inline-block";
 
-    // Power up Pixel Pet Stats
+    completedModules[modNum] = true;
     updatePixelPetStats();
 
-    showToast(`📚 Module ${modNum} Checked off successfully!`, "success");
-
-    // Check if all 5 completed
+    // Auto-advance or unlock exam
     const allDone = Object.values(completedModules).every(v => v === true);
     if (allDone) {
-        // Enable Certification Exam Panel
         const exam = document.getElementById('exam-card');
         exam.classList.remove('opacity-40', 'pointer-events-none');
-        showToast("🎓 All Courses Completed! The Certification Exam is now Unlocked! 🧠", "success");
+        showToast("🎓 Epic! All courses cleared. The 10-Question Evolution Exam is unlocked!", "success");
         loadExamQuestion(0);
         updatePixelPetState("Genius");
+    } else {
+        // Load next module automatically
+        setTimeout(() => {
+            if (modNum < 5) loadActiveModuleWorkspace(modNum + 1);
+        }, 800);
     }
 }
 
-function updatePixelPetStats() {
-    let count = Object.values(completedModules).filter(v => v === true).length;
+
+// =========================================================================
+// ==================== HAASY THE PIXEL BEARDED DRAGON =====================
+// =========================================================================
+
+function triggerHaasyHint() {
+    playSFX('sparkle');
+    const bubble = document.getElementById('haasy-hint-bubble');
     
-    // Max stats on 5 modules
-    const health = 20 + (count * 16);
-    const wisdom = 10 + (count * 18);
+    // Choose randomized technical hint corresponding to user's Age scaling
+    const tier = tierLessons[userTier];
+    const hints = tier.hints;
+    const randomHint = hints[Math.floor(Math.random() * hints.length)];
 
-    document.getElementById('pet-health-text').textContent = `${health}%`;
-    document.getElementById('pet-health-bar').style.width = `${health}%`;
+    bubble.innerHTML = `🦎 HAASY THINKS: <br> ${randomHint}`;
+    bubble.classList.remove('hidden');
 
-    document.getElementById('pet-wisdom-text').textContent = `${wisdom}%`;
-    document.getElementById('pet-wisdom-bar').style.width = `${wisdom}%`;
+    // Automatically prune bubble after interval
+    setTimeout(() => {
+        bubble.classList.add('hidden');
+    }, 6000);
 }
 
-function updatePixelPetState(state) {
-    const statusText = document.getElementById('pet-status');
-    const cells = document.querySelectorAll('.pixel-cell');
 
-    if (state === "Sleeping") {
-        statusText.textContent = "State: Cozy & Sleeping 😴";
-    } else if (state === "Happy") {
-        statusText.textContent = "State: Playful & Active! 😃";
-        // change pixel elements color to represent awake puppy
-        cells.forEach(c => {
-            if (c.classList.contains('pixel-orange')) {
-                c.classList.remove('pixel-orange');
-                c.classList.add('pixel-white');
-            }
-        });
-    } else if (state === "Genius") {
-        statusText.textContent = "State: Super Smart Genius! 🧠";
-        cells.forEach(c => {
-            if (c.classList.contains('pixel-indigo')) {
-                c.classList.remove('pixel-indigo');
-                c.classList.add('pixel-orange');
-            }
-        });
+// =========================================================================
+// ==================== THE BROKEN BRIDGE CANVAS GAME ======================
+// =========================================================================
+
+function initBrokenBridgeGame() {
+    bridgeNodesPlaced = [];
+    const wrapper = document.getElementById('bridge-logic-slot');
+    wrapper.innerHTML = "";
+
+    // Pre-populate missing slot indicators
+    for (let i = 0; i < 4; i++) {
+        const slot = document.createElement('div');
+        slot.className = "w-16 h-16 border-2 border-dashed border-black bg-white/40 rounded-xl flex items-center justify-center text-[10px] font-black text-slate-400";
+        slot.textContent = `Node ${i + 1}`;
+        wrapper.appendChild(slot);
+    }
+
+    // Populate Level choices in randomized layout
+    const choices = ["Trigger", "Filter", "Integration", "Action"];
+    // Shuffle
+    choices.sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('game-choices-wrapper');
+    container.innerHTML = "";
+    choices.forEach(ch => {
+        const btn = document.createElement('button');
+        btn.className = "btn-lego bg-yellow-100 text-[10px] px-3 py-1.5 font-black text-slate-800";
+        btn.textContent = ch;
+        btn.onclick = () => placeBridgeNode(ch);
+        container.appendChild(btn);
+    });
+}
+
+function placeBridgeNode(nodeName) {
+    if (bridgeNodesPlaced.length >= 4) return;
+
+    bridgeNodesPlaced.push(nodeName);
+    playSFX('lego');
+
+    // Redraw bridge slots
+    const wrapper = document.getElementById('bridge-logic-slot');
+    wrapper.innerHTML = "";
+
+    // Draw active placed nodes
+    bridgeNodesPlaced.forEach((node, idx) => {
+        const colors = { Trigger: "bg-sky-400", Filter: "bg-pink-300", Integration: "bg-yellow-300", Action: "bg-emerald-400" };
+        const nBox = document.createElement('div');
+        nBox.className = `${colors[node]} border-2 border-black rounded-xl p-2 h-14 w-16 text-[9px] font-black flex items-center justify-center leading-tight shadow animate-bounce`;
+        nBox.textContent = node;
+        wrapper.appendChild(nBox);
+    });
+
+    // Populate empty slots remaining
+    for (let i = bridgeNodesPlaced.length; i < 4; i++) {
+        const slot = document.createElement('div');
+        slot.className = "w-16 h-16 border-2 border-dashed border-black bg-white/40 rounded-xl flex items-center justify-center text-[10px] font-black text-slate-400";
+        slot.textContent = `Node ${i + 1}`;
+        wrapper.appendChild(slot);
+    }
+
+    // Evaluate bridge order if all 4 are loaded
+    if (bridgeNodesPlaced.length === 4) {
+        setTimeout(validateBridgeSequence, 1000);
     }
 }
 
-// Technology Certification Exam Controller
+function validateBridgeSequence() {
+    let isValid = true;
+    for (let i = 0; i < 4; i++) {
+        if (bridgeNodesPlaced[i] !== correctBridgeSequence[i]) {
+            isValid = false;
+            break;
+        }
+    }
+
+    if (isValid) {
+        playSFX('correct');
+        showToast("🌉 Beautiful! Your logic order is perfect! The bridge completed securely!", "success");
+        updatePixelPetState("Happy");
+        
+        // Let Haasy celebrate on-screen
+        const slots = document.getElementById('bridge-logic-slot');
+        slots.className += " border-b-4 border-emerald-400 animate-pulse";
+    } else {
+        // Trigger active Fail State collapse
+        playSFX('bubble');
+        showToast("⚠️ FAIL STATE: Logic bridge order was incorrect! The nodes collapsed!", "warning");
+        
+        const slots = document.getElementById('bridge-logic-slot');
+        slots.classList.add('translate-y-24', 'opacity-0');
+
+        setTimeout(() => {
+            slots.classList.remove('translate-y-24', 'opacity-0');
+            initBrokenBridgeGame(); // reset levels
+        }, 1200);
+    }
+}
+
+
+// =========================================================================
+// ==================== EVOLUTION CERTIFICATION EXAM =======================
+// =========================================================================
+
 function loadExamQuestion(qIdx) {
     examCurrentQuestion = qIdx;
-    if (qIdx >= examQuestions.length) {
-        gradeExamResult();
+    
+    const tier = tierLessons[userTier];
+    const questions = tier.examQuestions;
+
+    // Check if finished
+    if (qIdx >= questions.length) {
+        // Add text-area freebie question
+        loadFreebieQuestion();
         return;
     }
 
-    const q = examQuestions[qIdx];
-    document.getElementById('exam-score-badge').textContent = `Question ${qIdx + 1} of 10`;
-    document.getElementById('question-text').textContent = q.q;
+    const q = questions[qIdx];
+    document.getElementById('exam-score-badge').textContent = `Question ${qIdx + 1} of 5`;
+    document.getElementById('question-text').innerHTML = q.q;
 
-    // Load Multiple Choice Answers
+    // Populate multiple choice answers
     const box = document.getElementById('answer-choices-box');
     box.innerHTML = "";
 
     q.a.forEach((choice, idx) => {
         const btn = document.createElement('button');
         btn.className = "btn-lego bg-white border-2 border-black hover:bg-stone-50 text-left text-xs font-bold p-3 rounded-xl transition flex justify-between items-center text-slate-800";
-        btn.innerHTML = `<span>${choice}</span> <span class="opacity-0">➡️</span>`;
+        btn.innerHTML = `<span>${choice}</span> <span>➡️</span>`;
         btn.onclick = () => submitExamAnswer(idx);
         box.appendChild(btn);
     });
 }
 
 function submitExamAnswer(ansIdx) {
-    const q = examQuestions[examCurrentQuestion];
+    const tier = tierLessons[userTier];
+    const q = tier.examQuestions[examCurrentQuestion];
+
     if (ansIdx === q.correct) {
         examScore++;
         playSFX('sparkle');
@@ -803,20 +649,42 @@ function submitExamAnswer(ansIdx) {
         playSFX('bubble');
     }
 
-    // Go to next question
     loadExamQuestion(examCurrentQuestion + 1);
 }
 
+function loadFreebieQuestion() {
+    document.getElementById('exam-score-badge').textContent = "Question 5 of 5: Freebie";
+    document.getElementById('question-text').innerHTML = "Name three things you learned in the Haas Playground today.";
+
+    const box = document.getElementById('answer-choices-box');
+    box.innerHTML = `
+        <div class="col-span-2 space-y-3 w-full">
+            <textarea id="freebie-textarea-input" placeholder="e.g., I learned about automated trigger signals, how software programs connect using an API, and compiling home-screen PWAs..." class="w-full border-4 border-black rounded-2xl p-4 text-xs font-semibold h-24 focus:outline-none focus:border-indigo-600"></textarea>
+            <button onclick="gradeExamResult()" class="btn-lego bg-indigo-600 text-white text-xs px-6 py-3 w-full">Submit Exam</button>
+        </div>
+    `;
+}
+
 function gradeExamResult() {
-    const passingGrade = 9; // 90%
-    if (examScore >= passingGrade) {
+    const freebieText = document.getElementById('freebie-textarea-input').value.trim();
+    if (!freebieText) {
+        showToast("⚠️ Please enter three things you learned to pass the certification!", "warning");
+        return;
+    }
+
+    // Always count the freebie as correct
+    const totalScore = examScore + 1;
+    const totalQuestions = 5;
+    const pct = (totalScore / totalQuestions) * 100;
+
+    if (pct >= 90) {
         playSFX('correct');
-        showToast("🎓 Brilliant! You passed with a 90%+ score! Unlocking your Certificate!", "success");
+        showToast(`🎉 Brilliant! You passed with a ${pct}% score! Unlocking your custom certificate!`, "success");
         revealCertificateModal();
     } else {
         playSFX('bubble');
-        showToast(`❌ Scored ${examScore}/10. You need a 90% (9 correct) to clear your exam. Let's try again!`, "warning");
-        // Reset and restart
+        showToast(`❌ Scored ${totalScore}/${totalQuestions}. You need a 90% pass rate to clear your exam. Let's study and retry!`, "warning");
+        // Reset
         examScore = 0;
         loadExamQuestion(0);
     }
@@ -857,7 +725,11 @@ function applyNameToCertificate() {
     showToast("✍️ Certificate name locked and authenticated!", "success");
 }
 
-// Kids Creator Studio Assets
+
+// =========================================================================
+// ==================== KIDS CREATOR STUDIO & UTILS ========================
+// =========================================================================
+
 function previewCreatorAsset() {
     const sfx = document.getElementById('kids-sfx-dropdown').value;
     const asset = document.getElementById('kids-assets-dropdown').value;
@@ -873,11 +745,44 @@ function downloadCreatorPack() {
     showToast(`📥 Customized Asset Pack Downloaded for Free! Contains: ${sfx}_sound.mp3, ${asset}.png, and app_icons.zip!`, "success");
 }
 
+function updatePixelPetStats() {
+    let count = Object.values(completedModules).filter(v => v === true).length;
+    const health = 20 + (count * 16);
+    const wisdom = 10 + (count * 18);
 
-// =========================================================================
-// ==================== SYSTEM GENERAL UTILITIES ==========================
-// =========================================================================
+    document.getElementById('pet-health-text').textContent = `${health}%`;
+    document.getElementById('pet-health-bar').style.width = `${health}%`;
 
+    document.getElementById('pet-wisdom-text').textContent = `${wisdom}%`;
+    document.getElementById('pet-wisdom-bar').style.width = `${wisdom}%`;
+}
+
+function updatePixelPetState(state) {
+    const statusText = document.getElementById('pet-status');
+    const cells = document.querySelectorAll('.pixel-cell');
+
+    if (state === "Sleeping") {
+        statusText.textContent = "State: Spiky & Cozy 🦎";
+    } else if (state === "Happy") {
+        statusText.textContent = "State: Playful & Excited! 🦖";
+        cells.forEach(c => {
+            if (c.classList.contains('pixel-dragon')) {
+                c.classList.remove('pixel-dragon');
+                c.classList.add('pixel-beard');
+            }
+        });
+    } else if (state === "Genius") {
+        statusText.textContent = "State: Intelligent Genius! 🧠";
+        cells.forEach(c => {
+            if (c.classList.contains('pixel-beard')) {
+                c.classList.remove('pixel-beard');
+                c.classList.add('pixel-eye');
+            }
+        });
+    }
+}
+
+// Bouncy synthesized sound engine using HTML5 Web Audio API
 function playSFX(type) {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -923,7 +828,7 @@ function playSFX(type) {
             osc.stop(now + 0.08);
         }
     } catch (e) {
-        console.warn("AudioContext deferred until click event.", e);
+        console.warn("HTML5 Synth oscillator audio context deferred.", e);
     }
 }
 
