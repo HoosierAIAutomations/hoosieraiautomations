@@ -1841,44 +1841,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haas Playground | Hoosier AI Automations</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;850;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="1330.png">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Custom styles for Haas Playground */
-        @keyframes pulse-star {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-        .star-pulse {
-            transform-origin: 50px 91.5px;
-            animation: pulse-star 2s infinite ease-in-out;
+        body {
+            font-family: 'Inter', sans-serif;
         }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-        .innovator-theme {
-            background: radial-gradient(circle at 10% 20%, rgb(246, 237, 248) 0%, rgb(222, 234, 253) 90%);
         }
         .console-grid {
             background-size: 24px 24px;
             background-image: linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
         }
-        /* Custom transitions */
         .step-transition {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Lock screen selection on secure console */
         .secure-lock {
             user-select: none;
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+        }
+        /* Kid friendly lego pastels */
+        .lego-card {
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            border-radius: 20px;
+            background: #FFFFFF;
+            transition: transform 0.2s;
+        }
+        .lego-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #000;
+        }
+        .btn-lego {
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            border-radius: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: all 0.15s;
+        }
+        .btn-lego:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px #000;
+        }
+        .btn-lego:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #000;
         }
     </style>
 </head>
@@ -1887,18 +1902,19 @@
     <!-- Fullscreen Water Ripple Canvas -->
     <canvas id="ripple-canvas" class="fixed inset-0 z-[100] pointer-events-none opacity-0 transition-opacity duration-300"></canvas>
 
-    <!-- Glassmorphism Navbar -->
-    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm shadow-slate-100/50">
+    <!-- Navigation Header -->
+    <nav class="fixed w-full z-50 bg-white/70 backdrop-blur-md border-b border-stone-200/40 px-6 py-4 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3 text-slate-900 no-underline hover:opacity-90 transition">
-                <img src="1330.png" alt="Hoosier AI Automations Logo" class="h-10 w-auto">
-                <span class="text-xl font-black tracking-tighter uppercase italic text-slate-900">Hoosier AI Automations</span>
+            <a href="index.html" class="flex items-center space-x-3 text-slate-900 hover:opacity-95 transition">
+                <img src="1330.png" alt="Logo" class="h-10 w-auto">
+                <span class="text-xl font-black tracking-tighter uppercase italic">Hoosier AI Automations</span>
             </a>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="index.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Home</a>
                 <a href="promise.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Our Promise</a>
                 <a href="pricing.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Pricing</a>
                 <a href="portfolio.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Portfolio</a>
+                <a href="hireus.html" class="nav-link text-slate-600 hover:text-indigo-600 font-bold">Hire Us</a>
                 <a href="playground.html" class="nav-cta text-white font-bold">Open Playground</a>
             </div>
         </div>
@@ -1915,11 +1931,11 @@
         </div>
         <div class="flex gap-2 justify-end">
             <button id="pwa-dismiss" class="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:bg-stone-50 transition">Dismiss</button>
-            <button id="pwa-install-btn" class="bg-indigo-600 hover:bg-indigo-700 transition px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg shadow-indigo-100">Install Now</button>
+            <button id="pwa-install-btn" class="bg-indigo-600 hover:bg-indigo-700 transition px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg">Install Now</button>
         </div>
     </div>
 
-    <!-- Onboarding Stage Container -->
+    <!-- Onboarding Stage Wizard -->
     <div id="onboarding-stage" class="pt-36 pb-12 px-6 flex items-center justify-center min-h-[85vh]">
         <div class="max-w-xl w-full glass-panel border border-stone-200/55 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
             
@@ -1928,7 +1944,7 @@
                 <div class="flex-1 h-1 bg-stone-200 rounded-full overflow-hidden mr-2">
                     <div id="progress-bar-fill" class="h-full bg-indigo-600 transition-all duration-500 w-1/3"></div>
                 </div>
-                <span id="step-counter" class="text-xs font-black uppercase text-indigo-600 tracking-widest bg-indigo-50/80 px-3 py-1 rounded-full border border-indigo-100">Step 1 of 3</span>
+                <span id="step-counter" class="text-xs font-black uppercase text-indigo-600 tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Step 1 of 3</span>
             </div>
 
             <form id="onboarding-form" class="space-y-8 relative z-10" onsubmit="return false;">
@@ -1942,37 +1958,63 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 pt-2">
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/20 transition flex flex-col justify-between h-32 relative select-none">
-                            <input type="radio" name="user_role" value="Founder" class="hidden" checked>
-                            <span class="text-2xl">🚀</span>
-                            <span class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Founder</span>
-                            <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
+                        <!-- Role card components (SVG instead of Emojis) -->
+                        <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Founder/Owner')">
+                            <input type="radio" name="user_role" value="Founder/Owner" class="hidden">
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Founder/Owner</span>
                         </label>
 
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/20 transition flex flex-col justify-between h-32 relative select-none">
-                            <input type="radio" name="user_role" value="Owner" class="hidden">
-                            <span class="text-2xl">💼</span>
-                            <span class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Business Owner</span>
-                            <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
-                        </label>
-
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/20 transition flex flex-col justify-between h-32 relative select-none">
+                        <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Developer')">
                             <input type="radio" name="user_role" value="Developer" class="hidden">
-                            <span class="text-2xl">💻</span>
-                            <span class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Developer</span>
-                            <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            <span class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Developer</span>
                         </label>
 
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/20 transition flex flex-col justify-between h-32 relative select-none">
+                        <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Innovator')">
                             <input type="radio" name="user_role" value="Innovator" class="hidden">
-                            <span class="text-2xl">🧠</span>
-                            <span class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Innovator</span>
-                            <div class="absolute top-4 right-4 w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            <span class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Innovator</span>
+                        </label>
+
+                        <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Marketer')">
+                            <input type="radio" name="user_role" value="Marketer" class="hidden">
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                            </svg>
+                            <span class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Marketer</span>
+                        </label>
+
+                        <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Student')">
+                            <input type="radio" name="user_role" value="Student" class="hidden">
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                            </svg>
+                            <span class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Student</span>
+                        </label>
+
+                        <label class="role-card border-2 border-stone-200/60 rounded-2xl p-5 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex flex-col justify-between h-32 relative select-none" onclick="selectRole('Start-Up')">
+                            <input type="radio" name="user_role" value="Start-Up" class="hidden">
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Start-Up</span>
                         </label>
                     </div>
 
-                    <button type="button" onclick="nextStep(2)" class="btn-primary w-full mt-6 py-4 flex justify-center items-center gap-2">
-                        <span>Continue</span> <span class="text-lg">→</span>
+                    <!-- Role Feedback Response Message Box -->
+                    <div id="role-feedback-box" class="hidden bg-indigo-50 border border-indigo-100/60 rounded-2xl p-4 text-xs font-semibold text-indigo-800 animate-fade-in text-left">
+                        <span id="role-feedback-text"></span>
+                    </div>
+
+                    <button type="button" id="btn-continue-step-1" disabled onclick="nextStep(2)" class="w-full bg-stone-200 text-stone-400 cursor-not-allowed font-extrabold text-xs uppercase tracking-widest py-4 rounded-2xl transition-all duration-300">
+                        Continue
                     </button>
                 </div>
 
@@ -1981,62 +2023,73 @@
                     <div class="text-center">
                         <span class="text-indigo-600 font-black text-[10px] tracking-widest uppercase">Target Your Purpose</span>
                         <h2 class="text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">What's Your Intent?</h2>
-                        <p class="text-slate-500 text-sm mt-1">Select what you plan to engineer inside our interactive sandpit today.</p>
+                        <p class="text-slate-500 text-sm mt-1">Select what you plan to engineer inside our interactive playground today.</p>
                     </div>
 
                     <div class="space-y-3 pt-2">
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none">
-                            <input type="radio" name="user_intent" value="Sandpit" class="hidden" checked>
+                        <label class="intent-card border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none" onclick="selectIntent('Playground')">
+                            <input type="radio" name="user_intent" value="Playground" class="hidden">
                             <div class="flex items-center space-x-4">
-                                <span class="text-2xl">⏳</span>
+                                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                                 <div class="text-left">
-                                    <h4 class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Explore Automation Sandpit</h4>
-                                    <p class="text-xs text-slate-400">Build block charts and see logic streams.</p>
+                                    <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Explore Automation Playground</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Build blocks and see logic flows.</p>
                                 </div>
                             </div>
-                            <div class="w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
                         </label>
 
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none">
+                        <label class="intent-card border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none" onclick="selectIntent('Workflows')">
                             <input type="radio" name="user_intent" value="Workflows" class="hidden">
                             <div class="flex items-center space-x-4">
-                                <span class="text-2xl">🔗</span>
+                                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
                                 <div class="text-left">
-                                    <h4 class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Map Active Workflows</h4>
-                                    <p class="text-xs text-slate-400">Optimize and design structural API paths.</p>
+                                    <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Map Active Workflows</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Optimize and design structural API paths.</p>
                                 </div>
                             </div>
-                            <div class="w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
                         </label>
 
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none">
+                        <label class="intent-card border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none" onclick="selectIntent('Fun')">
                             <input type="radio" name="user_intent" value="Fun" class="hidden">
                             <div class="flex items-center space-x-4">
-                                <span class="text-2xl">🎪</span>
+                                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m2.828-9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                </svg>
                                 <div class="text-left">
-                                    <h4 class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Just Having Fun</h4>
-                                    <p class="text-xs text-slate-400">See what AI integrations can do.</p>
+                                    <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Just Having Fun</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Discover what smart integrations can build.</p>
                                 </div>
                             </div>
-                            <div class="w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
                         </label>
 
-                        <label class="border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none">
+                        <label class="intent-card border-2 border-stone-200/60 rounded-2xl p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/10 transition flex items-center justify-between relative select-none" onclick="selectIntent('NotSure')">
                             <input type="radio" name="user_intent" value="NotSure" class="hidden">
                             <div class="flex items-center space-x-4">
-                                <span class="text-2xl">🧭</span>
+                                <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                                 <div class="text-left">
-                                    <h4 class="font-extrabold text-slate-800 text-sm uppercase tracking-wide">Not Sure Yet</h4>
-                                    <p class="text-xs text-slate-400">Browse template examples and discover possibilities.</p>
+                                    <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wide">Not Sure Yet</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium">Browse templates and explore options.</p>
                                 </div>
                             </div>
-                            <div class="w-4 h-4 rounded-full border-2 border-stone-300 flex items-center justify-center radio-dot"><div class="w-2 h-2 rounded-full bg-indigo-600 opacity-0 transition-opacity"></div></div>
                         </label>
+                    </div>
+
+                    <!-- Intent Feedback Response Message Box -->
+                    <div id="intent-feedback-box" class="hidden bg-indigo-50 border border-indigo-100/60 rounded-2xl p-4 text-xs font-semibold text-indigo-800 animate-fade-in text-left">
+                        <span id="intent-feedback-text"></span>
                     </div>
 
                     <div class="flex gap-4 pt-2">
                         <button type="button" onclick="nextStep(1)" class="w-1/3 bg-stone-100 hover:bg-stone-200 transition py-4 rounded-2xl text-slate-500 font-extrabold text-xs uppercase tracking-widest">Back</button>
-                        <button type="button" onclick="nextStep(3)" class="w-2/3 btn-primary py-4 flex justify-center items-center gap-2"><span>Continue</span> <span class="text-lg">→</span></button>
+                        <button type="button" id="btn-continue-step-2" disabled onclick="nextStep(3)" class="w-2/3 bg-stone-200 text-stone-400 cursor-not-allowed font-extrabold text-xs uppercase tracking-widest py-4 rounded-2xl transition-all duration-300">
+                            Continue
+                        </button>
                     </div>
                 </div>
 
@@ -2045,32 +2098,27 @@
                     <div class="text-center">
                         <span class="text-indigo-600 font-black text-[10px] tracking-widest uppercase">Identity Verification</span>
                         <h2 class="text-3xl font-black text-slate-900 mt-2 tracking-tight uppercase">Verify Age</h2>
-                        <p class="text-slate-500 text-sm mt-1">Please confirm your name and age to generate your custom sandbox.</p>
+                        <p class="text-slate-500 text-sm mt-1">Please confirm your details to generate your custom playground console.</p>
                     </div>
 
                     <div class="space-y-5 pt-2 text-left">
                         <div class="space-y-1.5">
                             <label for="user-name-input" class="text-slate-600 text-xs font-black uppercase tracking-wider">Your Full Name</label>
-                            <input type="text" id="user-name-input" placeholder="Nate" required class="w-full bg-stone-50 border-2 border-stone-200/60 rounded-2xl px-5 py-4 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
+                            <input type="text" id="user-name-input" placeholder="Your Name" required class="w-full bg-stone-50 border-2 border-stone-200/60 rounded-2xl px-5 py-4 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
                         </div>
 
                         <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <label for="user-age-slider" class="text-slate-600 text-xs font-black uppercase tracking-wider">Your Age</label>
-                                <span id="age-display" class="bg-indigo-600 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-indigo-500 shadow shadow-indigo-100">18 Years</span>
-                            </div>
-                            <input type="range" id="user-age-slider" min="10" max="80" value="18" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-indigo-600 outline-none">
-                            <div class="flex justify-between text-[10px] font-bold text-slate-400">
-                                <span>10 Years</span>
-                                <span>18 (Professional)</span>
-                                <span>80 Years</span>
-                            </div>
+                            <label for="user-age-select" class="text-slate-600 text-xs font-black uppercase tracking-wider">Your Age</label>
+                            <!-- Dropdown selection box instead of Slider -->
+                            <select id="user-age-select" class="w-full bg-stone-50 border-2 border-stone-200/60 rounded-2xl px-5 py-4 text-sm font-semibold text-slate-800 focus:border-indigo-500 focus:bg-white outline-none transition">
+                                <option value="" disabled selected>Choose Your Age</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="flex gap-4 pt-4">
                         <button type="button" onclick="nextStep(2)" class="w-1/3 bg-stone-100 hover:bg-stone-200 transition py-4 rounded-2xl text-slate-500 font-extrabold text-xs uppercase tracking-widest">Back</button>
-                        <button type="button" onclick="completeOnboarding()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 py-4 rounded-2xl text-white font-extrabold text-xs uppercase tracking-widest flex justify-center items-center gap-2">
+                        <button type="button" onclick="completeOnboarding()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 transition shadow-lg py-4 rounded-2xl text-white font-extrabold text-xs uppercase tracking-widest flex justify-center items-center gap-2">
                             <span>Open Console</span> <span class="text-lg">✨</span>
                         </button>
                     </div>
@@ -2086,153 +2134,353 @@
     <!-- ========================================================================= -->
     <div id="playground-dashboard" class="hidden pt-32 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
         
-        <!-- PROMINENT PRICING MESSAGE / HERO BANNER -->
-        <div class="w-full glass-panel border border-stone-200/60 rounded-3xl p-6 md:p-8 mb-10 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/50 via-transparent to-transparent opacity-60"></div>
-            <div class="text-left space-y-2 relative z-10 max-w-3xl">
-                <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Zero Fee Sandbox</span>
-                <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">Interactive Sandpit Sandbox</h3>
-                <p class="text-slate-600 text-sm leading-relaxed font-medium">
-                    Everything inside the playground is free to explore. Individual downloads and exports help keep this community growing. Thank you for your support!
-                </p>
-            </div>
-            <div class="flex space-x-4 items-center relative z-10 w-full md:w-auto">
-                <button onclick="triggerBlueprintGeneration()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-widest px-6 py-4 rounded-2xl transition shadow-lg shadow-indigo-100/50 w-full md:w-auto">
-                    Generate New Blueprint
-                </button>
-            </div>
-        </div>
-
-        <!-- ================== VIEW 1: PROFESSIONAL DASHBOARD (18+) ================== -->
-        <div id="professional-dashboard" class="hidden grid lg:grid-cols-3 gap-8 items-start">
+        <!-- ================== VIEW 1: PROFESSIONAL STUDIO CONSOLE (18+) ================== -->
+        <div id="professional-dashboard" class="hidden space-y-10">
             
-            <!-- Dynamic Blueprint Canvas (2/3 Col) -->
-            <div class="lg:col-span-2 space-y-6">
-                <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl">
-                    <div class="flex justify-between items-center mb-6">
+            <!-- Hero banner with transparent pricing message -->
+            <div class="w-full glass-panel border border-stone-200/60 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/50 via-transparent to-transparent opacity-60"></div>
+                <div class="text-left space-y-2 relative z-10 max-w-3xl">
+                    <span class="text-indigo-600 font-extrabold text-[10px] tracking-widest uppercase bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100/40">Zero Fee Sandbox</span>
+                    <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">Interactive Professional Console</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed font-semibold">
+                        Everything inside the playground is free to explore. Individual downloads and exports help keep this community growing. Thank you for your support!
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 items-center relative z-10 w-full md:w-auto">
+                    <!-- Dropdown selector for Framework templates -->
+                    <select id="industry-selector" onchange="loadIndustryTemplate()" class="bg-white border-2 border-stone-200 rounded-xl px-4 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-700 outline-none">
+                        <option value="RealEstate">🏡 Real Estate Leads</option>
+                        <option value="Logistics">🚛 Smart Logistics</option>
+                        <option value="Retail">🛒 Retail Low Stock</option>
+                    </select>
+                    <button onclick="triggerBlueprintGeneration()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest px-6 py-3.5 rounded-2xl transition shadow-lg w-full sm:w-auto">
+                        Generate Blueprint
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Columns -->
+            <div class="grid lg:grid-cols-3 gap-8 items-start">
+                
+                <!-- Dynamic Design Canvas (2/3 Col) -->
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400 uppercase">Interactive Design Canvas</span>
+                                <h2 id="blueprint-title" class="text-2xl font-black text-slate-900 uppercase mt-0.5 tracking-tight">AI Pipeline Blueprint</h2>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="simulateStressTest()" class="bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-indigo-700 font-extrabold text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full transition">
+                                    ⚡ Stress Test
+                                </button>
+                                <span id="p-active-badge" class="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100/60 px-3 py-1.5 rounded-full">Secure Render</span>
+                            </div>
+                        </div>
+
+                        <!-- Flowchart Interactive Canvas -->
+                        <div class="relative w-full h-[450px] bg-[#FAF9F5]/40 border border-stone-200/50 rounded-2xl overflow-hidden console-grid flex items-center justify-center">
+                            <canvas id="blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
+                            
+                            <!-- Stress testing overlay ring -->
+                            <div id="stress-test-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm hidden flex-col items-center justify-center text-white space-y-4">
+                                <div class="relative w-24 h-24 flex items-center justify-center">
+                                    <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                                        <circle cx="48" cy="48" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent"/>
+                                        <circle id="stress-progress-ring" cx="48" cy="48" r="40" stroke="#818CF8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-width="8" fill="transparent" class="transition-all duration-100"/>
+                                    </svg>
+                                    <span id="stress-counter-text" class="font-mono text-xl font-bold">0</span>
+                                </div>
+                                <h4 class="font-extrabold text-sm uppercase tracking-widest">Simulating load pipeline...</h4>
+                                <p id="stress-log-text" class="text-[11px] text-slate-400 font-mono">Tasks generated: 0 / 1000</p>
+                            </div>
+
+                            <!-- Semi-transparent overlay watermark -->
+                            <div id="unpurchased-watermark" class="absolute inset-0 pointer-events-none flex items-center justify-center rotate-[-15deg] select-none opacity-[0.08]">
+                                <span class="text-slate-900 font-black text-4xl tracking-widest uppercase">HAAS PLAYGROUND • PRE-PURCHASED DEMO</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions Panel -->
+                        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4 border-t border-stone-100 pt-6">
+                            <div class="text-left">
+                                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Save To Enterprise Vault</h4>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Professional blueprints are free to design. Unlock full documentation and raw code exports to implement this in your business today.</p>
+                            </div>
+                            <button onclick="triggerExportPayment()" class="btn-primary w-full sm:w-auto px-8 py-4 flex items-center justify-center gap-2 font-black text-xs uppercase tracking-widest">
+                                <span>Unlock Full Guide ($5.00)</span> <span>💳</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Time-To-Value ROI Calculator Card -->
+                    <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl text-left space-y-6">
                         <div>
-                            <span class="text-xs font-bold text-slate-400 uppercase">Interactive Design Canvas</span>
-                            <h2 class="text-2xl font-black text-slate-900 uppercase mt-0.5 tracking-tight">AI Pipeline Blueprint</h2>
+                            <span class="text-xs font-bold text-slate-400 uppercase">ROI Tool</span>
+                            <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Time-To-Value Calculator</h2>
+                            <p class="text-xs text-slate-500 mt-1">Compare manual labor costs against Haas automation efficiency to see when your automation pays for itself.</p>
                         </div>
-                        <span id="p-active-badge" class="bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100/60 px-3 py-1 rounded-full">Secure Render</span>
+
+                        <div class="grid md:grid-cols-2 gap-6 items-center">
+                            <div class="space-y-4">
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Employee Hourly Rate ($)</label>
+                                    <input type="number" id="roi-rate" value="25" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:border-indigo-500 transition">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Weekly Hours Spent On Task</label>
+                                    <input type="number" id="roi-hours" value="10" oninput="calculateROI()" class="w-full bg-stone-50 border-2 border-stone-200/50 rounded-xl px-4 py-3 text-xs font-bold outline-none focus:border-indigo-500 transition">
+                                </div>
+                            </div>
+
+                            <!-- Interactive ROI cost bars -->
+                            <div class="bg-stone-50 rounded-2xl p-6 border border-stone-100 space-y-4">
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between text-xs font-bold">
+                                        <span class="text-slate-500 uppercase">Yearly Manual Cost:</span>
+                                        <span id="roi-manual-cost" class="text-rose-600 font-extrabold">$13,000</span>
+                                    </div>
+                                    <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
+                                        <div id="roi-manual-bar" class="h-full bg-rose-500 w-full transition-all duration-500"></div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between text-xs font-bold">
+                                        <span class="text-slate-500 uppercase">Yearly Haas Cost:</span>
+                                        <span class="text-emerald-600 font-extrabold">$600</span>
+                                    </div>
+                                    <div class="w-full h-3 bg-stone-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 w-[5%]"></div>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-stone-200/60 pt-3 text-center">
+                                    <p class="text-xs font-bold text-slate-800">Your Haas Automation pays for itself in <span id="roi-payback-days" class="text-indigo-600 font-black">17 Days</span>!</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Flowchart Interactive Canvas -->
-                    <div class="relative w-full h-[450px] bg-[#FAF9F5]/50 border border-stone-200/50 rounded-2xl overflow-hidden console-grid flex items-center justify-center">
-                        <canvas id="blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
-                        
-                        <!-- Semi-transparent overlay watermark -->
-                        <div id="unpurchased-watermark" class="absolute inset-0 pointer-events-none flex items-center justify-center rotate-[-15deg] select-none opacity-15">
-                            <span class="text-slate-900 font-black text-5xl tracking-widest uppercase">HAAS PLAYGROUND • PRE-PURCHASED DEMO</span>
+                    <!-- Developer toolkit and API map -->
+                    <div class="grid md:grid-cols-2 gap-8 text-left">
+                        <!-- JSON Schema Previewer -->
+                        <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 shadow-xl space-y-4 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Developer JSON Schema</h4>
+                                <p class="text-[10px] text-slate-500 mt-1">Raw blueprint payload exported directly to system nodes.</p>
+                            </div>
+                            <pre class="bg-slate-900 text-slate-300 font-mono text-[9px] p-4 rounded-xl overflow-x-auto max-h-[150px] border border-slate-800" id="json-preview"></pre>
+                        </div>
+
+                        <!-- App integrations map -->
+                        <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 shadow-xl space-y-4">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Integrations Map</h4>
+                                <p class="text-[10px] text-slate-500 mt-1">Fully compatible applications that Haas speaks to natively.</p>
+                            </div>
+                            <div class="grid grid-cols-4 gap-2 pt-2">
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Gmail</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Stripe</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Slack</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Shopify</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Airtable</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Firebase</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Twilio</span></div>
+                                <div class="bg-stone-50 border border-stone-100 rounded-lg p-2 flex flex-col items-center"><span class="text-xs font-extrabold text-slate-700">Zapier</span></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Actions Panel -->
-                    <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
-                        <p class="text-xs text-slate-500 font-medium">Watermarked preview. Export to unlock standard logic files.</p>
-                        <button onclick="triggerExportPayment()" class="btn-primary w-full sm:w-auto px-8 py-3.5 flex items-center justify-center gap-2">
-                            <span>Export Clear Blueprint ($5.00)</span> <span>💳</span>
-                        </button>
+                </div>
+
+                <!-- Sleek Studio Dark Terminal (1/3 Col) -->
+                <div class="space-y-6 text-left">
+                    <div class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6 shadow-2xl relative overflow-hidden h-[620px] flex flex-col justify-between">
+                        <div class="absolute inset-x-0 top-0 h-12 bg-slate-900 border-b border-slate-800/80 px-6 flex justify-between items-center z-10">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <span class="font-mono text-[10px] text-slate-500 font-bold tracking-wider">haas-terminal@studio-console</span>
+                            <span class="w-4 h-4 text-slate-600">⚡</span>
+                        </div>
+
+                        <!-- Streaming logs (Light blue pastel and bolded white text - NO GREEN) -->
+                        <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-2.5 font-mono text-xs text-sky-200 text-left" id="terminal-stream-log">
+                            <p class="text-slate-500">// Haas Studio Engine v1.4.2</p>
+                            <p class="text-slate-500">// Standing by for user generation requests...</p>
+                            <p class="text-white font-bold">Ready.</p>
+                            <div class="w-2.5 h-4 bg-sky-300 inline-block animate-pulse"></div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-800">
+                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest text-center">Thinking Terminal • real-time stream execution</p>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
-            <!-- Sleek High-Contrast Dark-Mode Studio Terminal (1/3 Col) -->
-            <div class="space-y-6">
-                <div class="bg-slate-950 border border-slate-800 rounded-[2rem] p-6 shadow-2xl relative overflow-hidden h-[590px] flex flex-col justify-between">
-                    <div class="absolute inset-x-0 top-0 h-12 bg-slate-900 border-b border-slate-800/80 px-6 flex justify-between items-center z-10">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                        </div>
-                        <span class="font-mono text-[10px] text-slate-500 font-bold tracking-wider">haas-terminal@studio-console</span>
-                        <span class="w-4 h-4 text-slate-600">⚡</span>
-                    </div>
-
-                    <!-- Streaming Console Log -->
-                    <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-2.5 font-mono text-xs text-emerald-400 text-left" id="terminal-stream-log">
-                        <p class="text-slate-500">// Haas Studio Engine v1.4.2</p>
-                        <p class="text-slate-500">// Standing by for user generation requests...</p>
-                        <p class="text-slate-300">Ready.</p>
-                        <div class="w-2.5 h-4 bg-emerald-400 inline-block animate-pulse"></div>
-                    </div>
-
-                    <div class="pt-4 border-t border-slate-800">
-                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest text-center">Thinking Terminal • real-time stream execution</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- ================= VIEW 2: YOUNG INNOVATOR TRACK (17 & UNDER) ================= -->
-        <div id="young-innovator-dashboard" class="hidden grid lg:grid-cols-3 gap-8 items-start">
+        <div id="young-innovator-dashboard" class="hidden space-y-10">
             
-            <!-- Simplified Educational Canvas -->
-            <div class="lg:col-span-2 space-y-6">
-                <div class="glass-panel border border-stone-200/65 rounded-[2rem] p-6 md:p-8 shadow-xl bg-gradient-to-br from-indigo-50/20 via-white to-pink-50/20">
-                    <div class="flex justify-between items-center mb-6">
+            <!-- Children track top header saying exactly what you wanted -->
+            <div class="w-full bg-gradient-to-r from-amber-200 via-pink-200 to-sky-200 border-4 border-black rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-[8px_8px_0px_#000] relative overflow-hidden text-left">
+                <div class="space-y-2 relative z-10 max-w-4xl">
+                    <span class="bg-black text-yellow-300 font-black text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border-2 border-black">Always 100% Free!</span>
+                    <h3 class="text-2xl md:text-3xl font-black text-black uppercase tracking-tight">Welcome to Haas Youth Playground</h3>
+                    <p class="text-black font-extrabold text-sm leading-relaxed">
+                        Welcome to Haas Youth Playground where everything is always free of charge to help provide our young people with the knowledge of Technology. Build workflows like digital Legos!
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 items-center relative z-10 w-full md:w-auto">
+                    <!-- Dropdown for kids templates -->
+                    <select id="kids-toolkit-selector" onchange="loadKidsTemplate()" class="bg-white border-4 border-black rounded-xl px-4 py-3 text-xs font-black uppercase tracking-wider text-black outline-none shadow-[3px_3px_0px_#000]">
+                        <option value="Homework">📚 Homework Hero</option>
+                        <option value="Pet">🤖 My AI Robot Pet</option>
+                        <option value="Creator">🎨 Designer Soundboard</option>
+                    </select>
+                    <button onclick="triggerKidsGeneration()" class="btn-lego bg-yellow-300 hover:bg-yellow-400 text-black px-6 py-3.5 w-full sm:w-auto">
+                        Snap Together Lego Blocks!
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lego style Dashboard layout -->
+            <div class="grid lg:grid-cols-3 gap-8 items-start">
+                
+                <!-- Bubbly, Lego-like Bouncy Block Canvas (2/3 Col) -->
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="lego-card p-6 md:p-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">My Digital Lego Sandbox</span>
+                                <h2 id="kids-canvas-title" class="text-2xl font-black text-black uppercase mt-0.5">Lego Connector Grid</h2>
+                            </div>
+                            <span class="bg-emerald-300 text-black font-black text-[10px] uppercase tracking-widest border-2 border-black px-3 py-1.5 rounded-full">Always Free!</span>
+                        </div>
+
+                        <!-- Canvas layout -->
+                        <div class="relative w-full h-[450px] bg-white border-4 border-black rounded-2xl overflow-hidden flex items-center justify-center">
+                            <canvas id="kids-blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
+                        </div>
+
+                        <!-- Kids actions -->
+                        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4 border-t-4 border-black pt-6 text-left">
+                            <div>
+                                <h4 class="font-black text-black text-sm uppercase">Get Your Certificate of Innovation!</h4>
+                                <p class="text-xs text-stone-500 font-bold">Claim your personalized Certificate representing your first Haas Automation workflow. 100% free!</p>
+                            </div>
+                            <button onclick="generateInnovationCertificate()" class="btn-lego bg-emerald-400 hover:bg-emerald-500 text-black px-8 py-4 flex items-center justify-center gap-2">
+                                <span>Get My Free Certificate!</span> <span>🎓</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mini-games: Logic Puzzles / The Broken Bridge -->
+                    <div class="lego-card p-6 md:p-8 text-left space-y-6">
                         <div>
-                            <span class="text-xs font-bold text-slate-400 uppercase">Educational Learning Panel</span>
-                            <h2 class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight uppercase">Fun App Connector</h2>
+                            <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Fun Game Level 1</span>
+                            <h3 class="text-xl font-black text-black uppercase tracking-tight">🌉 The Broken Bridge Game</h3>
+                            <p class="text-xs text-stone-500 font-bold mt-1">An automation flow has a missing node (it forgot to save a file!). Pick the correct "Logic Block" below to fix the bridge and complete the path!</p>
                         </div>
-                        <span class="bg-amber-50 text-amber-600 text-[10px] font-black uppercase tracking-widest border border-amber-100/60 px-3 py-1 rounded-full">Safety-Filtered</span>
-                    </div>
 
-                    <!-- Flowchart Simplified Educational Canvas -->
-                    <div class="relative w-full h-[450px] bg-white border border-stone-200/50 rounded-2xl overflow-hidden flex items-center justify-center">
-                        <canvas id="kids-blueprint-canvas" class="w-full h-full" width="800" height="450"></canvas>
-                        
-                        <!-- Visual Watermark -->
-                        <div id="kids-watermark" class="absolute inset-0 pointer-events-none flex items-center justify-center rotate-[-15deg] select-none opacity-10">
-                            <span class="text-indigo-900 font-black text-4xl tracking-widest uppercase">LEARNING SANDBOX • EDUCATION VIEW</span>
+                        <div class="border-4 border-black bg-stone-50 rounded-2xl p-5 relative overflow-hidden">
+                            <!-- Visual game board -->
+                            <div class="flex items-center justify-center gap-4 py-4">
+                                <div class="bg-blue-300 border-2 border-black rounded-xl p-3 font-black text-xs">📧 New Message</div>
+                                <div class="text-xl">➡️</div>
+                                <div id="game-bridge-slot" class="bg-stone-200 border-4 border-dashed border-black rounded-xl p-3 font-black text-xs text-stone-400 h-12 w-36 flex items-center justify-center">? Missing Node</div>
+                                <div class="text-xl">➡️</div>
+                                <div class="bg-emerald-300 border-2 border-black rounded-xl p-3 font-black text-xs">📅 Save to Calendar</div>
+                            </div>
+
+                            <!-- Choice buttons -->
+                            <div class="flex justify-center gap-3 pt-4 border-t-2 border-stone-200">
+                                <button onclick="selectGameChoice('Wrong')" class="btn-lego bg-pink-300 text-xs px-4 py-2">🎨 Draw Picture</button>
+                                <button onclick="selectGameChoice('Right')" class="btn-lego bg-yellow-300 text-xs px-4 py-2">🧠 Haas Thinks</button>
+                                <button onclick="selectGameChoice('Wrong')" class="btn-lego bg-rose-300 text-xs px-4 py-2">🎈 Blow Up Balloon</button>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Action Panel -->
-                    <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
-                        <p class="text-xs text-slate-500 font-medium">Safe learning workspace. Download your picture diagram free below!</p>
-                        <button onclick="downloadKidsBlueprint()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-2xl transition shadow-lg shadow-emerald-100 flex items-center justify-center gap-2 w-full sm:w-auto">
-                            <span>Save Fun Chart (Free!)</span> <span>🎨</span>
-                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Friendly Block Tracker -->
-            <div class="space-y-6">
-                <div class="glass-panel border border-stone-200/55 rounded-[2rem] p-6 shadow-xl h-[590px] flex flex-col justify-between bg-white relative overflow-hidden">
-                    <div class="absolute inset-x-0 top-0 h-12 bg-stone-50 border-b border-stone-200/40 px-6 flex justify-between items-center z-10">
-                        <div class="flex items-center space-x-1">
-                            <span class="text-sm">⭐</span>
-                            <span class="font-extrabold text-[10px] text-slate-400 uppercase tracking-widest">Haas Kid Helper</span>
+                <!-- Emoji Stream Logic tracker & Designer soundboard (1/3 Col) -->
+                <div class="space-y-6 text-left">
+                    
+                    <!-- Soundboard & voice sounds toolkit -->
+                    <div class="lego-card p-6 space-y-4 bg-sky-100">
+                        <h4 class="font-black text-black text-sm uppercase">🎨 Kids Creator Soundboard</h4>
+                        <p class="text-[10px] text-stone-600 font-bold">Download fun, bubbly system notification sounds for your tablet!</p>
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <button onclick="playSFX('bubble')" class="btn-lego bg-yellow-200 text-[10px] p-2">🫧 Bubble SFX</button>
+                            <button onclick="playSFX('sparkle')" class="btn-lego bg-pink-200 text-[10px] p-2">✨ Sparkle SFX</button>
+                            <button onclick="playSFX('correct')" class="btn-lego bg-emerald-200 text-[10px] p-2">🔔 Success Ping</button>
+                            <button onclick="playSFX('lego')" class="btn-lego bg-purple-200 text-[10px] p-2">🧱 Lego Snap</button>
                         </div>
-                        <span class="text-xs text-indigo-500 font-black">Online</span>
                     </div>
 
-                    <!-- Safe Kids log stream -->
-                    <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-3.5 text-left text-sm font-semibold text-slate-600" id="kids-stream-log">
-                        <p class="text-indigo-500">👋 Hi there, Young Innovator! Let's build something awesome!</p>
-                        <p class="text-stone-400">Press the "Generate New Blueprint" button above to start your journey!</p>
+                    <!-- Visual logs with Emojis and Icons -->
+                    <div class="lego-card p-6 h-[430px] flex flex-col justify-between bg-yellow-50 relative overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-12 bg-yellow-100 border-b-4 border-black px-6 flex justify-between items-center z-10">
+                            <span class="font-black text-[10px] text-black uppercase tracking-wider">🌟 Haas Kid Companion</span>
+                            <span class="text-xs">😊</span>
+                        </div>
+
+                        <!-- Stream log visual list -->
+                        <div class="flex-1 mt-10 pt-4 overflow-y-auto space-y-3 font-bold text-xs text-stone-700 text-left" id="kids-stream-log">
+                            <p class="text-indigo-600">👋 Hi there, Young Innovator! Let's build something awesome!</p>
+                            <p class="text-stone-400">Click the yellow "Snap Together Lego Blocks" button to start your journey!</p>
+                        </div>
+
+                        <div class="pt-4 border-t-2 border-black/20 flex items-center justify-center gap-2">
+                            <span>🛡️</span>
+                            <p class="text-[9px] font-black text-stone-400 uppercase tracking-widest">100% Student Safe Environment</p>
+                        </div>
                     </div>
 
-                    <div class="pt-4 border-t border-stone-100 flex items-center justify-center gap-2">
-                        <span class="text-xs">🛡️</span>
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">100% Student Safe Environment</p>
-                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
 
     </div>
 
-    <!-- Footer -->
+    <!-- Certificate Mock Modal (Floating modal dynamically populated and printed) -->
+    <div id="cert-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
+        <div class="max-w-2xl w-full bg-white border-8 border-black rounded-[2.5rem] p-8 md:p-12 relative shadow-[12px_12px_0px_#000] text-center space-y-6">
+            <!-- Close button -->
+            <button onclick="closeCertModal()" class="absolute top-4 right-4 text-xl font-black">✕</button>
+            
+            <!-- Certificate frame border -->
+            <div class="border-4 border-double border-black p-8 rounded-2xl bg-amber-50 space-y-6">
+                <span class="text-3xl">🎓</span>
+                <h1 class="font-black text-2xl md:text-3xl uppercase tracking-wider text-black">Certificate of Innovation</h1>
+                <p class="text-xs font-bold text-slate-500 tracking-widest uppercase">Presented Proudly to</p>
+                <h2 id="cert-recipient-name" class="text-3xl font-black text-indigo-600 uppercase italic tracking-wide">Young Innovator</h2>
+                <div class="w-1/2 h-1 bg-black mx-auto"></div>
+                <p class="text-xs font-bold text-slate-700 max-w-md mx-auto leading-relaxed">
+                    successfully constructed their very first Haas automation loop logic workflow in the Hoosier AI Youth Playground!
+                </p>
+                <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider" id="cert-date-text">Verified Secure on May 12, 2026</p>
+            </div>
+            
+            <div class="flex gap-4">
+                <button onclick="closeCertModal()" class="w-1/2 btn-lego bg-stone-100 text-xs py-3.5">Close</button>
+                <button onclick="window.print()" class="w-1/2 btn-lego bg-yellow-300 text-xs py-3.5">Print Certificate 🖨️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with customized educational messaging -->
     <footer class="py-16 border-t border-stone-200 text-center text-slate-500 text-xs tracking-widest uppercase px-6 flex flex-col items-center justify-center space-y-6">
         <!-- Indiana Outline Badge -->
         <div class="inline-flex items-center space-x-3 bg-white border border-stone-200 px-6 py-3.5 rounded-full shadow-md">
-            <!-- Indiana Outline SVG with pulsing star -->
             <svg class="h-10 w-auto text-indigo-600" viewBox="0 0 100 140" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M 36,16 C 45,14 65,15 84,14 C 85,30 84,65 83,95 C 82,104 80,110 78,111 C 74,111 68,117 65,119 C 59,122 55,115 50,121 C 46,126 40,125 36,122 C 28,118 24,124 19,124 C 22,118 28,108 30,103 C 32,96 30,85 32,75 C 34,60 35,35 34,16 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="4.5" />
                 <path d="M 48,90 L 50,85 L 52,90 L 57,90 L 53,93 L 55,98 L 50,95 L 45,98 L 47,93 L 43,90 Z" fill="#F59E0B" class="star-pulse" />
@@ -2243,12 +2491,12 @@
                 <p class="text-[9px] font-bold text-indigo-500 uppercase tracking-widest">Bedford, Indiana</p>
             </div>
         </div>
-        <div class="space-y-2 text-center text-[11px]">
-            <p>&copy; 2026 Hoosier AI Automations. All Rights Reserved.</p>
+        <div class="space-y-2 text-center text-[11px]" id="playground-footer-text">
+            <p>&copy; 2026 Hoosier AI Automations. Built for the next generation of Hoosier creators. Keep dreaming, keep building.</p>
         </div>
     </footer>
 
-    <!-- Custom Toast Notification Container -->
+    <!-- Custom Toast Container -->
     <div id="toast-container" class="fixed top-24 right-6 z-[110] space-y-3 pointer-events-none"></div>
 
     <script src="chat.js"></script>
@@ -2779,513 +3027,750 @@ function createGlobalRippleAndNavigate(targetUrl, clickX, clickY) {
 
 ## File: Assets/playground.js
 ```javascript
-// Haas Playground Client Controller - Hoosier AI Automations
+// Haas Playground Dynamic Controller - Hoosier AI Automations
+let userRole = '';
+let userIntent = '';
+let userName = '';
+let userAge = 18;
 
-let currentOnboardingStep = 1;
-let isAdult = true;
-let isWatermarked = true;
-let deferredPrompt = null;
-let currentRole = "Founder";
-let currentIntent = "Sandpit";
+// PWA Install Event Handler
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show custom installation banner
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.remove('hidden');
+});
 
-// Standard blueprint node configurations
-const adultNodes = [
-    { x: 80, y: 150, title: "Trigger: Form Submit", desc: "Connect: Web 3 Forms API", type: "trigger", color: "#6366F1" },
-    { x: 300, y: 150, title: "Action: Haas Parser", desc: "Model: Deepmind Pro AI", type: "process", color: "#EC4899" },
-    { x: 520, y: 150, title: "Database: Save Lead", desc: "Service: Airtable API Secure", type: "storage", color: "#10B981" },
-    { x: 520, y: 300, title: "Dispatch: SMS Alerts", desc: "Provider: Twilio Dispatcher", type: "action", color: "#F59E0B" }
-];
-
-const kidsNodes = [
-    { x: 100, y: 180, title: "Step 1: Start My Game", desc: "Action: Press Play", type: "trigger", color: "#3B82F6" },
-    { x: 340, y: 180, title: "Step 2: Connect Apps", desc: "Action: Share Score", type: "process", color: "#F43F5E" },
-    { x: 580, y: 180, title: "Step 3: Win Prize!", desc: "Action: Learning Star unlocked", type: "reward", color: "#10B981" }
-];
-
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. PWA Service Worker Registration
+document.addEventListener('DOMContentLoaded', () => {
+    // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('[PWA] Service Worker Registered!', reg))
-            .catch(err => console.warn('[PWA] Service Worker Failed!', err));
+            .then(reg => console.log('Service Worker Registered Successfully! Scope:', reg.scope))
+            .catch(err => console.error('Service Worker Registration Failed:', err));
     }
 
-    // 2. Capture native PWA Install prompt
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        const pwaBanner = document.getElementById('pwa-install-banner');
-        if (pwaBanner) pwaBanner.classList.remove('hidden');
-    });
-
-    document.getElementById('pwa-dismiss')?.addEventListener('click', () => {
-        document.getElementById('pwa-install-banner')?.classList.add('hidden');
-    });
-
-    document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`[PWA] User choice: ${outcome}`);
-            deferredPrompt = null;
-            document.getElementById('pwa-install-banner')?.classList.add('hidden');
-        }
-    });
-
-    // 3. Setup Age Slider Display
-    const ageSlider = document.getElementById('user-age-slider');
-    const ageDisplay = document.getElementById('age-display');
-    if (ageSlider && ageDisplay) {
-        ageSlider.addEventListener('input', (e) => {
-            const age = e.target.value;
-            ageDisplay.innerText = `${age} Years`;
-            if (age >= 18) {
-                ageDisplay.className = "bg-indigo-600 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-indigo-500 shadow shadow-indigo-100";
+    // Populate Age Dropdown Selector dynamically
+    const ageSelect = document.getElementById('user-age-select');
+    if (ageSelect) {
+        for (let i = 10; i <= 80; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            if (i < 18) {
+                opt.textContent = `${i} Years (Young Innovator Track)`;
             } else {
-                ageDisplay.className = "bg-pink-500 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-pink-400 shadow shadow-pink-100";
+                opt.textContent = `${i} Years (Professional Console)`;
+            }
+            if (i === 18) opt.selected = true;
+            ageSelect.appendChild(opt);
+        }
+    }
+
+    // Bind PWA Install triggers
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to PWA prompt: ${outcome}`);
+                deferredPrompt = null;
+                document.getElementById('pwa-install-banner').classList.add('hidden');
             }
         });
     }
 
-    // 4. Ripple Landing Animation Trigger (if param passed)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('transition') === 'ripple') {
-        playRippleEntry();
+    const dismissBtn = document.getElementById('pwa-dismiss');
+    if (dismissBtn) {
+        dismissBtn.addEventListener('click', () => {
+            document.getElementById('pwa-install-banner').classList.add('hidden');
+        });
     }
 
-    // 5. Check if user already completed onboarding
-    const cachedAge = localStorage.getItem('haas_playground_age');
-    const cachedName = localStorage.getItem('haas_playground_name');
-    if (cachedAge && cachedName) {
-        isAdult = parseInt(cachedAge) >= 18;
-        currentRole = localStorage.getItem('haas_playground_role') || "Founder";
-        currentIntent = localStorage.getItem('haas_playground_intent') || "Sandpit";
-        document.getElementById('onboarding-stage').classList.add('hidden');
-        loadConsoleView();
-    }
-
-    // 6. Security Locks (Disable context menu, standard copy/paste and F12 inspect triggers)
-    document.addEventListener('contextmenu', (e) => {
-        if (document.getElementById('playground-dashboard').offsetParent !== null) {
-            e.preventDefault();
-            showToast("🔒 Security active. Export blueprint to download clean logic files!", "warning");
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (document.getElementById('playground-dashboard').offsetParent !== null) {
-            // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
-            if (
-                e.key === 'F12' ||
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
-                (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
-            ) {
-                e.preventDefault();
-                showToast("🔒 Inspect Element protected. Download/Export clean blueprints to view raw files!", "warning");
-            }
-        }
-    });
-
-    // 7. Check mock payment simulation
-    if (urlParams.get('payment_success') === 'true') {
-        isWatermarked = false;
-        setTimeout(() => {
-            showToast("💳 Stripe transaction approved! Custom watermarks removed.", "success");
-            triggerBlueprintGeneration();
-        }, 1200);
-    }
+    // Initial default calculations
+    calculateROI();
 });
 
 // =========================================================================
-// ==================== ONBOARDING WIZARD NAVIGATION =======================
+// ==================== ONBOARDING FLOW ACTIONS ============================
 // =========================================================================
 
-function nextStep(step) {
-    document.getElementById(`onboarding-step-${currentOnboardingStep}`).classList.add('hidden');
-    document.getElementById(`onboarding-step-${step}`).classList.remove('hidden');
-    currentOnboardingStep = step;
+function selectRole(role) {
+    userRole = role;
+    
+    // Highlight selected card
+    document.querySelectorAll('.role-card').forEach(card => {
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.add('border-stone-200/60');
+    });
+    
+    const selectedCard = event.currentTarget;
+    selectedCard.classList.remove('border-stone-200/60');
+    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
 
-    // Update Progress Indicators
-    const progressBar = document.getElementById('progress-bar-fill');
-    const stepCounter = document.getElementById('step-counter');
-    if (progressBar && stepCounter) {
-        const percent = (step / 3) * 100;
-        progressBar.style.width = `${percent}%`;
-        stepCounter.innerText = `Step ${step} of 3`;
+    // Dynamic response messages
+    const feedbackBox = document.getElementById('role-feedback-box');
+    const feedbackText = document.getElementById('role-feedback-text');
+    feedbackBox.classList.remove('hidden');
+
+    let text = "";
+    switch (role) {
+        case "Founder/Owner":
+            text = "🚀 Awesome choice! As a Founder or Owner, we'll customize your dashboard to focus on ROI calculation, time-saving metrics, and production-ready pipelines.";
+            break;
+        case "Developer":
+            text = "💻 Welcome, engineer! The Professional Console will provide raw JSON schemas, API mapping tools, and advanced integration blueprints.";
+            break;
+        case "Innovator":
+            text = "🧠 Brilliant! As an Innovator, you'll be shown futuristic automation frameworks to spark creative design patterns and logic streams.";
+            break;
+        case "Marketer":
+            text = "📣 Marketing expert! We will pre-load lead response, CRM syncing, and stock monitoring pipelines built to keep clients engaged.";
+            break;
+        case "Student":
+            text = "🎓 Great! We'll gear your workspace toward interactive educational tools to simplify how apps connect and perform algorithms.";
+            break;
+        case "Start-Up":
+            text = "⚡ Speed is key! As a Start-Up focus, we'll demonstrate lightweight automations that replace full departments on a shoestring budget.";
+            break;
+    }
+    feedbackText.textContent = text;
+
+    // Enable continue button
+    const btn = document.getElementById('btn-continue-step-1');
+    btn.removeAttribute('disabled');
+    btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
+    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+}
+
+function selectIntent(intent) {
+    userIntent = intent;
+    
+    // Highlight intent card
+    document.querySelectorAll('.intent-card').forEach(card => {
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.add('border-stone-200/60');
+    });
+    
+    const selectedCard = event.currentTarget;
+    selectedCard.classList.remove('border-stone-200/60');
+    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
+
+    // Intent feedback responses
+    const feedbackBox = document.getElementById('intent-feedback-box');
+    const feedbackText = document.getElementById('intent-feedback-text');
+    feedbackBox.classList.remove('hidden');
+
+    let text = "";
+    switch (intent) {
+        case "Playground":
+            text = "🎠 Perfect! You're entering the live playground dashboard where you can stress-test automations, stream thoughts, and customize layouts.";
+            break;
+        case "Workflows":
+            text = "🔗 Heavy duty design! We'll render structured network paths showing how data moves across standard platforms secure and fast.";
+            break;
+        case "Fun":
+            text = "🎪 Pure curiosity! Relax and explore. You can play custom built logic games, trigger sound effects, and claim visual rewards.";
+            break;
+        case "NotSure":
+            text = "🧭 No problem! We'll load simple and friendly preset blueprints to guide you through what Haas automations make possible.";
+            break;
+    }
+    feedbackText.textContent = text;
+
+    // Enable continue button
+    const btn = document.getElementById('btn-continue-step-2');
+    btn.removeAttribute('disabled');
+    btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
+    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+}
+
+function nextStep(stepNumber) {
+    // Hide all steps
+    document.getElementById('onboarding-step-1').classList.add('hidden');
+    document.getElementById('onboarding-step-2').classList.add('hidden');
+    document.getElementById('onboarding-step-3').classList.add('hidden');
+
+    // Show selected step
+    document.getElementById(`onboarding-step-${stepNumber}`).classList.remove('hidden');
+
+    // Update progress bar & headers
+    const fill = document.getElementById('progress-bar-fill');
+    const counter = document.getElementById('step-counter');
+    
+    if (stepNumber === 1) {
+        fill.style.width = "33.33%";
+        counter.textContent = "Step 1 of 3";
+    } else if (stepNumber === 2) {
+        fill.style.width = "66.66%";
+        counter.textContent = "Step 2 of 3";
+    } else {
+        fill.style.width = "100%";
+        counter.textContent = "Step 3 of 3";
     }
 }
 
 function completeOnboarding() {
     const nameInput = document.getElementById('user-name-input');
-    const name = nameInput ? nameInput.value.trim() : "Guest";
-    const age = parseInt(document.getElementById('user-age-slider').value);
+    const ageSelect = document.getElementById('user-age-select');
 
-    if (!name) {
-        showToast("⚠️ Please enter your name to complete onboarding.", "error");
+    if (!nameInput.value.trim()) {
+        showToast("⚠️ Please enter your name!", "warning");
+        nameInput.focus();
         return;
     }
 
-    // Save Selection
-    const selectedRole = document.querySelector('input[name="user_role"]:checked')?.value || "Founder";
-    const selectedIntent = document.querySelector('input[name="user_intent"]:checked')?.value || "Sandpit";
+    userName = nameInput.value.trim();
+    userAge = parseInt(ageSelect.value);
 
-    localStorage.setItem('haas_playground_name', name);
-    localStorage.setItem('haas_playground_age', age);
-    localStorage.setItem('haas_playground_role', selectedRole);
-    localStorage.setItem('haas_playground_intent', selectedIntent);
-
-    isAdult = age >= 18;
-    currentRole = selectedRole;
-    currentIntent = selectedIntent;
-
-    showToast(`✨ Welcome to Haas Playground, ${name}!`, "success");
-
-    // Fade onboarding out and dashboard in
-    const onboarding = document.getElementById('onboarding-stage');
-    onboarding.classList.add('animate-fade-out');
-    setTimeout(() => {
-        onboarding.classList.add('hidden');
-        loadConsoleView();
-    }, 400);
-}
-
-// =========================================================================
-// ===================== CONSOLE RENDERING ENGINE =========================
-// =========================================================================
-
-function loadConsoleView() {
+    // Hide wizard flow
+    document.getElementById('onboarding-stage').classList.add('hidden');
+    
+    // Display actual workspace console
     const dashboard = document.getElementById('playground-dashboard');
     dashboard.classList.remove('hidden');
-    dashboard.classList.add('animate-fade-in');
 
-    if (isAdult) {
+    if (userAge >= 18) {
+        // Adult Professional Track
         document.getElementById('professional-dashboard').classList.remove('hidden');
-        triggerBlueprintGeneration();
+        showToast(`🎉 Welcome to Pro Studio, ${userName}!`, "success");
+        initProfessionalConsole();
     } else {
+        // Youth Innovator Track
         document.getElementById('young-innovator-dashboard').classList.remove('hidden');
-        triggerBlueprintGeneration();
+        showToast(`🎈 Welcome, Young Innovator ${userName}!`, "success");
+        initYouthPlayground();
     }
 }
 
-function drawBlueprint(canvasId, nodes, watermarked) {
-    const canvas = document.getElementById(canvasId);
+// =========================================================================
+// ==================== PROFESSIONAL STUDIO CONSOLE (18+) ==================
+// =========================================================================
+
+let proStreamLogs = [];
+const proBlueprints = {
+    RealEstate: {
+        title: "🏡 Real Estate Lead Generation Pipeline",
+        nodes: [
+            { text: "Lead Enters Form", x: 100, y: 225, type: "trigger" },
+            { text: "Filter & Validate", x: 260, y: 225, type: "action" },
+            { text: "Sync CRM Contact", x: 420, y: 225, type: "action" },
+            { text: "Notify Agent SMS", x: 580, y: 150, type: "action" },
+            { text: "Trigger Lead Nurture", x: 580, y: 300, type: "action" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3], [2, 4]],
+        json: {
+            pipeline_name: "Real_Estate_Leads_V1",
+            trigger_node: "Web_Form_Submit",
+            filters: ["address_exists", "phone_verified"],
+            crm_target: "Firebase_DB",
+            notifiers: ["Twilio_SMS_Agent", "Sendgrid_Email_Lead_Nurture"]
+        }
+    },
+    Logistics: {
+        title: "🚛 Smart Logistics & Routing Pipeline",
+        nodes: [
+            { text: "GPS Location Pulse", x: 80, y: 225, type: "trigger" },
+            { text: "Geofence Check", x: 230, y: 150, type: "action" },
+            { text: "Validate Delivery Status", x: 380, y: 225, type: "action" },
+            { text: "ETA Prediction API", x: 530, y: 225, type: "action" },
+            { text: "Notify Customer SMS", x: 680, y: 225, type: "action" }
+        ],
+        connections: [[0, 1], [0, 2], [2, 3], [3, 4]],
+        json: {
+            pipeline_name: "Logistics_Smart_Route",
+            trigger_node: "GPS_Ping",
+            geofence_boundary_miles: 5,
+            prediction_algorithm: "ETA_Random_Forest",
+            notifiers: ["Twilio_SMS_Customer_ETA"]
+        }
+    },
+    Retail: {
+        title: "🛒 Retail Inventory Low-Stock Sync",
+        nodes: [
+            { text: "Item Sold Shopify", x: 100, y: 225, type: "trigger" },
+            { text: "Database Count Check", x: 260, y: 225, type: "action" },
+            { text: "Construct PO Order", x: 420, y: 150, type: "action" },
+            { text: "Notify Wholesale API", x: 580, y: 225, type: "action" },
+            { text: "Slack Alert low stock", x: 580, y: 300, type: "action" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3], [1, 4]],
+        json: {
+            pipeline_name: "Shopify_Low_Stock_Sync",
+            trigger_node: "Shopify_Webhook_Order",
+            threshold: 15,
+            auto_wholesale_purchase: true,
+            alert_channels: ["Slack_Operations"]
+        }
+    }
+};
+
+function initProfessionalConsole() {
+    loadIndustryTemplate();
+}
+
+function loadIndustryTemplate() {
+    const selected = document.getElementById('industry-selector').value;
+    const blueprint = proBlueprints[selected];
+    
+    // Set title
+    document.getElementById('blueprint-title').textContent = blueprint.title;
+
+    // Set JSON Preview
+    document.getElementById('json-preview').textContent = JSON.stringify(blueprint.json, null, 2);
+
+    // Stream logs to thinking terminal
+    proStreamLogs = [
+        `[SYSTEM]: Initializing Haas Logic Engine for ${selected}...`,
+        `[ANALYSIS]: Identifying manual bottlenecks in system paths...`,
+        `[ACTION]: Mapping active trigger payload parameters...`,
+        `[VERIFY]: Resolving system webhooks and verifying APIs...`,
+        `[SUCCESS]: Blueprint compiled successfully.`
+    ];
+    streamTerminalLogs();
+
+    // Render on Canvas
+    drawProfessionalBlueprint(blueprint);
+}
+
+function drawProfessionalBlueprint(blueprint) {
+    const canvas = document.getElementById('blueprint-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 1. Draw sleek subtle alignment grids
-    ctx.strokeStyle = "rgba(99, 102, 241, 0.05)";
-    ctx.lineWidth = 1;
-    for (let x = 0; x < canvas.width; x += 25) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-    }
-    for (let y = 0; y < canvas.height; y += 25) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-
-    // 2. Draw connector curves
-    ctx.strokeStyle = "rgba(165, 180, 252, 0.6)";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([5, 5]);
-    ctx.lineDashOffset = 0;
-
-    for (let i = 0; i < nodes.length - 1; i++) {
-        const from = nodes[i];
-        const to = nodes[i + 1];
+    // Draw lines
+    ctx.lineWidth = 2.5;
+    blueprint.connections.forEach(conn => {
+        const from = blueprint.nodes[conn[0]];
+        const to = blueprint.nodes[conn[1]];
         
+        ctx.strokeStyle = "#818CF8"; // Indigo
         ctx.beginPath();
-        ctx.moveTo(from.x + 180, from.y + 35);
-        ctx.bezierCurveTo(
-            from.x + 250, from.y + 35,
-            to.x - 70, to.y + 35,
-            to.x, to.y + 35
-        );
-        ctx.stroke();
-    }
-    ctx.setLineDash([]); // Reset line dash
-
-    // 3. Draw Nodes (Glassmorphic look)
-    nodes.forEach(node => {
-        // Drop shadow
-        ctx.shadowColor = "rgba(99, 102, 241, 0.1)";
-        ctx.shadowBlur = 15;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 8;
-
-        // Container card
-        ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.roundRect(node.x, node.y, 180, 70, 16);
-        ctx.fill();
-
-        // Border colored highlight
-        ctx.shadowColor = "transparent"; // Reset shadow for outline
-        ctx.strokeStyle = node.color;
-        ctx.lineWidth = 2.5;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
         ctx.stroke();
 
-        // Color tag indicator pill
-        ctx.fillStyle = node.color;
+        // Draw arrow tip
+        const angle = Math.atan2(to.y - from.y, to.x - from.x);
+        ctx.fillStyle = "#818CF8";
         ctx.beginPath();
-        ctx.roundRect(node.x + 12, node.y + 12, 12, 12, 4);
-        ctx.fill();
-
-        // Node Title text
-        ctx.fillStyle = "#0F172A"; // Slate 900
-        ctx.font = "bold 11px Inter, sans-serif";
-        ctx.fillText(node.title, node.x + 32, node.y + 22);
-
-        // Node description text
-        ctx.fillStyle = "#64748B"; // Slate 500
-        ctx.font = "500 9px Inter, sans-serif";
-        ctx.fillText(node.desc, node.x + 12, node.y + 48);
-
-        // Service outline tags (if any)
-        ctx.fillStyle = "rgba(99, 102, 241, 0.08)";
-        ctx.beginPath();
-        ctx.roundRect(node.x + 12, node.y + 54, 156, 3, 2);
+        ctx.arc(to.x - 10 * Math.cos(angle), to.y - 10 * Math.sin(angle), 5, 0, Math.PI * 2);
         ctx.fill();
     });
 
-    // 4. Visual watermark overlay (if locked)
-    if (watermarked) {
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(-Math.PI / 12);
-        ctx.font = "black 14px Inter, sans-serif";
-        ctx.fillStyle = "rgba(100, 116, 139, 0.16)";
+    // Draw nodes
+    blueprint.nodes.forEach(node => {
+        ctx.fillStyle = node.type === "trigger" ? "#4F46E5" : "#FAF9F5";
+        ctx.strokeStyle = "#4F46E5";
+        ctx.lineWidth = 3;
+
+        // Rounded card draw
+        drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 12, node.type === "trigger", true);
+
+        // Text print
+        ctx.fillStyle = node.type === "trigger" ? "#FFFFFF" : "#1E293B";
+        ctx.font = "bold 11px 'Inter', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        
-        // Render simple tile watermark patterns
-        const text = isAdult ? "HAAS PLAYGROUND • PRE-PURCHASED DEMO" : "HAAS LEARNING TRACK • EDUCATION PREVIEW";
-        for (let i = -3; i <= 3; i++) {
-            ctx.fillText(text, 0, i * 80);
+        ctx.fillText(node.text, node.x, node.y);
+    });
+}
+
+function drawRoundedRect(ctx, x, y, width, height, radius, fill, stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
+}
+
+function streamTerminalLogs() {
+    const term = document.getElementById('terminal-stream-log');
+    term.innerHTML = "";
+    let i = 0;
+
+    function addLog() {
+        if (i < proStreamLogs.length) {
+            const p = document.createElement('p');
+            if (proStreamLogs[i].includes('SUCCESS')) {
+                p.className = 'text-white font-bold tracking-wide border-l-2 border-indigo-500 pl-2';
+            } else if (proStreamLogs[i].includes('SYSTEM')) {
+                p.className = 'text-indigo-300 font-medium';
+            } else {
+                p.className = 'text-sky-200';
+            }
+            p.textContent = proStreamLogs[i];
+            term.appendChild(p);
+            term.scrollTop = term.scrollHeight;
+            i++;
+            setTimeout(addLog, 450);
+        } else {
+            const cursor = document.createElement('div');
+            cursor.className = 'w-2.5 h-4 bg-sky-300 inline-block animate-pulse mt-1';
+            term.appendChild(cursor);
         }
-        ctx.restore();
+    }
+    addLog();
+}
+
+// 1,000 Task Stress Test Simulator
+function simulateStressTest() {
+    const overlay = document.getElementById('stress-test-overlay');
+    overlay.classList.remove('hidden');
+
+    let count = 0;
+    const ring = document.getElementById('stress-progress-ring');
+    const countText = document.getElementById('stress-counter-text');
+    const logText = document.getElementById('stress-log-text');
+    
+    // Add logs to terminal in the background
+    const term = document.getElementById('terminal-stream-log');
+    const p = document.createElement('p');
+    p.className = 'text-yellow-300 font-bold';
+    p.textContent = `[STRESS TEST]: Commencing 1,000 tasks simulation pipeline run...`;
+    term.appendChild(p);
+
+    const interval = setInterval(() => {
+        if (count < 1000) {
+            count += 40;
+            if (count > 1000) count = 1000;
+            
+            // Progress ring calculation
+            const pct = count / 1000;
+            const offset = 251.2 - (251.2 * pct);
+            ring.style.strokeDashoffset = offset;
+            
+            countText.textContent = count;
+            logText.textContent = `Tasks generated: ${count} / 1000`;
+            
+            if (count % 200 === 0) {
+                const subP = document.createElement('p');
+                subP.className = 'text-sky-100 font-mono text-[10px] pl-2';
+                subP.textContent = `⚡ [STRESS] Simulating concurrency block load: ${count} payloads successfully completed.`;
+                term.appendChild(subP);
+                term.scrollTop = term.scrollHeight;
+            }
+        } else {
+            clearInterval(interval);
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                showToast("✅ Concurrency Stress Test Completed! 0 Failures detected.", "success");
+                
+                const finalP = document.createElement('p');
+                finalP.className = 'text-emerald-300 font-bold';
+                finalP.textContent = `[STRESS COMPLETED]: 1,000 / 1,000 loops finished securely in 2.5s. Ready.`;
+                term.appendChild(finalP);
+                term.scrollTop = term.scrollHeight;
+            }, 600);
+        }
+    }, 100);
+}
+
+// Time-To-Value ROI Calculator logic
+function calculateROI() {
+    const rate = parseFloat(document.getElementById('roi-rate').value) || 0;
+    const hours = parseFloat(document.getElementById('roi-hours').value) || 0;
+
+    const yearlyManual = rate * hours * 52;
+    const manualCostText = document.getElementById('roi-manual-cost');
+    const manualBar = document.getElementById('roi-manual-bar');
+    const paybackText = document.getElementById('roi-payback-days');
+
+    // Display formatted cost
+    manualCostText.textContent = yearlyManual.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+    // Animate manual bar relative to maximum height representation
+    const maxVal = 50000;
+    const percentage = Math.min((yearlyManual / maxVal) * 100, 100);
+    manualBar.style.width = `${percentage}%`;
+
+    // Payback day threshold crossover point representation
+    if (yearlyManual > 0) {
+        // Haas SaaS pipeline setup costs fixed $300 + hosting $25/mo
+        const baseCost = 600; 
+        const dailySavings = (rate * hours) / 7;
+        const paybackDays = Math.ceil(baseCost / dailySavings);
+        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Less than a Year";
+    } else {
+        paybackText.textContent = "0 Days";
     }
 }
 
-// =========================================================================
-// =================== DYNAMIC TERMINAL LOG STREAM =========================
-// =========================================================================
-
-let terminalInterval = null;
-
-function triggerBlueprintGeneration() {
-    const streamContainer = document.getElementById(isAdult ? 'terminal-stream-log' : 'kids-stream-log');
-    if (!streamContainer) return;
-    
-    // Clear old logs and drawing
-    streamContainer.innerHTML = "";
-    
-    const logs = isAdult ? [
-        "🤖 [Haas Studio] Initializing engineering pipeline compilation...",
-        "🔌 [Haas Studio] Fetching custom APIs for role: " + currentRole + "...",
-        "⚙️ [Haas Studio] Creating system routing structures for: " + currentIntent + "...",
-        "🔒 [Haas Studio] Securing isolated runtime context...",
-        "📡 [Haas Studio] Initializing direct Stripe transaction check checks...",
-        "💾 [Haas Studio] Embedding blueprint vectors in memory DB...",
-        "🏆 [Haas Studio] Blueprint compilation completed successfully! Ready for export."
-    ] : [
-        "🎈 [Haas Kid] Welcome! Let's build your cool learning diagram!...",
-        "🎒 [Haas Kid] Loading custom stars and templates...",
-        "🛡️ [Haas Kid] Safety filters are 100% active and running!...",
-        "✨ [Haas Kid] Coloring your blocks in blue and green...",
-        "🧩 [Haas Kid] Fitting block paths together...",
-        "🌈 [Haas Kid] Everything looks super fun! Save your drawing below!"
-    ];
-
-    let logIndex = 0;
-    
-    if (terminalInterval) clearInterval(terminalInterval);
-
-    // Dynamic stream sequence
-    terminalInterval = setInterval(() => {
-        if (logIndex < logs.length) {
-            const line = document.createElement('p');
-            line.className = isAdult ? "text-emerald-400" : "text-indigo-600";
-            line.innerText = logs[logIndex];
-            streamContainer.appendChild(line);
-            
-            // Auto scroll container
-            streamContainer.scrollTop = streamContainer.scrollHeight;
-            logIndex++;
-            
-            // Draw progressively
-            const currentNodes = isAdult ? adultNodes.slice(0, Math.ceil((logIndex / logs.length) * adultNodes.length)) : kidsNodes;
-            drawBlueprint(isAdult ? 'blueprint-canvas' : 'kids-blueprint-canvas', currentNodes, isWatermarked);
-        } else {
-            clearInterval(terminalInterval);
-            // Append blink cursor in terminal
-            if (isAdult) {
-                const cursor = document.createElement('div');
-                cursor.className = "w-2.5 h-4 bg-emerald-400 inline-block animate-pulse mt-2";
-                streamContainer.appendChild(cursor);
-            }
-        }
-    }, 700);
-}
-
-// =========================================================================
-// ================= MONETIZATION & SIMULATION CHECKS =======================
-// =========================================================================
-
+// Paywall vault trigger
 function triggerExportPayment() {
-    showToast("💳 Creating secure Stripe checkout session...", "info");
-    
-    // Simulate redirecting to Stripe Checkout. We pass payment_success parameter to represent completion
+    showToast("💳 Redirecting to Stripe Secure Portal Checkout...", "success");
     setTimeout(() => {
-        window.location.href = window.location.pathname + "?payment_success=true";
-    }, 1500);
+        // Mock success callback scenario
+        showToast("✨ Payment Completed! Downloading standard blueprint package containing JSON schematics...", "success");
+    }, 2000);
 }
 
-function downloadKidsBlueprint() {
-    showToast("🎨 Preparing your fun diagram design. Saved to downloads!", "success");
-    simulateFileDownload("haas-kids-diagram.json", JSON.stringify(kidsNodes, null, 2));
-}
-
-function simulateFileDownload(filename, text) {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-}
 
 // =========================================================================
-// ================= WATER RIPPLE TRANSITION LOGIC =========================
+// ==================== YOUNG INNOVATOR TRACK (17 & UNDER) =================
 // =========================================================================
 
-function playRippleEntry() {
-    const canvas = document.getElementById('ripple-canvas');
+const kidsBlueprints = {
+    Homework: {
+        title: "📚 Homework Hero Magic Chain",
+        nodes: [
+            { text: "🏫 Posts Homework", x: 100, y: 225 },
+            { text: "🧩 Sort in Planner", x: 300, y: 225 },
+            { text: "📱 Call Phone Reminder", x: 500, y: 225 }
+        ],
+        logs: [
+            "🎈 Initializing Homework Hero pipeline...",
+            "🧱 Snapping 'Posts Homework' blocks into 'Sort in Planner' nodes...",
+            "🌟 Success! Your robot assistant is set up to phone you alerts!"
+        ]
+    },
+    Pet: {
+        title: "🤖 My AI Robot Pet Companion",
+        nodes: [
+            { text: "💬 Ask Robot Pet", x: 100, y: 225 },
+            { text: "🧠 Think Prompt", x: 300, y: 225 },
+            { text: "📣 Fun Speech Voice", x: 500, y: 225 }
+        ],
+        logs: [
+            "🔮 Training mini assistant helper robot pet...",
+            "🌟 Give him a personality wizard, funny alien, or helpful robot!",
+            "🎉 Your virtual pet is active! Click creator board to hear him speak."
+        ]
+    },
+    Creator: {
+        title: "🎨 Kids Digital Designer Space",
+        nodes: [
+            { text: "📐 Drag Shape", x: 100, y: 225 },
+            { text: "🎨 Choose Colors", x: 300, y: 225 },
+            { text: "📥 Save Poster", x: 500, y: 225 }
+        ],
+        logs: [
+            "🧸 Loading Design Space Assets...",
+            "🎈 Preparing wallpapers, icon packs, and custom notification tones...",
+            "✨ Grab your Innovation Certificate below to download!"
+        ]
+    }
+};
+
+function initYouthPlayground() {
+    loadKidsTemplate();
+}
+
+function loadKidsTemplate() {
+    const selected = document.getElementById('kids-toolkit-selector').value;
+    const blueprint = kidsBlueprints[selected];
+    
+    document.getElementById('kids-canvas-title').textContent = blueprint.title;
+
+    // Load logs
+    const logContainer = document.getElementById('kids-stream-log');
+    logContainer.innerHTML = "";
+    blueprint.logs.forEach(msg => {
+        const p = document.createElement('p');
+        p.className = "text-slate-800 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left";
+        p.textContent = msg;
+        logContainer.appendChild(p);
+    });
+
+    drawKidsBlueprint(blueprint);
+}
+
+function drawKidsBlueprint(blueprint) {
+    const canvas = document.getElementById('kids-blueprint-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
-    canvas.classList.remove('opacity-0');
-    canvas.classList.add('opacity-100');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let radius = 0;
-    const maxRadius = Math.max(canvas.width, canvas.height) * 1.2;
-    const originX = canvas.width / 2;
-    const originY = canvas.height / 2;
-
-    function animate() {
-        if (radius < maxRadius) {
-            radius += 28;
-            ctx.fillStyle = `rgba(99, 102, 241, ${Math.max(0, 1 - (radius / maxRadius))})`;
+    // Draw bubbly lego dots background
+    ctx.fillStyle = "rgba(0,0,0,0.03)";
+    for (let x = 12; x < canvas.width; x += 24) {
+        for (let y = 12; y < canvas.height; y += 24) {
             ctx.beginPath();
-            ctx.arc(originX, originY, radius, 0, Math.PI * 2);
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
             ctx.fill();
-            requestAnimationFrame(animate);
-        } else {
-            canvas.classList.add('opacity-0');
-            setTimeout(() => {
-                canvas.classList.add('hidden');
-            }, 300);
         }
     }
-    animate();
+
+    // Draw connect chains with thick lego outline
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(100, 225);
+    ctx.lineTo(500, 225);
+    ctx.stroke();
+
+    // Draw bubbly kids cards
+    blueprint.nodes.forEach((node, idx) => {
+        const colors = ["#F3A8E2", "#90E0EF", "#FFE3E3", "#FFF3B0", "#CAFFBF"];
+        ctx.fillStyle = colors[idx % colors.length];
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 4;
+
+        // Bubbly rounded rectangles
+        drawRoundedRect(ctx, node.x - 70, node.y - 35, 140, 70, 18, true, true);
+
+        // Draw top lego connectors
+        ctx.fillStyle = "#FFFFFF";
+        ctx.beginPath();
+        ctx.arc(node.x - 30, node.y - 35, 10, 0, Math.PI * 2);
+        ctx.arc(node.x + 30, node.y - 35, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Print text
+        ctx.fillStyle = "#000000";
+        ctx.font = "900 12px 'Inter', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(node.text, node.x, node.y);
+    });
 }
 
-function triggerRippleExit(targetUrl, clickX, clickY) {
-    const canvas = document.getElementById('ripple-canvas');
-    if (!canvas) {
-        window.location.href = targetUrl;
-        return;
-    }
-    const ctx = canvas.getContext('2d');
-    
-    canvas.classList.remove('hidden', 'opacity-0');
-    canvas.classList.add('opacity-100');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+function triggerKidsGeneration() {
+    playSFX('lego');
+    showToast("🧱 Snapping digital Lego Blocks together! ✨", "success");
+    loadKidsTemplate();
+}
 
-    let radius = 0;
-    const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+// Bouncy synthesized sound engine using HTML5 Web Audio API
+function playSFX(type) {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
 
-    function animate() {
-        if (radius < maxRadius) {
-            radius += 32;
-            
-            // Clean backdrop clear
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Expanding radial blur gradients representing ripples
-            const gradient = ctx.createRadialGradient(clickX, clickY, radius * 0.1, clickX, clickY, radius);
-            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.95)');
-            gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.7)');
-            gradient.addColorStop(1, 'rgba(250, 249, 245, 0)');
-            
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(clickX, clickY, radius, 0, Math.PI * 2);
-            ctx.fill();
-            
-            requestAnimationFrame(animate);
-        } else {
-            window.location.href = targetUrl;
+        const now = audioCtx.currentTime;
+
+        if (type === 'bubble') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
+            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+        } else if (type === 'sparkle') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(1500, now);
+            osc.frequency.exponentialRampToValueAtTime(800, now + 0.25);
+            gainNode.gain.setValueAtTime(0.1, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+            osc.start(now);
+            osc.stop(now + 0.25);
+        } else if (type === 'correct') {
+            // Arpeggio
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+            osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            osc.start(now);
+            osc.stop(now + 0.4);
+        } else if (type === 'lego') {
+            // Wood block click sound
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(180, now);
+            osc.frequency.setValueAtTime(120, now + 0.05);
+            gainNode.gain.setValueAtTime(0.3, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+            osc.start(now);
+            osc.stop(now + 0.08);
         }
+    } catch (e) {
+        console.warn("HTML5 Synth oscillator audio context deferred until interactive click.", e);
     }
-    animate();
+}
+
+// Interactive Broken Bridge Game Logic Selector
+function selectGameChoice(outcome) {
+    if (outcome === 'Right') {
+        playSFX('correct');
+        const slot = document.getElementById('game-bridge-slot');
+        slot.textContent = "🧠 Haas Thinks";
+        slot.className = "bg-yellow-300 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
+        
+        // Push logging response to kid stream log
+        const log = document.getElementById('kids-stream-log');
+        const p = document.createElement('p');
+        p.className = "text-emerald-600 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left mt-2";
+        p.textContent = "🎉 HURRAY! You picked 'Haas Thinks'! The bridge is fixed and your Lego automation works beautifully! Let's build another!";
+        log.appendChild(p);
+        log.scrollTop = log.scrollHeight;
+
+        showToast("🌟 Beautiful! You completed the logic puzzle bridge!", "success");
+    } else {
+        playSFX('bubble');
+        showToast("🎈 Oops! That logic block didn't fit. Try another block!", "warning");
+    }
+}
+
+// innovation Certificate modal trigger
+function generateInnovationCertificate() {
+    playSFX('correct');
+    
+    // Populate dynamic user metrics
+    document.getElementById('cert-recipient-name').textContent = userName || "Young Innovator";
+    
+    // Set current formatted date
+    const opt = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateText = new Date().toLocaleDateString('en-US', opt);
+    document.getElementById('cert-date-text').textContent = `Official Seal Authenticated on ${dateText}`;
+
+    // Reveal certificate modal
+    const modal = document.getElementById('cert-modal');
+    modal.classList.remove('hidden');
+}
+
+function closeCertModal() {
+    document.getElementById('cert-modal').classList.add('hidden');
 }
 
 // =========================================================================
-// ==================== TOAST COMPONENT ALERT SYSTEM =======================
+// ==================== SYSTEM GENERAL UTILITIES ==========================
 // =========================================================================
 
-function showToast(message, type = "info") {
+function showToast(message, type = "success") {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `glass-panel px-6 py-4 rounded-2xl border flex items-center gap-3 shadow-xl pointer-events-auto transform transition duration-500 translate-x-12 opacity-0 max-w-sm`;
+    toast.className = `p-4 rounded-xl text-xs font-bold shadow-lg text-white max-w-sm pointer-events-auto flex items-center gap-3 border transition-all duration-300 transform translate-x-12 opacity-0 select-none`;
     
-    let icon = "🔔";
     if (type === "success") {
-        toast.classList.add('border-emerald-100', 'bg-emerald-50/90');
-        icon = "✅";
+        toast.className += " bg-emerald-600 border-emerald-500 shadow-emerald-100";
     } else if (type === "warning") {
-        toast.classList.add('border-amber-100', 'bg-amber-50/90');
-        icon = "🔒";
-    } else if (type === "error") {
-        toast.classList.add('border-rose-100', 'bg-rose-50/90');
-        icon = "⚠️";
+        toast.className += " bg-amber-600 border-amber-500 shadow-amber-100";
     } else {
-        toast.classList.add('border-indigo-100', 'bg-indigo-50/90');
+        toast.className += " bg-indigo-600 border-indigo-500 shadow-indigo-100";
     }
 
-    toast.innerHTML = `
-        <span class="text-xl">${icon}</span>
-        <div class="text-left">
-            <p class="font-bold text-slate-800 text-xs uppercase tracking-wide">${type === "info" ? "Haas Notification" : type}</p>
-            <p class="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">${message}</p>
-        </div>
-    `;
-
+    toast.textContent = message;
     container.appendChild(toast);
 
-    // Slide in
+    // Bouncy reveal
     setTimeout(() => {
         toast.classList.remove('translate-x-12', 'opacity-0');
     }, 10);
 
-    // Slide out and remove
+    // Automatically prune
     setTimeout(() => {
         toast.classList.add('translate-x-12', 'opacity-0');
         setTimeout(() => {
-            toast.remove();
-        }, 500);
+            if (container.contains(toast)) container.removeChild(toast);
+        }, 300);
     }, 4500);
 }
 ```

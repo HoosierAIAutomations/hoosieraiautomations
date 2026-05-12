@@ -1,509 +1,746 @@
-// Haas Playground Client Controller - Hoosier AI Automations
+// Haas Playground Dynamic Controller - Hoosier AI Automations
+let userRole = '';
+let userIntent = '';
+let userName = '';
+let userAge = 18;
 
-let currentOnboardingStep = 1;
-let isAdult = true;
-let isWatermarked = true;
-let deferredPrompt = null;
-let currentRole = "Founder";
-let currentIntent = "Sandpit";
+// PWA Install Event Handler
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show custom installation banner
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.remove('hidden');
+});
 
-// Standard blueprint node configurations
-const adultNodes = [
-    { x: 80, y: 150, title: "Trigger: Form Submit", desc: "Connect: Web 3 Forms API", type: "trigger", color: "#6366F1" },
-    { x: 300, y: 150, title: "Action: Haas Parser", desc: "Model: Deepmind Pro AI", type: "process", color: "#EC4899" },
-    { x: 520, y: 150, title: "Database: Save Lead", desc: "Service: Airtable API Secure", type: "storage", color: "#10B981" },
-    { x: 520, y: 300, title: "Dispatch: SMS Alerts", desc: "Provider: Twilio Dispatcher", type: "action", color: "#F59E0B" }
-];
-
-const kidsNodes = [
-    { x: 100, y: 180, title: "Step 1: Start My Game", desc: "Action: Press Play", type: "trigger", color: "#3B82F6" },
-    { x: 340, y: 180, title: "Step 2: Connect Apps", desc: "Action: Share Score", type: "process", color: "#F43F5E" },
-    { x: 580, y: 180, title: "Step 3: Win Prize!", desc: "Action: Learning Star unlocked", type: "reward", color: "#10B981" }
-];
-
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. PWA Service Worker Registration
+document.addEventListener('DOMContentLoaded', () => {
+    // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('[PWA] Service Worker Registered!', reg))
-            .catch(err => console.warn('[PWA] Service Worker Failed!', err));
+            .then(reg => console.log('Service Worker Registered Successfully! Scope:', reg.scope))
+            .catch(err => console.error('Service Worker Registration Failed:', err));
     }
 
-    // 2. Capture native PWA Install prompt
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        const pwaBanner = document.getElementById('pwa-install-banner');
-        if (pwaBanner) pwaBanner.classList.remove('hidden');
-    });
-
-    document.getElementById('pwa-dismiss')?.addEventListener('click', () => {
-        document.getElementById('pwa-install-banner')?.classList.add('hidden');
-    });
-
-    document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`[PWA] User choice: ${outcome}`);
-            deferredPrompt = null;
-            document.getElementById('pwa-install-banner')?.classList.add('hidden');
-        }
-    });
-
-    // 3. Setup Age Slider Display
-    const ageSlider = document.getElementById('user-age-slider');
-    const ageDisplay = document.getElementById('age-display');
-    if (ageSlider && ageDisplay) {
-        ageSlider.addEventListener('input', (e) => {
-            const age = e.target.value;
-            ageDisplay.innerText = `${age} Years`;
-            if (age >= 18) {
-                ageDisplay.className = "bg-indigo-600 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-indigo-500 shadow shadow-indigo-100";
+    // Populate Age Dropdown Selector dynamically
+    const ageSelect = document.getElementById('user-age-select');
+    if (ageSelect) {
+        for (let i = 10; i <= 80; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            if (i < 18) {
+                opt.textContent = `${i} Years (Young Innovator Track)`;
             } else {
-                ageDisplay.className = "bg-pink-500 text-white font-extrabold text-xs px-3 py-1 rounded-full border border-pink-400 shadow shadow-pink-100";
+                opt.textContent = `${i} Years (Professional Console)`;
+            }
+            if (i === 18) opt.selected = true;
+            ageSelect.appendChild(opt);
+        }
+    }
+
+    // Bind PWA Install triggers
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to PWA prompt: ${outcome}`);
+                deferredPrompt = null;
+                document.getElementById('pwa-install-banner').classList.add('hidden');
             }
         });
     }
 
-    // 4. Ripple Landing Animation Trigger (if param passed)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('transition') === 'ripple') {
-        playRippleEntry();
+    const dismissBtn = document.getElementById('pwa-dismiss');
+    if (dismissBtn) {
+        dismissBtn.addEventListener('click', () => {
+            document.getElementById('pwa-install-banner').classList.add('hidden');
+        });
     }
 
-    // 5. Check if user already completed onboarding
-    const cachedAge = localStorage.getItem('haas_playground_age');
-    const cachedName = localStorage.getItem('haas_playground_name');
-    if (cachedAge && cachedName) {
-        isAdult = parseInt(cachedAge) >= 18;
-        currentRole = localStorage.getItem('haas_playground_role') || "Founder";
-        currentIntent = localStorage.getItem('haas_playground_intent') || "Sandpit";
-        document.getElementById('onboarding-stage').classList.add('hidden');
-        loadConsoleView();
-    }
-
-    // 6. Security Locks (Disable context menu, standard copy/paste and F12 inspect triggers)
-    document.addEventListener('contextmenu', (e) => {
-        if (document.getElementById('playground-dashboard').offsetParent !== null) {
-            e.preventDefault();
-            showToast("🔒 Security active. Export blueprint to download clean logic files!", "warning");
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (document.getElementById('playground-dashboard').offsetParent !== null) {
-            // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
-            if (
-                e.key === 'F12' ||
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
-                (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
-            ) {
-                e.preventDefault();
-                showToast("🔒 Inspect Element protected. Download/Export clean blueprints to view raw files!", "warning");
-            }
-        }
-    });
-
-    // 7. Check mock payment simulation
-    if (urlParams.get('payment_success') === 'true') {
-        isWatermarked = false;
-        setTimeout(() => {
-            showToast("💳 Stripe transaction approved! Custom watermarks removed.", "success");
-            triggerBlueprintGeneration();
-        }, 1200);
-    }
+    // Initial default calculations
+    calculateROI();
 });
 
 // =========================================================================
-// ==================== ONBOARDING WIZARD NAVIGATION =======================
+// ==================== ONBOARDING FLOW ACTIONS ============================
 // =========================================================================
 
-function nextStep(step) {
-    document.getElementById(`onboarding-step-${currentOnboardingStep}`).classList.add('hidden');
-    document.getElementById(`onboarding-step-${step}`).classList.remove('hidden');
-    currentOnboardingStep = step;
+function selectRole(role) {
+    userRole = role;
+    
+    // Highlight selected card
+    document.querySelectorAll('.role-card').forEach(card => {
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.add('border-stone-200/60');
+    });
+    
+    const selectedCard = event.currentTarget;
+    selectedCard.classList.remove('border-stone-200/60');
+    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
 
-    // Update Progress Indicators
-    const progressBar = document.getElementById('progress-bar-fill');
-    const stepCounter = document.getElementById('step-counter');
-    if (progressBar && stepCounter) {
-        const percent = (step / 3) * 100;
-        progressBar.style.width = `${percent}%`;
-        stepCounter.innerText = `Step ${step} of 3`;
+    // Dynamic response messages
+    const feedbackBox = document.getElementById('role-feedback-box');
+    const feedbackText = document.getElementById('role-feedback-text');
+    feedbackBox.classList.remove('hidden');
+
+    let text = "";
+    switch (role) {
+        case "Founder/Owner":
+            text = "🚀 Awesome choice! As a Founder or Owner, we'll customize your dashboard to focus on ROI calculation, time-saving metrics, and production-ready pipelines.";
+            break;
+        case "Developer":
+            text = "💻 Welcome, engineer! The Professional Console will provide raw JSON schemas, API mapping tools, and advanced integration blueprints.";
+            break;
+        case "Innovator":
+            text = "🧠 Brilliant! As an Innovator, you'll be shown futuristic automation frameworks to spark creative design patterns and logic streams.";
+            break;
+        case "Marketer":
+            text = "📣 Marketing expert! We will pre-load lead response, CRM syncing, and stock monitoring pipelines built to keep clients engaged.";
+            break;
+        case "Student":
+            text = "🎓 Great! We'll gear your workspace toward interactive educational tools to simplify how apps connect and perform algorithms.";
+            break;
+        case "Start-Up":
+            text = "⚡ Speed is key! As a Start-Up focus, we'll demonstrate lightweight automations that replace full departments on a shoestring budget.";
+            break;
+    }
+    feedbackText.textContent = text;
+
+    // Enable continue button
+    const btn = document.getElementById('btn-continue-step-1');
+    btn.removeAttribute('disabled');
+    btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
+    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+}
+
+function selectIntent(intent) {
+    userIntent = intent;
+    
+    // Highlight intent card
+    document.querySelectorAll('.intent-card').forEach(card => {
+        card.classList.remove('border-indigo-600', 'bg-indigo-50/20');
+        card.classList.add('border-stone-200/60');
+    });
+    
+    const selectedCard = event.currentTarget;
+    selectedCard.classList.remove('border-stone-200/60');
+    selectedCard.classList.add('border-indigo-600', 'bg-indigo-50/20');
+
+    // Intent feedback responses
+    const feedbackBox = document.getElementById('intent-feedback-box');
+    const feedbackText = document.getElementById('intent-feedback-text');
+    feedbackBox.classList.remove('hidden');
+
+    let text = "";
+    switch (intent) {
+        case "Playground":
+            text = "🎠 Perfect! You're entering the live playground dashboard where you can stress-test automations, stream thoughts, and customize layouts.";
+            break;
+        case "Workflows":
+            text = "🔗 Heavy duty design! We'll render structured network paths showing how data moves across standard platforms secure and fast.";
+            break;
+        case "Fun":
+            text = "🎪 Pure curiosity! Relax and explore. You can play custom built logic games, trigger sound effects, and claim visual rewards.";
+            break;
+        case "NotSure":
+            text = "🧭 No problem! We'll load simple and friendly preset blueprints to guide you through what Haas automations make possible.";
+            break;
+    }
+    feedbackText.textContent = text;
+
+    // Enable continue button
+    const btn = document.getElementById('btn-continue-step-2');
+    btn.removeAttribute('disabled');
+    btn.classList.remove('bg-stone-200', 'text-stone-400', 'cursor-not-allowed');
+    btn.classList.add('btn-primary', 'text-white', 'cursor-pointer', 'scale-105');
+}
+
+function nextStep(stepNumber) {
+    // Hide all steps
+    document.getElementById('onboarding-step-1').classList.add('hidden');
+    document.getElementById('onboarding-step-2').classList.add('hidden');
+    document.getElementById('onboarding-step-3').classList.add('hidden');
+
+    // Show selected step
+    document.getElementById(`onboarding-step-${stepNumber}`).classList.remove('hidden');
+
+    // Update progress bar & headers
+    const fill = document.getElementById('progress-bar-fill');
+    const counter = document.getElementById('step-counter');
+    
+    if (stepNumber === 1) {
+        fill.style.width = "33.33%";
+        counter.textContent = "Step 1 of 3";
+    } else if (stepNumber === 2) {
+        fill.style.width = "66.66%";
+        counter.textContent = "Step 2 of 3";
+    } else {
+        fill.style.width = "100%";
+        counter.textContent = "Step 3 of 3";
     }
 }
 
 function completeOnboarding() {
     const nameInput = document.getElementById('user-name-input');
-    const name = nameInput ? nameInput.value.trim() : "Guest";
-    const age = parseInt(document.getElementById('user-age-slider').value);
+    const ageSelect = document.getElementById('user-age-select');
 
-    if (!name) {
-        showToast("⚠️ Please enter your name to complete onboarding.", "error");
+    if (!nameInput.value.trim()) {
+        showToast("⚠️ Please enter your name!", "warning");
+        nameInput.focus();
         return;
     }
 
-    // Save Selection
-    const selectedRole = document.querySelector('input[name="user_role"]:checked')?.value || "Founder";
-    const selectedIntent = document.querySelector('input[name="user_intent"]:checked')?.value || "Sandpit";
+    userName = nameInput.value.trim();
+    userAge = parseInt(ageSelect.value);
 
-    localStorage.setItem('haas_playground_name', name);
-    localStorage.setItem('haas_playground_age', age);
-    localStorage.setItem('haas_playground_role', selectedRole);
-    localStorage.setItem('haas_playground_intent', selectedIntent);
-
-    isAdult = age >= 18;
-    currentRole = selectedRole;
-    currentIntent = selectedIntent;
-
-    showToast(`✨ Welcome to Haas Playground, ${name}!`, "success");
-
-    // Fade onboarding out and dashboard in
-    const onboarding = document.getElementById('onboarding-stage');
-    onboarding.classList.add('animate-fade-out');
-    setTimeout(() => {
-        onboarding.classList.add('hidden');
-        loadConsoleView();
-    }, 400);
-}
-
-// =========================================================================
-// ===================== CONSOLE RENDERING ENGINE =========================
-// =========================================================================
-
-function loadConsoleView() {
+    // Hide wizard flow
+    document.getElementById('onboarding-stage').classList.add('hidden');
+    
+    // Display actual workspace console
     const dashboard = document.getElementById('playground-dashboard');
     dashboard.classList.remove('hidden');
-    dashboard.classList.add('animate-fade-in');
 
-    if (isAdult) {
+    if (userAge >= 18) {
+        // Adult Professional Track
         document.getElementById('professional-dashboard').classList.remove('hidden');
-        triggerBlueprintGeneration();
+        showToast(`🎉 Welcome to Pro Studio, ${userName}!`, "success");
+        initProfessionalConsole();
     } else {
+        // Youth Innovator Track
         document.getElementById('young-innovator-dashboard').classList.remove('hidden');
-        triggerBlueprintGeneration();
+        showToast(`🎈 Welcome, Young Innovator ${userName}!`, "success");
+        initYouthPlayground();
     }
 }
 
-function drawBlueprint(canvasId, nodes, watermarked) {
-    const canvas = document.getElementById(canvasId);
+// =========================================================================
+// ==================== PROFESSIONAL STUDIO CONSOLE (18+) ==================
+// =========================================================================
+
+let proStreamLogs = [];
+const proBlueprints = {
+    RealEstate: {
+        title: "🏡 Real Estate Lead Generation Pipeline",
+        nodes: [
+            { text: "Lead Enters Form", x: 100, y: 225, type: "trigger" },
+            { text: "Filter & Validate", x: 260, y: 225, type: "action" },
+            { text: "Sync CRM Contact", x: 420, y: 225, type: "action" },
+            { text: "Notify Agent SMS", x: 580, y: 150, type: "action" },
+            { text: "Trigger Lead Nurture", x: 580, y: 300, type: "action" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3], [2, 4]],
+        json: {
+            pipeline_name: "Real_Estate_Leads_V1",
+            trigger_node: "Web_Form_Submit",
+            filters: ["address_exists", "phone_verified"],
+            crm_target: "Firebase_DB",
+            notifiers: ["Twilio_SMS_Agent", "Sendgrid_Email_Lead_Nurture"]
+        }
+    },
+    Logistics: {
+        title: "🚛 Smart Logistics & Routing Pipeline",
+        nodes: [
+            { text: "GPS Location Pulse", x: 80, y: 225, type: "trigger" },
+            { text: "Geofence Check", x: 230, y: 150, type: "action" },
+            { text: "Validate Delivery Status", x: 380, y: 225, type: "action" },
+            { text: "ETA Prediction API", x: 530, y: 225, type: "action" },
+            { text: "Notify Customer SMS", x: 680, y: 225, type: "action" }
+        ],
+        connections: [[0, 1], [0, 2], [2, 3], [3, 4]],
+        json: {
+            pipeline_name: "Logistics_Smart_Route",
+            trigger_node: "GPS_Ping",
+            geofence_boundary_miles: 5,
+            prediction_algorithm: "ETA_Random_Forest",
+            notifiers: ["Twilio_SMS_Customer_ETA"]
+        }
+    },
+    Retail: {
+        title: "🛒 Retail Inventory Low-Stock Sync",
+        nodes: [
+            { text: "Item Sold Shopify", x: 100, y: 225, type: "trigger" },
+            { text: "Database Count Check", x: 260, y: 225, type: "action" },
+            { text: "Construct PO Order", x: 420, y: 150, type: "action" },
+            { text: "Notify Wholesale API", x: 580, y: 225, type: "action" },
+            { text: "Slack Alert low stock", x: 580, y: 300, type: "action" }
+        ],
+        connections: [[0, 1], [1, 2], [2, 3], [1, 4]],
+        json: {
+            pipeline_name: "Shopify_Low_Stock_Sync",
+            trigger_node: "Shopify_Webhook_Order",
+            threshold: 15,
+            auto_wholesale_purchase: true,
+            alert_channels: ["Slack_Operations"]
+        }
+    }
+};
+
+function initProfessionalConsole() {
+    loadIndustryTemplate();
+}
+
+function loadIndustryTemplate() {
+    const selected = document.getElementById('industry-selector').value;
+    const blueprint = proBlueprints[selected];
+    
+    // Set title
+    document.getElementById('blueprint-title').textContent = blueprint.title;
+
+    // Set JSON Preview
+    document.getElementById('json-preview').textContent = JSON.stringify(blueprint.json, null, 2);
+
+    // Stream logs to thinking terminal
+    proStreamLogs = [
+        `[SYSTEM]: Initializing Haas Logic Engine for ${selected}...`,
+        `[ANALYSIS]: Identifying manual bottlenecks in system paths...`,
+        `[ACTION]: Mapping active trigger payload parameters...`,
+        `[VERIFY]: Resolving system webhooks and verifying APIs...`,
+        `[SUCCESS]: Blueprint compiled successfully.`
+    ];
+    streamTerminalLogs();
+
+    // Render on Canvas
+    drawProfessionalBlueprint(blueprint);
+}
+
+function drawProfessionalBlueprint(blueprint) {
+    const canvas = document.getElementById('blueprint-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 1. Draw sleek subtle alignment grids
-    ctx.strokeStyle = "rgba(99, 102, 241, 0.05)";
-    ctx.lineWidth = 1;
-    for (let x = 0; x < canvas.width; x += 25) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-    }
-    for (let y = 0; y < canvas.height; y += 25) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-
-    // 2. Draw connector curves
-    ctx.strokeStyle = "rgba(165, 180, 252, 0.6)";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([5, 5]);
-    ctx.lineDashOffset = 0;
-
-    for (let i = 0; i < nodes.length - 1; i++) {
-        const from = nodes[i];
-        const to = nodes[i + 1];
+    // Draw lines
+    ctx.lineWidth = 2.5;
+    blueprint.connections.forEach(conn => {
+        const from = blueprint.nodes[conn[0]];
+        const to = blueprint.nodes[conn[1]];
         
+        ctx.strokeStyle = "#818CF8"; // Indigo
         ctx.beginPath();
-        ctx.moveTo(from.x + 180, from.y + 35);
-        ctx.bezierCurveTo(
-            from.x + 250, from.y + 35,
-            to.x - 70, to.y + 35,
-            to.x, to.y + 35
-        );
-        ctx.stroke();
-    }
-    ctx.setLineDash([]); // Reset line dash
-
-    // 3. Draw Nodes (Glassmorphic look)
-    nodes.forEach(node => {
-        // Drop shadow
-        ctx.shadowColor = "rgba(99, 102, 241, 0.1)";
-        ctx.shadowBlur = 15;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 8;
-
-        // Container card
-        ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.roundRect(node.x, node.y, 180, 70, 16);
-        ctx.fill();
-
-        // Border colored highlight
-        ctx.shadowColor = "transparent"; // Reset shadow for outline
-        ctx.strokeStyle = node.color;
-        ctx.lineWidth = 2.5;
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
         ctx.stroke();
 
-        // Color tag indicator pill
-        ctx.fillStyle = node.color;
+        // Draw arrow tip
+        const angle = Math.atan2(to.y - from.y, to.x - from.x);
+        ctx.fillStyle = "#818CF8";
         ctx.beginPath();
-        ctx.roundRect(node.x + 12, node.y + 12, 12, 12, 4);
-        ctx.fill();
-
-        // Node Title text
-        ctx.fillStyle = "#0F172A"; // Slate 900
-        ctx.font = "bold 11px Inter, sans-serif";
-        ctx.fillText(node.title, node.x + 32, node.y + 22);
-
-        // Node description text
-        ctx.fillStyle = "#64748B"; // Slate 500
-        ctx.font = "500 9px Inter, sans-serif";
-        ctx.fillText(node.desc, node.x + 12, node.y + 48);
-
-        // Service outline tags (if any)
-        ctx.fillStyle = "rgba(99, 102, 241, 0.08)";
-        ctx.beginPath();
-        ctx.roundRect(node.x + 12, node.y + 54, 156, 3, 2);
+        ctx.arc(to.x - 10 * Math.cos(angle), to.y - 10 * Math.sin(angle), 5, 0, Math.PI * 2);
         ctx.fill();
     });
 
-    // 4. Visual watermark overlay (if locked)
-    if (watermarked) {
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(-Math.PI / 12);
-        ctx.font = "black 14px Inter, sans-serif";
-        ctx.fillStyle = "rgba(100, 116, 139, 0.16)";
+    // Draw nodes
+    blueprint.nodes.forEach(node => {
+        ctx.fillStyle = node.type === "trigger" ? "#4F46E5" : "#FAF9F5";
+        ctx.strokeStyle = "#4F46E5";
+        ctx.lineWidth = 3;
+
+        // Rounded card draw
+        drawRoundedRect(ctx, node.x - 70, node.y - 25, 140, 50, 12, node.type === "trigger", true);
+
+        // Text print
+        ctx.fillStyle = node.type === "trigger" ? "#FFFFFF" : "#1E293B";
+        ctx.font = "bold 11px 'Inter', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        
-        // Render simple tile watermark patterns
-        const text = isAdult ? "HAAS PLAYGROUND • PRE-PURCHASED DEMO" : "HAAS LEARNING TRACK • EDUCATION PREVIEW";
-        for (let i = -3; i <= 3; i++) {
-            ctx.fillText(text, 0, i * 80);
+        ctx.fillText(node.text, node.x, node.y);
+    });
+}
+
+function drawRoundedRect(ctx, x, y, width, height, radius, fill, stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
+}
+
+function streamTerminalLogs() {
+    const term = document.getElementById('terminal-stream-log');
+    term.innerHTML = "";
+    let i = 0;
+
+    function addLog() {
+        if (i < proStreamLogs.length) {
+            const p = document.createElement('p');
+            if (proStreamLogs[i].includes('SUCCESS')) {
+                p.className = 'text-white font-bold tracking-wide border-l-2 border-indigo-500 pl-2';
+            } else if (proStreamLogs[i].includes('SYSTEM')) {
+                p.className = 'text-indigo-300 font-medium';
+            } else {
+                p.className = 'text-sky-200';
+            }
+            p.textContent = proStreamLogs[i];
+            term.appendChild(p);
+            term.scrollTop = term.scrollHeight;
+            i++;
+            setTimeout(addLog, 450);
+        } else {
+            const cursor = document.createElement('div');
+            cursor.className = 'w-2.5 h-4 bg-sky-300 inline-block animate-pulse mt-1';
+            term.appendChild(cursor);
         }
-        ctx.restore();
+    }
+    addLog();
+}
+
+// 1,000 Task Stress Test Simulator
+function simulateStressTest() {
+    const overlay = document.getElementById('stress-test-overlay');
+    overlay.classList.remove('hidden');
+
+    let count = 0;
+    const ring = document.getElementById('stress-progress-ring');
+    const countText = document.getElementById('stress-counter-text');
+    const logText = document.getElementById('stress-log-text');
+    
+    // Add logs to terminal in the background
+    const term = document.getElementById('terminal-stream-log');
+    const p = document.createElement('p');
+    p.className = 'text-yellow-300 font-bold';
+    p.textContent = `[STRESS TEST]: Commencing 1,000 tasks simulation pipeline run...`;
+    term.appendChild(p);
+
+    const interval = setInterval(() => {
+        if (count < 1000) {
+            count += 40;
+            if (count > 1000) count = 1000;
+            
+            // Progress ring calculation
+            const pct = count / 1000;
+            const offset = 251.2 - (251.2 * pct);
+            ring.style.strokeDashoffset = offset;
+            
+            countText.textContent = count;
+            logText.textContent = `Tasks generated: ${count} / 1000`;
+            
+            if (count % 200 === 0) {
+                const subP = document.createElement('p');
+                subP.className = 'text-sky-100 font-mono text-[10px] pl-2';
+                subP.textContent = `⚡ [STRESS] Simulating concurrency block load: ${count} payloads successfully completed.`;
+                term.appendChild(subP);
+                term.scrollTop = term.scrollHeight;
+            }
+        } else {
+            clearInterval(interval);
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                showToast("✅ Concurrency Stress Test Completed! 0 Failures detected.", "success");
+                
+                const finalP = document.createElement('p');
+                finalP.className = 'text-emerald-300 font-bold';
+                finalP.textContent = `[STRESS COMPLETED]: 1,000 / 1,000 loops finished securely in 2.5s. Ready.`;
+                term.appendChild(finalP);
+                term.scrollTop = term.scrollHeight;
+            }, 600);
+        }
+    }, 100);
+}
+
+// Time-To-Value ROI Calculator logic
+function calculateROI() {
+    const rate = parseFloat(document.getElementById('roi-rate').value) || 0;
+    const hours = parseFloat(document.getElementById('roi-hours').value) || 0;
+
+    const yearlyManual = rate * hours * 52;
+    const manualCostText = document.getElementById('roi-manual-cost');
+    const manualBar = document.getElementById('roi-manual-bar');
+    const paybackText = document.getElementById('roi-payback-days');
+
+    // Display formatted cost
+    manualCostText.textContent = yearlyManual.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+    // Animate manual bar relative to maximum height representation
+    const maxVal = 50000;
+    const percentage = Math.min((yearlyManual / maxVal) * 100, 100);
+    manualBar.style.width = `${percentage}%`;
+
+    // Payback day threshold crossover point representation
+    if (yearlyManual > 0) {
+        // Haas SaaS pipeline setup costs fixed $300 + hosting $25/mo
+        const baseCost = 600; 
+        const dailySavings = (rate * hours) / 7;
+        const paybackDays = Math.ceil(baseCost / dailySavings);
+        paybackText.textContent = paybackDays <= 365 ? `${paybackDays} Days` : "Less than a Year";
+    } else {
+        paybackText.textContent = "0 Days";
     }
 }
 
-// =========================================================================
-// =================== DYNAMIC TERMINAL LOG STREAM =========================
-// =========================================================================
-
-let terminalInterval = null;
-
-function triggerBlueprintGeneration() {
-    const streamContainer = document.getElementById(isAdult ? 'terminal-stream-log' : 'kids-stream-log');
-    if (!streamContainer) return;
-    
-    // Clear old logs and drawing
-    streamContainer.innerHTML = "";
-    
-    const logs = isAdult ? [
-        "🤖 [Haas Studio] Initializing engineering pipeline compilation...",
-        "🔌 [Haas Studio] Fetching custom APIs for role: " + currentRole + "...",
-        "⚙️ [Haas Studio] Creating system routing structures for: " + currentIntent + "...",
-        "🔒 [Haas Studio] Securing isolated runtime context...",
-        "📡 [Haas Studio] Initializing direct Stripe transaction check checks...",
-        "💾 [Haas Studio] Embedding blueprint vectors in memory DB...",
-        "🏆 [Haas Studio] Blueprint compilation completed successfully! Ready for export."
-    ] : [
-        "🎈 [Haas Kid] Welcome! Let's build your cool learning diagram!...",
-        "🎒 [Haas Kid] Loading custom stars and templates...",
-        "🛡️ [Haas Kid] Safety filters are 100% active and running!...",
-        "✨ [Haas Kid] Coloring your blocks in blue and green...",
-        "🧩 [Haas Kid] Fitting block paths together...",
-        "🌈 [Haas Kid] Everything looks super fun! Save your drawing below!"
-    ];
-
-    let logIndex = 0;
-    
-    if (terminalInterval) clearInterval(terminalInterval);
-
-    // Dynamic stream sequence
-    terminalInterval = setInterval(() => {
-        if (logIndex < logs.length) {
-            const line = document.createElement('p');
-            line.className = isAdult ? "text-emerald-400" : "text-indigo-600";
-            line.innerText = logs[logIndex];
-            streamContainer.appendChild(line);
-            
-            // Auto scroll container
-            streamContainer.scrollTop = streamContainer.scrollHeight;
-            logIndex++;
-            
-            // Draw progressively
-            const currentNodes = isAdult ? adultNodes.slice(0, Math.ceil((logIndex / logs.length) * adultNodes.length)) : kidsNodes;
-            drawBlueprint(isAdult ? 'blueprint-canvas' : 'kids-blueprint-canvas', currentNodes, isWatermarked);
-        } else {
-            clearInterval(terminalInterval);
-            // Append blink cursor in terminal
-            if (isAdult) {
-                const cursor = document.createElement('div');
-                cursor.className = "w-2.5 h-4 bg-emerald-400 inline-block animate-pulse mt-2";
-                streamContainer.appendChild(cursor);
-            }
-        }
-    }, 700);
-}
-
-// =========================================================================
-// ================= MONETIZATION & SIMULATION CHECKS =======================
-// =========================================================================
-
+// Paywall vault trigger
 function triggerExportPayment() {
-    showToast("💳 Creating secure Stripe checkout session...", "info");
-    
-    // Simulate redirecting to Stripe Checkout. We pass payment_success parameter to represent completion
+    showToast("💳 Redirecting to Stripe Secure Portal Checkout...", "success");
     setTimeout(() => {
-        window.location.href = window.location.pathname + "?payment_success=true";
-    }, 1500);
+        // Mock success callback scenario
+        showToast("✨ Payment Completed! Downloading standard blueprint package containing JSON schematics...", "success");
+    }, 2000);
 }
 
-function downloadKidsBlueprint() {
-    showToast("🎨 Preparing your fun diagram design. Saved to downloads!", "success");
-    simulateFileDownload("haas-kids-diagram.json", JSON.stringify(kidsNodes, null, 2));
-}
-
-function simulateFileDownload(filename, text) {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-}
 
 // =========================================================================
-// ================= WATER RIPPLE TRANSITION LOGIC =========================
+// ==================== YOUNG INNOVATOR TRACK (17 & UNDER) =================
 // =========================================================================
 
-function playRippleEntry() {
-    const canvas = document.getElementById('ripple-canvas');
+const kidsBlueprints = {
+    Homework: {
+        title: "📚 Homework Hero Magic Chain",
+        nodes: [
+            { text: "🏫 Posts Homework", x: 100, y: 225 },
+            { text: "🧩 Sort in Planner", x: 300, y: 225 },
+            { text: "📱 Call Phone Reminder", x: 500, y: 225 }
+        ],
+        logs: [
+            "🎈 Initializing Homework Hero pipeline...",
+            "🧱 Snapping 'Posts Homework' blocks into 'Sort in Planner' nodes...",
+            "🌟 Success! Your robot assistant is set up to phone you alerts!"
+        ]
+    },
+    Pet: {
+        title: "🤖 My AI Robot Pet Companion",
+        nodes: [
+            { text: "💬 Ask Robot Pet", x: 100, y: 225 },
+            { text: "🧠 Think Prompt", x: 300, y: 225 },
+            { text: "📣 Fun Speech Voice", x: 500, y: 225 }
+        ],
+        logs: [
+            "🔮 Training mini assistant helper robot pet...",
+            "🌟 Give him a personality wizard, funny alien, or helpful robot!",
+            "🎉 Your virtual pet is active! Click creator board to hear him speak."
+        ]
+    },
+    Creator: {
+        title: "🎨 Kids Digital Designer Space",
+        nodes: [
+            { text: "📐 Drag Shape", x: 100, y: 225 },
+            { text: "🎨 Choose Colors", x: 300, y: 225 },
+            { text: "📥 Save Poster", x: 500, y: 225 }
+        ],
+        logs: [
+            "🧸 Loading Design Space Assets...",
+            "🎈 Preparing wallpapers, icon packs, and custom notification tones...",
+            "✨ Grab your Innovation Certificate below to download!"
+        ]
+    }
+};
+
+function initYouthPlayground() {
+    loadKidsTemplate();
+}
+
+function loadKidsTemplate() {
+    const selected = document.getElementById('kids-toolkit-selector').value;
+    const blueprint = kidsBlueprints[selected];
+    
+    document.getElementById('kids-canvas-title').textContent = blueprint.title;
+
+    // Load logs
+    const logContainer = document.getElementById('kids-stream-log');
+    logContainer.innerHTML = "";
+    blueprint.logs.forEach(msg => {
+        const p = document.createElement('p');
+        p.className = "text-slate-800 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left";
+        p.textContent = msg;
+        logContainer.appendChild(p);
+    });
+
+    drawKidsBlueprint(blueprint);
+}
+
+function drawKidsBlueprint(blueprint) {
+    const canvas = document.getElementById('kids-blueprint-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
-    canvas.classList.remove('opacity-0');
-    canvas.classList.add('opacity-100');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let radius = 0;
-    const maxRadius = Math.max(canvas.width, canvas.height) * 1.2;
-    const originX = canvas.width / 2;
-    const originY = canvas.height / 2;
-
-    function animate() {
-        if (radius < maxRadius) {
-            radius += 28;
-            ctx.fillStyle = `rgba(99, 102, 241, ${Math.max(0, 1 - (radius / maxRadius))})`;
+    // Draw bubbly lego dots background
+    ctx.fillStyle = "rgba(0,0,0,0.03)";
+    for (let x = 12; x < canvas.width; x += 24) {
+        for (let y = 12; y < canvas.height; y += 24) {
             ctx.beginPath();
-            ctx.arc(originX, originY, radius, 0, Math.PI * 2);
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
             ctx.fill();
-            requestAnimationFrame(animate);
-        } else {
-            canvas.classList.add('opacity-0');
-            setTimeout(() => {
-                canvas.classList.add('hidden');
-            }, 300);
         }
     }
-    animate();
+
+    // Draw connect chains with thick lego outline
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(100, 225);
+    ctx.lineTo(500, 225);
+    ctx.stroke();
+
+    // Draw bubbly kids cards
+    blueprint.nodes.forEach((node, idx) => {
+        const colors = ["#F3A8E2", "#90E0EF", "#FFE3E3", "#FFF3B0", "#CAFFBF"];
+        ctx.fillStyle = colors[idx % colors.length];
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 4;
+
+        // Bubbly rounded rectangles
+        drawRoundedRect(ctx, node.x - 70, node.y - 35, 140, 70, 18, true, true);
+
+        // Draw top lego connectors
+        ctx.fillStyle = "#FFFFFF";
+        ctx.beginPath();
+        ctx.arc(node.x - 30, node.y - 35, 10, 0, Math.PI * 2);
+        ctx.arc(node.x + 30, node.y - 35, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Print text
+        ctx.fillStyle = "#000000";
+        ctx.font = "900 12px 'Inter', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(node.text, node.x, node.y);
+    });
 }
 
-function triggerRippleExit(targetUrl, clickX, clickY) {
-    const canvas = document.getElementById('ripple-canvas');
-    if (!canvas) {
-        window.location.href = targetUrl;
-        return;
-    }
-    const ctx = canvas.getContext('2d');
-    
-    canvas.classList.remove('hidden', 'opacity-0');
-    canvas.classList.add('opacity-100');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+function triggerKidsGeneration() {
+    playSFX('lego');
+    showToast("🧱 Snapping digital Lego Blocks together! ✨", "success");
+    loadKidsTemplate();
+}
 
-    let radius = 0;
-    const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+// Bouncy synthesized sound engine using HTML5 Web Audio API
+function playSFX(type) {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
 
-    function animate() {
-        if (radius < maxRadius) {
-            radius += 32;
-            
-            // Clean backdrop clear
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Expanding radial blur gradients representing ripples
-            const gradient = ctx.createRadialGradient(clickX, clickY, radius * 0.1, clickX, clickY, radius);
-            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.95)');
-            gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.7)');
-            gradient.addColorStop(1, 'rgba(250, 249, 245, 0)');
-            
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(clickX, clickY, radius, 0, Math.PI * 2);
-            ctx.fill();
-            
-            requestAnimationFrame(animate);
-        } else {
-            window.location.href = targetUrl;
+        const now = audioCtx.currentTime;
+
+        if (type === 'bubble') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
+            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+        } else if (type === 'sparkle') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(1500, now);
+            osc.frequency.exponentialRampToValueAtTime(800, now + 0.25);
+            gainNode.gain.setValueAtTime(0.1, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+            osc.start(now);
+            osc.stop(now + 0.25);
+        } else if (type === 'correct') {
+            // Arpeggio
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+            osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            osc.start(now);
+            osc.stop(now + 0.4);
+        } else if (type === 'lego') {
+            // Wood block click sound
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(180, now);
+            osc.frequency.setValueAtTime(120, now + 0.05);
+            gainNode.gain.setValueAtTime(0.3, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+            osc.start(now);
+            osc.stop(now + 0.08);
         }
+    } catch (e) {
+        console.warn("HTML5 Synth oscillator audio context deferred until interactive click.", e);
     }
-    animate();
+}
+
+// Interactive Broken Bridge Game Logic Selector
+function selectGameChoice(outcome) {
+    if (outcome === 'Right') {
+        playSFX('correct');
+        const slot = document.getElementById('game-bridge-slot');
+        slot.textContent = "🧠 Haas Thinks";
+        slot.className = "bg-yellow-300 border-4 border-black rounded-xl p-3 font-black text-xs text-black h-12 w-36 flex items-center justify-center animate-bounce";
+        
+        // Push logging response to kid stream log
+        const log = document.getElementById('kids-stream-log');
+        const p = document.createElement('p');
+        p.className = "text-emerald-600 font-extrabold text-xs bg-white border-2 border-black rounded-xl p-3 shadow-[2px_2px_0px_#000] animate-fade-in text-left mt-2";
+        p.textContent = "🎉 HURRAY! You picked 'Haas Thinks'! The bridge is fixed and your Lego automation works beautifully! Let's build another!";
+        log.appendChild(p);
+        log.scrollTop = log.scrollHeight;
+
+        showToast("🌟 Beautiful! You completed the logic puzzle bridge!", "success");
+    } else {
+        playSFX('bubble');
+        showToast("🎈 Oops! That logic block didn't fit. Try another block!", "warning");
+    }
+}
+
+// innovation Certificate modal trigger
+function generateInnovationCertificate() {
+    playSFX('correct');
+    
+    // Populate dynamic user metrics
+    document.getElementById('cert-recipient-name').textContent = userName || "Young Innovator";
+    
+    // Set current formatted date
+    const opt = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateText = new Date().toLocaleDateString('en-US', opt);
+    document.getElementById('cert-date-text').textContent = `Official Seal Authenticated on ${dateText}`;
+
+    // Reveal certificate modal
+    const modal = document.getElementById('cert-modal');
+    modal.classList.remove('hidden');
+}
+
+function closeCertModal() {
+    document.getElementById('cert-modal').classList.add('hidden');
 }
 
 // =========================================================================
-// ==================== TOAST COMPONENT ALERT SYSTEM =======================
+// ==================== SYSTEM GENERAL UTILITIES ==========================
 // =========================================================================
 
-function showToast(message, type = "info") {
+function showToast(message, type = "success") {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `glass-panel px-6 py-4 rounded-2xl border flex items-center gap-3 shadow-xl pointer-events-auto transform transition duration-500 translate-x-12 opacity-0 max-w-sm`;
+    toast.className = `p-4 rounded-xl text-xs font-bold shadow-lg text-white max-w-sm pointer-events-auto flex items-center gap-3 border transition-all duration-300 transform translate-x-12 opacity-0 select-none`;
     
-    let icon = "🔔";
     if (type === "success") {
-        toast.classList.add('border-emerald-100', 'bg-emerald-50/90');
-        icon = "✅";
+        toast.className += " bg-emerald-600 border-emerald-500 shadow-emerald-100";
     } else if (type === "warning") {
-        toast.classList.add('border-amber-100', 'bg-amber-50/90');
-        icon = "🔒";
-    } else if (type === "error") {
-        toast.classList.add('border-rose-100', 'bg-rose-50/90');
-        icon = "⚠️";
+        toast.className += " bg-amber-600 border-amber-500 shadow-amber-100";
     } else {
-        toast.classList.add('border-indigo-100', 'bg-indigo-50/90');
+        toast.className += " bg-indigo-600 border-indigo-500 shadow-indigo-100";
     }
 
-    toast.innerHTML = `
-        <span class="text-xl">${icon}</span>
-        <div class="text-left">
-            <p class="font-bold text-slate-800 text-xs uppercase tracking-wide">${type === "info" ? "Haas Notification" : type}</p>
-            <p class="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">${message}</p>
-        </div>
-    `;
-
+    toast.textContent = message;
     container.appendChild(toast);
 
-    // Slide in
+    // Bouncy reveal
     setTimeout(() => {
         toast.classList.remove('translate-x-12', 'opacity-0');
     }, 10);
 
-    // Slide out and remove
+    // Automatically prune
     setTimeout(() => {
         toast.classList.add('translate-x-12', 'opacity-0');
         setTimeout(() => {
-            toast.remove();
-        }, 500);
+            if (container.contains(toast)) container.removeChild(toast);
+        }, 300);
     }, 4500);
 }
