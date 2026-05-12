@@ -1,0 +1,22 @@
+{
+  "name": "Haas AI Playground",
+  "short_name": "HaasPlayground",
+  "description": "Design premium visual AI pipelines and automated workflows in our secure sandbox.",
+  "start_url": "playground.html",
+  "display": "standalone",
+  "background_color": "#FAF9F5",
+  "theme_color": "#6366F1",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "1330.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "1330.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

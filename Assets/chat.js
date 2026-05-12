@@ -76,3 +76,64 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') sendMessage();
     });
 });
+
+// =========================================================================
+// ================ GLOBAL NAV WATER RIPPLE TRANSITION =====================
+// =========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    // Intercept clicks to any link pointing to the playground
+    const navCtas = document.querySelectorAll('a[href="playground.html"], .nav-cta');
+    navCtas.forEach(cta => {
+        cta.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetUrl = cta.getAttribute('href') || 'playground.html';
+            
+            // Trigger the custom organic ripple exit transition
+            createGlobalRippleAndNavigate(targetUrl, e.clientX, e.clientY);
+        });
+    });
+});
+
+function createGlobalRippleAndNavigate(targetUrl, clickX, clickY) {
+    let canvas = document.getElementById('global-ripple-canvas');
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'global-ripple-canvas';
+        canvas.style.position = 'fixed';
+        canvas.style.inset = '0';
+        canvas.style.zIndex = '1000';
+        canvas.style.pointerEvents = 'none';
+        document.body.appendChild(canvas);
+    }
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let radius = 0;
+    const maxRadius = Math.max(canvas.width, canvas.height) * 1.5;
+
+    function animate() {
+        if (radius < maxRadius) {
+            radius += 36;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Circular organic wash expanding smoothly from coordinates
+            const gradient = ctx.createRadialGradient(clickX, clickY, radius * 0.05, clickX, clickY, radius);
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.98)');
+            gradient.addColorStop(0.4, 'rgba(99, 102, 241, 0.85)');
+            gradient.addColorStop(1, 'rgba(250, 249, 245, 0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(clickX, clickY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            requestAnimationFrame(animate);
+        } else {
+            window.location.href = targetUrl + "?transition=ripple";
+        }
+    }
+    animate();
+}
+
