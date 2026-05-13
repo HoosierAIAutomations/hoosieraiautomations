@@ -16,7 +16,7 @@ export const handler = async (event, context) => {
 
   try {
     const payload = JSON.parse(event.body);
-    
+
     // Inject the secure backend key
     payload.access_key = WEB3FORMS_ACCESS_KEY;
 
@@ -29,26 +29,37 @@ export const handler = async (event, context) => {
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    // Safely read raw text first — Web3Forms can return HTML on errors
+    const rawText = await response.text();
+    console.log("Web3Forms status:", response.status);
+    console.log("Web3Forms raw response:", rawText.substring(0, 500));
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseErr) {
+      // Web3Forms returned HTML (redirect, maintenance page, etc.)
+      const snippet = rawText.substring(0, 300);
+      console.error("Web3Forms returned non-JSON body:", snippet);
+      throw new Error("Web3Forms returned unexpected response: " + snippet);
+    }
 
     if (!response.ok) {
-        console.error("Web3Forms API Error:", data);
-        throw new Error(data.message || "Failed to submit form to Web3Forms");
+      console.error("Web3Forms API error response:", data);
+      throw new Error(data.message || "Web3Forms rejected the submission.");
     }
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
 
   } catch (error) {
-    console.error("Error in submit-audit function:", error);
+    console.error("Error in submit-audit function:", error.message);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to submit audit data." }),
+      body: JSON.stringify({ error: error.message || "Failed to submit audit data." }),
     };
   }
 };
