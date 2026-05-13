@@ -365,3 +365,60 @@ input[type="range"].custom-slider::-moz-range-thumb:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
+/* --- Responsive & PWA Enhancements --- */
+
+/* Safe area support for PWA */
+nav {
+    padding-top: calc(1rem + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: 1rem !important;
+}
+
+#chat-widget {
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+#pwa-install-prompt {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Chat Widget Width Fix for Small Screens */
+#chat-window {
+    width: calc(100vw - 4rem) !important;
+    max-width: 360px !important;
+}
+
+/* Mobile Drawer Hamburger Animations */
+#mobile-menu-toggle span {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+#mobile-menu-toggle.open #hamburger-line-1 {
+    transform: translateY(6px) rotate(45deg);
+}
+#mobile-menu-toggle.open #hamburger-line-2 {
+    opacity: 0;
+    transform: scaleX(0);
+}
+#mobile-menu-toggle.open #hamburger-line-3 {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Staggered Slide-in Animation for Mobile Nav Links */
+.mobile-nav-link {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+#mobile-drawer:not(.translate-x-full) .mobile-nav-link {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+#mobile-drawer:not(.translate-x-full) .mobile-nav-link:nth-child(1) { transition-delay: 100ms; }
+#mobile-drawer:not(.translate-x-full) .mobile-nav-link:nth-child(2) { transition-delay: 140ms; }
+#mobile-drawer:not(.translate-x-full) .mobile-nav-link:nth-child(3) { transition-delay: 180ms; }
+#mobile-drawer:not(.translate-x-full) .mobile-nav-link:nth-child(4) { transition-delay: 220ms; }
+#mobile-drawer:not(.translate-x-full) .mobile-nav-link:nth-child(5) { transition-delay: 260ms; }
+
+
