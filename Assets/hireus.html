@@ -108,7 +108,7 @@
             </div>
 
             <!-- Form submission to secure Netlify function endpoint -->
-            <form id="audit-wizard-form" action="/.netlify/functions/submit-audit" method="POST">
+            <form id="audit-wizard-form" action="https://api.web3forms.com/submit" method="POST">
                 
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
@@ -628,6 +628,8 @@
         }
 
         // Ajax submission with loading spinner and Success animation
+        // Submits directly to Web3Forms API from the browser (their intended usage —
+        // the access_key is a public client-side key, not a secret).
         const form = document.getElementById('audit-wizard-form');
         const submitBtn = document.getElementById('submit-btn');
 
@@ -640,9 +642,11 @@
 
             const formData = new FormData(form);
             const object = Object.fromEntries(formData);
+            // Inject the Web3Forms access key — this is a public client-side key
+            object.access_key = "6d5ff7ca-74f7-4f27-9142-04a8a5dd1244";
             const json = JSON.stringify(object);
 
-            fetch('/.netlify/functions/submit-audit', {
+            fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
