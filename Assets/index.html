@@ -366,14 +366,15 @@
 <script src="chat.js"></script>
 
 <!-- PWA Custom Installer Prompt -->
-<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
-    <div class="bg-white border-2 border-[#001C48] p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm mx-auto">
-        <img src="icon-192.png" alt="Logo" class="w-12 h-12 rounded-lg">
-        <div class="flex-1">
-            <p class="text-sm font-bold text-[#001C48]">Install Hoosier AI</p>
-            <p class="text-xs text-slate-600">Add to home screen for instant access.</p>
+<div id="pwa-install-prompt" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden w-[calc(100%-2rem)] sm:w-auto">
+    <div class="bg-white border border-indigo-100 p-3 sm:p-4 rounded-2xl shadow-2xl flex items-center gap-3 sm:gap-4 max-w-sm mx-auto ring-1 ring-black/5 relative">
+        <button id="pwa-close-btn" class="absolute -top-2 -right-2 bg-white border border-stone-200 text-slate-400 hover:text-slate-700 rounded-full w-6 h-6 flex items-center justify-center text-sm shadow-sm z-10">&times;</button>
+        <img src="icon-192.png" alt="Logo" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shadow-sm border border-stone-100">
+        <div class="flex-1 min-w-0">
+            <p class="text-sm font-black text-slate-900 truncate">Hoosier AI</p>
+            <p class="text-[10px] sm:text-xs text-slate-500 font-medium leading-tight">Add to home screen for instant access.</p>
         </div>
-        <button id="install-button" class="bg-[#001C48] text-white px-4 py-2 rounded-xl text-xs font-bold hover:scale-105 transition-transform">
+        <button id="install-button" class="bg-indigo-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold hover:bg-indigo-700 hover:scale-105 transition-all shadow-md shadow-indigo-200 flex-shrink-0">
             Install
         </button>
     </div>
@@ -383,6 +384,7 @@
     let deferredPrompt;
     const installPrompt = document.getElementById('pwa-install-prompt');
     const installBtn = document.getElementById('install-button');
+    const pwaCloseBtn = document.getElementById('pwa-close-btn');
 
     // Register Service Worker
     if ('serviceWorker' in navigator) {
@@ -394,7 +396,7 @@
         deferredPrompt = e;
         // Show the custom prompt after 3 seconds
         setTimeout(() => {
-            if (installPrompt) {
+            if (installPrompt && !localStorage.getItem('pwaPromptDismissed')) {
                 installPrompt.classList.remove('hidden');
             }
         }, 3000);
@@ -410,6 +412,15 @@
                 }
                 deferredPrompt = null;
             }
+        });
+    }
+
+    if (pwaCloseBtn) {
+        pwaCloseBtn.addEventListener('click', () => {
+            if (installPrompt) {
+                installPrompt.classList.add('hidden');
+            }
+            localStorage.setItem('pwaPromptDismissed', 'true');
         });
     }
 </script>
